@@ -1,0 +1,46 @@
+   <TouchableOpacity
+          style={styles.press}
+          onPress={() => navigation.navigate('Calendar')}>
+          <View
+            style={[styles.buttonGrad, {backgroundColor: colors.mainButton}]}>
+            <Text
+              style={[
+                styles.text,
+                {color: colors.text, fontSize: 18 * scaleFactor},
+              ]}>
+              Kalender
+            </Text>
+            <Image
+              source={require('../../Assets/images/structure_calendar.png')}
+              style={[
+                styles.images,
+                {
+                  width: 70 * scaleFactor,
+                  height: 70 * scaleFactor,
+                },
+              ]}></Image>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.press}
+          onPress={() => navigation.navigate('Daily overview')}>
+          <View
+            style={[styles.buttonGrad, {backgroundColor: colors.mainButton}]}>
+            <Text
+              style={[
+                styles.text,
+                {color: colors.text, fontSize: 18 * scaleFactor},
+              ]}>
+              Dags oversigt
+            </Text>
+            <Image
+              source={require('../../Assets/images/structure_dailyOverview.png')}
+              style={[
+                styles.images,
+                {
+                  width: 110 * scaleFactor,
+                  height: 70 * scaleFactor,
+                },
+              ]}></Image>
+          </View>
+        </TouchableOpacity>

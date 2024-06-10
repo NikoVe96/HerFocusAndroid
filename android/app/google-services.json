@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "268230671545",
+    "project_id": "herfocus-a64e4",
+    "storage_bucket": "herfocus-a64e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268230671545:android:ca630fb77e1853bbab6f68",
+        "android_client_info": {
+          "package_name": "com.herfocus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtRlfsNK4rDcLdjVeMVAxzhAp5cVR2OOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
