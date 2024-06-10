@@ -43,6 +43,7 @@ import Forum from '../Pages/Forum/Forum';
 import IndividualPost from '../Pages/Forum/IndividualPost';
 import { useUser } from '../Components/UserContext';
 import Notebook from '../Pages/Structure components/Notebook';
+import Todos from '../Pages/Structure components/Todos';
 import FutureTodo from '../Pages/Structure components/FutureTodo';
 import CompletedModules from '../Pages/Learning components/CompletedModules';
 
@@ -377,6 +378,7 @@ function SideMenu() {
       <Drawer.Screen name="Add task" component={AddTask}></Drawer.Screen>
       <Drawer.Screen name="App history" component={AppHistory}></Drawer.Screen>
       <Drawer.Screen name="Future todo" component={FutureTodo}></Drawer.Screen>
+      <Drawer.Screen name="Todos" component={Todos}></Drawer.Screen>
       <Drawer.Screen
         name="Completed modules"
         component={CompletedModules}></Drawer.Screen>

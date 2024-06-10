@@ -23,9 +23,9 @@ export const BottomNavigation = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-        onPress={() => navigation.navigate('Daily overview')}>
-        <FontAwesomeIcon icon={faSpinner} size={20} color={colors.barText} />
-        <Text style={{ color: colors.barText, paddingTop: 5 }}>I dag</Text>
+        onPress={() => navigation.navigate('Todos')}>
+        <FontAwesomeIcon icon={faCirclePlus} size={20} color={colors.barText} />
+        <Text style={{ color: colors.barText, paddingTop: 5 }}>To-do</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
