@@ -159,6 +159,7 @@ export const CalendarOverview = ({ navigation }) => {
 
   async function allDayQuery(day) {
     let query = new Parse.Query('Events');
+    query.equalTo('user', ID);
     query.equalTo('allDay', true);
     query.equalTo('date', day);
     const result = await query.find();
@@ -202,12 +203,12 @@ export const CalendarOverview = ({ navigation }) => {
   async function getMarkedDates() {
 
     let taskDaysQuery = new Parse.Query('Task');
-    taskDaysQuery.contains('user', ID);
+    taskDaysQuery.equalTo('user', ID);
     taskDaysQuery.ascending('date');
 
 
     let eventDaysQuery = new Parse.Query('Events');
-    eventDaysQuery.contains('user', ID);
+    eventDaysQuery.equalTo('user', ID);
     eventDaysQuery.ascending('date');
 
     const routineDaysQuery = new Parse.Query('Routine');
