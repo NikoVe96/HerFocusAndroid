@@ -2,22 +2,15 @@ import Parse from 'parse/react-native';
 import CommentSection from './CommentSection';
 import WriteComment from './WriteComment';
 import Post from './Post';
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-} from 'react-native';
-import { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
-import { useTheme } from '@react-navigation/native';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {useEffect, useState} from 'react';
+import {ScrollView} from 'react-native-gesture-handler';
+import {useTheme} from '@react-navigation/native';
 
-function IndividualPost({ route, navigation }) {
-  const { postObject, onDelete } = route.params;
-  const [postedBy, setPostedBy] = useState('');
-  const [postContent, setPostContent] = useState('');
-  const [numberOfComments, setCommentCount] = useState(0);
+function IndividualPost({route, navigation}) {
+  const {postObject, onDelete} = route.params;
   const [allComments, setAllComments] = useState([]);
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   useEffect(() => {
     fetchComments();
@@ -55,6 +48,7 @@ function IndividualPost({ route, navigation }) {
             individualPostClickCallback={() =>
               handleAddCommentClick(postObject)
             }
+            onDelete={handleDeletePost}
           />
           <WriteComment postId={postObject} onNewComment={handleNewComment} />
           <CommentSection
@@ -62,7 +56,6 @@ function IndividualPost({ route, navigation }) {
             comments={allComments}
             setComments={fetchComments}
             onNewComment={handleNewComment}
-            onDelete={handleDeletePost}
           />
         </View>
       </ScrollView>
