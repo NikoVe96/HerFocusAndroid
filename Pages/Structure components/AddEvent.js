@@ -71,6 +71,7 @@ export const AddEvent = () => {
         await newEvent(date);
       }
       Alert.alert('Dine begivenheder er blevet tilføjet til din kalender!')
+      clearInput();
     } else {
       await newEvent(eventDate);
     }
@@ -209,6 +210,10 @@ export const AddEvent = () => {
     setDescription('');
     setDayEvent(false);
     setIsAllDayEnabled(false);
+    setInterval();
+    setStartDate();
+    setEndDate();
+    setRecurringDayEnabled(false);
   }
 
   function showEmojiModal() {
@@ -577,7 +582,7 @@ export const AddEvent = () => {
                         borderColor: colors.subButton,
                       },
                     ]}
-                    onPress={setStartTimePickerVisibility(true)}>
+                    onPress={() => setStartTimePickerVisibility(true)}>
                     <Text
                       style={[
                         styles.buttonText,
@@ -847,7 +852,7 @@ export const AddEvent = () => {
               borderColor: colors.mainButton,
             },
           ]}
-          onPress={() => saveEvent}>
+          onPress={() => saveEvent()}>
           <Text
             style={{
               fontSize: 18 * scaleFactor,

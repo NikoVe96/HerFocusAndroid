@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Parse from 'parse/react-native';
-import { Text, View, TextInput, TouchableOpacity, Alert, StyleSheet, Dimensions } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, Alert, StyleSheet, Dimensions, Switch } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCalendar, faPlus, faRotateRight, faStopwatch, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import Modal from "react-native-modal";
@@ -14,6 +14,8 @@ import { emojis } from "rn-emoji-picker/dist/data"
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import DatePicker from "react-native-date-picker";
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { Picker } from '@react-native-picker/picker';
+import { format, addDays, addWeeks, addMonths, isBefore, isEqual } from 'date-fns';
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize('JgIXR8AGoB3f1NzklRf0k9IlIWLORS7EzWRsFIUb', 'NBIxAIeWCONMHjJRL96JpIFh9pRKzJgb6t4lQUJD');
@@ -48,6 +50,14 @@ export const AddRoutine = ({ navigation }) => {
   const [checked, setChecked] = useState(true);
   const today = new Date;
   const [tStart, setTstart] = useState(null);
+  const [isAllDayEnabled, setIsAllDayEnabled] = useState(false);
+  const [isRecurringEnabled, setRecurringDayEnabled] = useState(false);
+  const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
+  const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
+  const [recurrence, setRecurrence] = useState('none');
+  const [interval, setInterval] = useState(1);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -177,6 +187,10 @@ export const AddRoutine = ({ navigation }) => {
     setRoutineSteps([]);
     setRoutineColor('');
     setRoutineEmoji('');
+    setRecurrence(1);
+    setStartDate();
+    setEndDate();
+    setRecurringDayEnabled(false);
   }
 
   async function routines() {
@@ -204,6 +218,11 @@ export const AddRoutine = ({ navigation }) => {
       routineObject.set('endTime', routineEndTime);
       routineObject.set('calendarDate', routineDate);
       routineObject.set('tStart', tStart);
+      if (isRecurringEnabled == true) {
+        routineObject.set('recurrence', generateRecurringDates());
+      } else {
+        routineObject.set('recurrence', []);
+      }
       await routineObject.save();
 
       setToCalendarModalVisible(false);
@@ -215,6 +234,37 @@ export const AddRoutine = ({ navigation }) => {
         'Der opstod en fejl');
     }
   }
+
+  const generateRecurringDates = () => {
+    const dates = [];
+    let currentDate = startDate;
+    console.log('interval: ' + interval);
+
+    while (isBefore(currentDate, endDate) || isEqual(currentDate, endDate)) {
+      dates.push(format(currentDate, 'yyyy-MM-dd'));
+
+      switch (recurrence) {
+        case 'daily':
+          currentDate = addDays(currentDate, interval);
+          break;
+        case 'weekly':
+          currentDate = addWeeks(currentDate, interval);
+          break;
+        case 'monthly':
+          currentDate = addMonths(currentDate, interval);
+          break;
+        default:
+          break;
+      }
+    }
+
+    return dates;
+  }
+
+  const dateDisplay = (date) => {
+    let month = date.getMonth() + 1;
+    return date.getDate() + '/' + month + '/' + date.getFullYear();
+  };
 
   const handleStartTimeConfirm = (date) => {
     let minutes = date.getMinutes();
@@ -839,6 +889,30 @@ export const AddRoutine = ({ navigation }) => {
               <FontAwesomeIcon icon={faCircleXmark} size={30} style={{ alignSelf: 'flex-end', marginBottom: '5%' }} />
             </TouchableOpacity>
             <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginVertical: '2%'
+                }}>
+                <Text
+                  style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.text }}>
+                  Tilbagevendene begivenhed
+                </Text>
+                <Switch
+                  trackColor={{ false: colors.mainButton, true: colors.subButton }}
+                  thumbColor={isRecurringEnabled ? colors.border : colors.background}
+                  ios_backgroundColor={colors.mainButton}
+                  onValueChange={() => setRecurringDayEnabled(previousState => !previousState)}
+                  value={isRecurringEnabled}
+                />
+              </View>
+              <View
+                style={[
+                  styles.border,
+                  { backgroundColor: colors.border, borderColor: colors.border, marginTop: '5%' },
+                ]}></View>
               <View style={{ flexDirection: 'row', marginVertical: 2 }}>
                 <View style={styles.rowView}>
                   <TouchableOpacity
@@ -919,44 +993,169 @@ export const AddRoutine = ({ navigation }) => {
                   </Text>
                 </View>
               </View>
-              <View style={{ flexDirection: 'row', marginVertical: 2 }}>
-                <View style={styles.rowView}>
-                  <TouchableOpacity
-                    style={[
-                      styles.buttonSmall,
-                      {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
-                      },
-                    ]}
-                    onPress={() => setDatePickerVisibility(true)}>
-                    <Text style={styles.buttonText}>Dato</Text>
-                  </TouchableOpacity>
-                  <DatePicker
-                    mode="date"
-                    modal
-                    open={isDatePickerVisible}
-                    date={today}
-                    onConfirm={(date) => {
-                      setDatePickerVisibility(false)
-                      handleDateConfirm(date)
-                    }}
-                    onCancel={() => {
-                      setDatePickerVisibility(false)
-                    }}
-                  />
+
+              {isRecurringEnabled ?
+                <View>
+                  <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                    <View style={[styles.rowView, { alignItems: 'center', flex: 1, justifyContent: 'center' }]}>
+                      <Text style={styles.text}>Gentages hver: </Text>
+                    </View>
+                    <View style={[styles.rowView, { alignItems: 'center', alignSelf: 'center', flex: 0.5 }]}>
+                      <TextInput style={[styles.textInput, {}]} keyboardType="numeric" onChangeText={(interval) => setInterval(parseInt(interval))} />
+                    </View>
+                    <View style={[styles.rowView, { flex: 1, marginHorizontal: '2%' }]}>
+                      <Picker selectedValue={recurrence} onValueChange={(recurrence) => setRecurrence(recurrence)} style={[
+                        styles.buttonSmall,
+                        {
+                          backgroundColor: colors.subButton,
+                          borderColor: colors.subButton,
+                        },
+                      ]}>
+                        <Picker.Item label="Dag" value="daily" />
+                        <Picker.Item label="Uge" value="weekly" />
+                        <Picker.Item label="Måned" value="monthly" />
+                      </Picker>
+                    </View>
+                  </View>
+                  <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                    <View style={styles.rowView}>
+                      <TouchableOpacity
+                        style={[
+                          styles.buttonSmall,
+                          {
+                            backgroundColor: colors.subButton,
+                            borderColor: colors.subButton,
+                          },
+                        ]}
+                        onPress={() => setStartDatePickerVisibility(true)}>
+                        <Text
+                          style={[
+                            styles.buttonText,
+                            { fontSize: 20 * scaleFactor },
+                            { color: colors.text },
+                          ]}>
+                          Start dato
+                        </Text>
+                      </TouchableOpacity>
+                      <DatePicker
+                        mode="date"
+                        modal
+                        open={isStartDatePickerVisible}
+                        date={today}
+                        onConfirm={(date) => {
+                          setStartDate(date)
+                          setStartDatePickerVisibility(false)
+                          setEndDatePickerVisibility(true)
+                        }}
+                        onCancel={() => {
+                          setStartDatePickerVisibility(false)
+                        }}
+                      />
+                    </View>
+                    <View style={[styles.rowView, { alignItems: 'center' }]}>
+                      <Text
+                        style={[
+                          styles.text,
+                          { fontWeight: 'bold', fontSize: 18 * scaleFactor },
+                          { color: colors.text },
+                        ]}>
+                        {startDate == null ? null : dateDisplay(startDate)}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                    <View style={styles.rowView}>
+                      <TouchableOpacity
+                        style={[
+                          styles.buttonSmall,
+                          {
+                            backgroundColor: colors.subButton,
+                            borderColor: colors.subButton,
+                          },
+                        ]}
+                        onPress={() => setEndDatePickerVisibility(true)}>
+                        <Text
+                          style={[
+                            styles.buttonText,
+                            { fontSize: 20 * scaleFactor },
+                            { color: colors.text },
+                          ]}>
+                          Slut dato
+                        </Text>
+                      </TouchableOpacity>
+                      <DatePicker
+                        mode="date"
+                        modal
+                        open={isEndDatePickerVisible}
+                        date={today}
+                        onConfirm={(date) => {
+                          setEndDate(date)
+                          setEndDatePickerVisibility(false)
+                        }}
+                        onCancel={() => {
+                          setEndDatePickerVisibility(false)
+                        }}
+                      />
+                    </View>
+                    <View style={[styles.rowView, { alignItems: 'center' }]}>
+                      <Text
+                        style={[
+                          styles.text,
+                          { fontWeight: 'bold', fontSize: 18 * scaleFactor },
+                          { color: colors.text },
+                        ]}>
+                        {endDate == null ? null : dateDisplay(endDate)}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
-                <View style={[styles.rowView, { alignItems: 'center' }]}>
-                  <Text
-                    style={[
-                      styles.text,
-                      { fontWeight: 'bold' },
-                      { color: colors.text },
-                    ]}>
-                    {routineDate}
-                  </Text>
+                : <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                  <View style={styles.rowView}>
+                    <TouchableOpacity
+                      style={[
+                        styles.buttonSmall,
+                        {
+                          backgroundColor: colors.subButton,
+                          borderColor: colors.subButton,
+                        },
+                      ]}
+                      onPress={() => setDatePickerVisibility(true)}>
+                      <Text
+                        style={[
+                          styles.buttonText,
+                          { fontSize: 20 * scaleFactor },
+                          { color: colors.text },
+                        ]}>
+                        Dato
+                      </Text>
+                    </TouchableOpacity>
+                    <DatePicker
+                      mode="date"
+                      modal
+                      open={isDatePickerVisible}
+                      date={today}
+                      onConfirm={(date) => {
+                        setDatePickerVisibility(false)
+                        handleDateConfirm(date)
+                      }}
+                      onCancel={() => {
+                        setDatePickerVisibility(false)
+                      }}
+                    />
+                  </View>
+                  <View style={[styles.rowView, { alignItems: 'center' }]}>
+                    <Text
+                      style={[
+                        styles.text,
+                        { fontWeight: 'bold', fontSize: 18 * scaleFactor },
+                        { color: colors.text },
+                      ]}>
+                      {`${routineDate}`}
+                    </Text>
+                  </View>
                 </View>
-              </View>
+              }
+
             </View>
           </View>
           <TouchableOpacity
@@ -1086,6 +1285,19 @@ const styles = StyleSheet.create({
   text: {
     marginVertical: 10,
     fontSize: 18,
+  },
+  textInput: {
+    padding: 8,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderRadius: 10,
+    fontSize: 16,
+    borderColor: 'white',
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
   },
 });
 
