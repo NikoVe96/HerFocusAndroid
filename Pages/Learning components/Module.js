@@ -18,6 +18,7 @@ import Parse from 'parse/react-native';
 import Quiz from '../../Components/Quiz';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBookmark, faCheck } from '@fortawesome/free-solid-svg-icons';
+import Markdown from 'react-native-markdown-display';
 
 export const Module = ({ route }) => {
   const [progress, setProgress] = useState(new Animated.Value(1));
@@ -1208,7 +1209,18 @@ export const Module = ({ route }) => {
                 alignSelf: 'center',
               }}></Image>
             <View style={styles.textContainer}>
-              <Text style={[styles.text, { color: colors.text }]}>{intro1}</Text>
+              <Markdown
+                style={{
+                  paragraph: { fontSize: 18 * scaleFactor, color: colors.text },
+                  bullet_list: { fontSize: 18, color: colors.text },
+                  heading3: {
+                    color: colors.text,
+                    fontSize: 20 * scaleFactor,
+                    marginTop: 30,
+                    fontWeight: 'bold',
+                  },
+                  list_item: { marginVertical: 5 },
+                }}>{intro1}</Markdown>
             </View>
             <View
               style={{
@@ -1242,7 +1254,18 @@ export const Module = ({ route }) => {
                 alignSelf: 'center',
               }}></Image>
             <View style={styles.textContainer}>
-              <Text style={[styles.text, { color: colors.text }]}>{intro2}</Text>
+              <Markdown
+                style={{
+                  paragraph: { fontSize: 18 * scaleFactor, color: colors.text },
+                  bullet_list: { fontSize: 18, color: colors.text },
+                  heading3: {
+                    color: colors.text,
+                    fontSize: 20 * scaleFactor,
+                    marginTop: 30,
+                    fontWeight: 'bold',
+                  },
+                  list_item: { marginVertical: 5 },
+                }}>{intro2}</Markdown>
             </View>
             <View
               style={{
@@ -1288,7 +1311,18 @@ export const Module = ({ route }) => {
                 alignSelf: 'center',
               }}></Image>
             <View style={styles.textContainer}>
-              <Text style={[styles.text, { color: colors.text }]}>{intro3}</Text>
+              <Markdown
+                style={{
+                  paragraph: { fontSize: 18 * scaleFactor, color: colors.text },
+                  bullet_list: { fontSize: 18, color: colors.text },
+                  heading3: {
+                    color: colors.text,
+                    fontSize: 20 * scaleFactor,
+                    marginTop: 30,
+                    fontWeight: 'bold',
+                  },
+                  list_item: { marginVertical: 5 },
+                }}>{intro3}</Markdown>
             </View>
             <View
               style={{

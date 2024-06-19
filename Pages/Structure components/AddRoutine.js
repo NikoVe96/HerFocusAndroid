@@ -47,6 +47,7 @@ export const AddRoutine = ({ navigation }) => {
   const [routineEndTime, setRoutineEndTime] = useState('');
   const [checked, setChecked] = useState(true);
   const today = new Date;
+  const [tStart, setTstart] = useState(null);
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -202,6 +203,7 @@ export const AddRoutine = ({ navigation }) => {
       routineObject.set('startTime', routineStartTime);
       routineObject.set('endTime', routineEndTime);
       routineObject.set('calendarDate', routineDate);
+      routineObject.set('tStart', tStart);
       await routineObject.save();
 
       setToCalendarModalVisible(false);
@@ -228,6 +230,7 @@ export const AddRoutine = ({ navigation }) => {
 
     setRoutineStartTime(hours
       + ':' + minutes);
+    setTstart(date);
     setStartTimePickerVisibility(false);
   };
 
@@ -584,16 +587,16 @@ export const AddRoutine = ({ navigation }) => {
                           ? 45 * scaleFactor
                           : 40 * scaleFactor,
                       backgroundColor: '#FAEDCB',
-                      borderColor: '#FAEDCB',
+                      borderColor: routineColor === '#FAEDCB'
+                        ? 'grey'
+                        : '#FAEDCB',
                       elevation: 5,
-                      shadowColor: 'grey',
-                      shadowOffset: { width: 1, height: 2 },
-                      shadowOpacity: 0.8,
-                      shadowRadius: 1,
+                      shadowColor: 'black',
+                      shadowOpacity: 0.5,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowRadius: 2,
                     }}
-                    onPress={() =>
-                      handleColorPick('#FAEDCB')
-                    }></TouchableOpacity>
+                    onPress={() => handleColorPick('#FAEDCB')}></TouchableOpacity>
                   <TouchableOpacity
                     style={{
                       borderWidth: routineColor === '#C9E4DE' ? 1.5 : 1,
@@ -610,16 +613,16 @@ export const AddRoutine = ({ navigation }) => {
                           ? 45 * scaleFactor
                           : 40 * scaleFactor,
                       backgroundColor: '#C9E4DE',
-                      borderColor: '#C9E4DE',
+                      borderColor: routineColor === '#C9E4DE'
+                        ? 'grey'
+                        : '#C9E4DE',
                       elevation: 5,
                       shadowColor: 'grey',
                       shadowOffset: { width: 1, height: 2 },
                       shadowOpacity: 0.8,
                       shadowRadius: 1,
                     }}
-                    onPress={() =>
-                      handleColorPick('#C9E4DE')
-                    }></TouchableOpacity>
+                    onPress={() => handleColorPick('#C9E4DE')}></TouchableOpacity>
                   <TouchableOpacity
                     style={{
                       borderWidth: routineColor === '#C6DEF1' ? 1.5 : 1,
@@ -636,16 +639,16 @@ export const AddRoutine = ({ navigation }) => {
                           ? 45 * scaleFactor
                           : 40 * scaleFactor,
                       backgroundColor: '#C6DEF1',
-                      borderColor: '#C6DEF1',
+                      borderColor: routineColor === '#C6DEF1'
+                        ? 'grey'
+                        : '#C6DEF1',
                       elevation: 5,
-                      shadowColor: 'grey',
-                      shadowOffset: { width: 1, height: 2 },
-                      shadowOpacity: 0.8,
-                      shadowRadius: 1,
+                      shadowColor: 'black',
+                      shadowOpacity: 0.5,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowRadius: 2,
                     }}
-                    onPress={() =>
-                      handleColorPick('#C6DEF1')
-                    }></TouchableOpacity>
+                    onPress={() => handleColorPick('#C6DEF1')}></TouchableOpacity>
                   <TouchableOpacity
                     style={{
                       borderWidth: routineColor === '#DBCDF0' ? 1.5 : 1,
@@ -662,16 +665,16 @@ export const AddRoutine = ({ navigation }) => {
                           ? 45 * scaleFactor
                           : 40 * scaleFactor,
                       backgroundColor: '#DBCDF0',
-                      borderColor: '#DBCDF0',
+                      borderColor: routineColor === '#DBCDF0'
+                        ? 'grey'
+                        : '#DBCDF0',
                       elevation: 5,
-                      shadowColor: 'grey',
-                      shadowOffset: { width: 1, height: 2 },
-                      shadowOpacity: 0.8,
-                      shadowRadius: 1,
+                      shadowColor: 'black',
+                      shadowOpacity: 0.5,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowRadius: 2,
                     }}
-                    onPress={() =>
-                      handleColorPick('#DBCDF0')
-                    }></TouchableOpacity>
+                    onPress={() => handleColorPick('#DBCDF0')}></TouchableOpacity>
                   <TouchableOpacity
                     style={{
                       borderWidth: routineColor === '#FFADAD' ? 1.5 : 1,
@@ -688,16 +691,16 @@ export const AddRoutine = ({ navigation }) => {
                           ? 45 * scaleFactor
                           : 40 * scaleFactor,
                       backgroundColor: '#FFADAD',
-                      borderColor: '#FFADAD',
+                      borderColor: routineColor === '#FFADAD'
+                        ? 'grey'
+                        : '#FFADAD',
                       elevation: 5,
-                      shadowColor: 'grey',
-                      shadowOffset: { width: 1, height: 2 },
-                      shadowOpacity: 0.8,
-                      shadowRadius: 1,
+                      shadowColor: 'black',
+                      shadowOpacity: 0.5,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowRadius: 2,
                     }}
-                    onPress={() =>
-                      handleColorPick('#FFADAD')
-                    }></TouchableOpacity>
+                    onPress={() => handleColorPick('#FFADAD')}></TouchableOpacity>
                   <TouchableOpacity
                     style={{
                       borderWidth: routineColor === '#FFD6A5' ? 1.5 : 1,
@@ -714,16 +717,16 @@ export const AddRoutine = ({ navigation }) => {
                           ? 45 * scaleFactor
                           : 40 * scaleFactor,
                       backgroundColor: '#FFD6A5',
-                      borderColor: '#FFD6A5',
+                      borderColor: routineColor === '#FFD6A5'
+                        ? 'grey'
+                        : '#FFD6A5',
                       elevation: 5,
-                      shadowColor: 'grey',
-                      shadowOffset: { width: 1, height: 2 },
-                      shadowOpacity: 0.8,
-                      shadowRadius: 1,
+                      shadowColor: 'black',
+                      shadowOpacity: 0.5,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowRadius: 2,
                     }}
-                    onPress={() =>
-                      handleColorPick('#FFD6A5')
-                    }></TouchableOpacity>
+                    onPress={() => handleColorPick('#FFD6A5')}></TouchableOpacity>
                 </View>
               </View>
               <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
@@ -836,6 +839,54 @@ export const AddRoutine = ({ navigation }) => {
               <FontAwesomeIcon icon={faCircleXmark} size={30} style={{ alignSelf: 'flex-end', marginBottom: '5%' }} />
             </TouchableOpacity>
             <View>
+              <View
+                style={[
+                  styles.border,
+                  { backgroundColor: colors.border, borderColor: colors.border, marginBottom: '5%' },
+                ]}></View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginVertical: '2%'
+                }}>
+                <Text
+                  style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.text }}>
+                  Heldags begivenhed
+                </Text>
+                <Switch
+                  trackColor={{ false: colors.mainButton, true: colors.subButton }}
+                  thumbColor={isAllDayEnabled ? colors.border : colors.background}
+                  ios_backgroundColor={colors.mainButton}
+                  onValueChange={() => allDayEvent()}
+                  value={isAllDayEnabled}
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginVertical: '2%'
+                }}>
+                <Text
+                  style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.text }}>
+                  Tilbagevendene begivenhed
+                </Text>
+                <Switch
+                  trackColor={{ false: colors.mainButton, true: colors.subButton }}
+                  thumbColor={isRecurringEnabled ? colors.border : colors.background}
+                  ios_backgroundColor={colors.mainButton}
+                  onValueChange={() => setRecurringDayEnabled(previousState => !previousState)}
+                  value={isRecurringEnabled}
+                />
+              </View>
+              <View
+                style={[
+                  styles.border,
+                  { backgroundColor: colors.border, borderColor: colors.border, marginTop: '5%' },
+                ]}></View>
               <View style={{ flexDirection: 'row', marginVertical: 2 }}>
                 <View style={styles.rowView}>
                   <TouchableOpacity
@@ -859,6 +910,7 @@ export const AddRoutine = ({ navigation }) => {
                     onConfirm={(date) => {
                       setStartTimePickerVisibility(false)
                       handleStartTimeConfirm(date)
+                      setEndTimePickerVisibility(true)
                     }}
                     onCancel={() => {
                       setStartTimePickerVisibility(false)
@@ -897,6 +949,7 @@ export const AddRoutine = ({ navigation }) => {
                     onConfirm={(date) => {
                       setEndTimePickerVisibility(false)
                       handleEndTimeConfirm(date)
+                      setDatePickerVisibility(true)
                     }}
                     onCancel={() => {
                       setEndTimePickerVisibility(false)

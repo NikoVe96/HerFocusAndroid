@@ -257,10 +257,10 @@ export const DailyOverview = () => {
                   Næste to-do
                 </Text>
                 <View style={styles.rowView}>
-                  <Text style={{ fontSize: 36 }}>
+                  <Text style={{ fontSize: 36, color: colors.text }}>
                     {remainingTasksArray[0].get('emoji')}
                   </Text>
-                  <Text style={{ fontSize: 26, marginHorizontal: 10 }}>
+                  <Text style={{ fontSize: 26, marginHorizontal: 10, color: colors.text }}>
                     {remainingTasksArray[0].get('name')}
                   </Text>
                 </View>
@@ -271,14 +271,14 @@ export const DailyOverview = () => {
                     style={{ marginHorizontal: 5 }}
                     color={colors.border}
                   />
-                  <Text style={{ fontSize: 18 }}>
+                  <Text style={{ fontSize: 18, color: colors.text }}>
                     Fra {remainingTasksArray[0].get('startTime')}
                     {' '}til {remainingTasksArray[0].get('endTime')}
 
                   </Text>
                 </View>
                 {remainingTasksArray[0].get('description') == '' ?
-                  <Text style={{ marginBottom: '10%' }}></Text>
+                  <Text style={{ marginBottom: '10%', color: colors.text }}></Text>
                   : <ScrollView
                     contentContainerStyle={{
                       borderWidth: 1,
@@ -287,7 +287,7 @@ export const DailyOverview = () => {
                       padding: 10,
                       marginHorizontal: 10,
                     }}>
-                    <Text style={{ fontSize: 16, marginBottom: 20 }}>{remainingTasksArray[0].get('description')}</Text>
+                    <Text style={{ fontSize: 16, marginBottom: 20, color: colors.text }}>{remainingTasksArray[0].get('description')}</Text>
                   </ScrollView>
                 }
                 <View style={[styles.rowView, { paddingBottom: '5%' }]}>
@@ -350,10 +350,10 @@ export const DailyOverview = () => {
                 </Text>
 
                 <View style={styles.rowView}>
-                  <Text style={{ fontSize: 36 }}>
+                  <Text style={{ fontSize: 36, color: colors.text }}>
                     {remainingTasksArray[1].get('emoji')}
                   </Text>
-                  <Text style={{ fontSize: 26, marginHorizontal: 10 }}>
+                  <Text style={{ fontSize: 26, marginHorizontal: 10, color: colors.text }}>
                     {remainingTasksArray[1].get('name')}
                   </Text>
                 </View>
@@ -364,13 +364,13 @@ export const DailyOverview = () => {
                     style={{ marginHorizontal: 5 }}
                     color={colors.border}
                   />
-                  <Text style={{ fontSize: 18 }}>
+                  <Text style={{ fontSize: 18, color: colors.text }}>
                     Fra {remainingTasksArray[1].get('startTime')}
                     {' '}til {remainingTasksArray[1].get('endTime')}
                   </Text>
                 </View>
                 {remainingTasksArray[1].get('description') == '' ?
-                  <Text style={{ marginBottom: '10%' }}></Text>
+                  <Text style={{ marginBottom: '10%', color: colors.text }}></Text>
                   : <ScrollView
                     contentContainerStyle={{
                       borderWidth: 1,
@@ -379,7 +379,7 @@ export const DailyOverview = () => {
                       padding: 10,
                       marginHorizontal: 10,
                     }}>
-                    <Text style={{ fontSize: 16, marginBottom: 20 }}>{remainingTasksArray[1].get('description')}</Text>
+                    <Text style={{ fontSize: 16, marginBottom: 20, color: colors.text }}>{remainingTasksArray[1].get('description')}</Text>
                   </ScrollView>
                 }
                 <View style={[styles.rowView, { paddingBottom: '5%' }]}>
@@ -436,6 +436,7 @@ export const DailyOverview = () => {
                   fontSize: 24,
                   marginLeft: '12%',
                   marginBottom: '10%',
+                  color: colors.text
                 }}>
                 {' '}
                 Har du ramt væggen?
@@ -461,6 +462,7 @@ export const DailyOverview = () => {
                     fontSize: 20,
                     fontWeight: 'bold',
                     marginVertical: '10%',
+                    color: colors.text
                   }}>
                   Udskyd
                 </Text>
@@ -492,7 +494,7 @@ export const DailyOverview = () => {
                     elevation: 10,
                   }}
                   onPress={() => postpone()}>
-                  <Text style={{ textAlign: 'center', fontSize: 16 }}>
+                  <Text style={{ textAlign: 'center', fontSize: 16, color: colors.text }}>
                     Udskyd din to-do
                   </Text>
                 </TouchableOpacity>
@@ -523,6 +525,7 @@ export const DailyOverview = () => {
                     fontWeight: 'bold',
                     marginVertical: '10%',
                     textAlign: 'center',
+                    color: colors.text
                   }}>
                   Fremtidig to-do
                 </Text>
@@ -543,7 +546,7 @@ export const DailyOverview = () => {
                     elevation: 10,
                   }}
                   onPress={() => futureTodo()}>
-                  <Text style={{ textAlign: 'center', fontSize: 16 }}>
+                  <Text style={{ textAlign: 'center', fontSize: 16, color: colors.text }}>
                     Flyt til fremtidige to-do's
                   </Text>
                 </TouchableOpacity>

@@ -9,8 +9,8 @@ import Modal from 'react-native-modal';
 import getAvatarImage from '../General components/AvatarUtils';
 
 
-const Post = ({ postObject, onDelete }) => {
-  const navigation = useNavigation();
+const Post = ({ postObject, onDelete, navigation }) => {
+  //const navigation = useNavigation();
   const [username, setUsername] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [commentCount, setCommentCount] = useState(
@@ -59,6 +59,9 @@ const Post = ({ postObject, onDelete }) => {
     setModalVisible(false);
   };
 
+  function handlePostClick() {
+    navigation.navigate('IndividualPost', { postObject: postObject, onDelete });
+  }
 
   return (
     <View style={styles.container}>

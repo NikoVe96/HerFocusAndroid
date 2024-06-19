@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavigation from './Navigation/BottomNav';
@@ -9,16 +9,26 @@ import Parse from 'parse/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeProvider, useThemeContext } from './Assets/Theme/ThemeContext';
 import { UserProvider, useUser } from './Components/UserContext';
-
+import { configurePushNotifications } from './Components/PushNotificationMethods';
+import { PermissionsAndroid, Alert } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize('JgIXR8AGoB3f1NzklRf0k9IlIWLORS7EzWRsFIUb', 'NBIxAIeWCONMHjJRL96JpIFh9pRKzJgb6t4lQUJD');
-Parse.serverURL = 'https://parseapi.back4app.com/'
+Parse.serverURL = 'https://parseapi.back4app.com/';
+PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+configurePushNotifications();
+
+export const getSessionToken = async () => {
+  const sessionToken = await AsyncStorage.getItem('sessionToken');
+  return sessionToken;
+};
 
 function App() {
-
   const { theme } = useThemeContext();
   const { isLoggedIn } = useUser();
+
+
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

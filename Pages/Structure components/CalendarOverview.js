@@ -83,7 +83,7 @@ export const CalendarOverview = ({ navigation }) => {
       dayTasks(today);
       getMarkedDates();
       return () => { };
-    }, []),
+    }, [ID]),
   );
 
   useEffect(() => {
@@ -102,6 +102,12 @@ export const CalendarOverview = ({ navigation }) => {
     getCurrentUser();
   }, []);
 
+  useEffect(() => {
+    if (ID) {
+      setMarkedDays();
+    }
+  }, [ID]);
+
   async function showDayModal(day) {
     const formattedDate = `${day.year}-${day.month.toString().padStart(2, '0')}-${day.day.toString().padStart(2, '0')}`;
     setChosenDate(formattedDate);
@@ -117,17 +123,17 @@ export const CalendarOverview = ({ navigation }) => {
     let eventQuery = new Parse.Query('Events');
     let routineQuery = new Parse.Query('Routine');
 
-    taskQuery.contains('user', ID);
+    taskQuery.equalTo('user', { __type: 'Pointer', className: '_User', objectId: ID });
     taskQuery.equalTo('date', day);
     taskQuery.ascending('startTime');
 
-    eventQuery.contains('user', ID);
-    eventQuery.contains('date', day);
+    eventQuery.equalTo('user', { __type: 'Pointer', className: '_User', objectId: ID });
+    eventQuery.equalTo('date', day);
     eventQuery.notEqualTo('allDay', true);
     eventQuery.ascending('startTime');
 
-    routineQuery.contains('user', ID);
-    routineQuery.contains('calendarDate', day);
+    routineQuery.equalTo('user', { __type: 'Pointer', className: '_User', objectId: ID });
+    routineQuery.equalTo('calendarDate', day);
     routineQuery.ascending('startTime');
 
     Promise.all([
@@ -156,11 +162,11 @@ export const CalendarOverview = ({ navigation }) => {
     });
   }
 
-
   async function allDayQuery(day) {
     let query = new Parse.Query('Events');
     query.equalTo('allDay', true);
     query.equalTo('date', day);
+    query.equalTo('user', { __type: 'Pointer', className: '_User', objectId: ID });
     const result = await query.find();
     setAllDayArray(result);
     console.log('all day array: ' + result)
@@ -196,22 +202,20 @@ export const CalendarOverview = ({ navigation }) => {
         color: colors.text,
       },
     ],
-    [],
+    [colors],
   );
 
   async function getMarkedDates() {
-
     let taskDaysQuery = new Parse.Query('Task');
-    taskDaysQuery.contains('user', ID);
+    taskDaysQuery.equalTo('user', { __type: 'Pointer', className: '_User', objectId: ID });
     taskDaysQuery.ascending('date');
 
-
     let eventDaysQuery = new Parse.Query('Events');
-    eventDaysQuery.contains('user', ID);
+    eventDaysQuery.equalTo('user', { __type: 'Pointer', className: '_User', objectId: ID });
     eventDaysQuery.ascending('date');
 
     const routineDaysQuery = new Parse.Query('Routine');
-    routineDaysQuery.equalTo('user', ID);
+    routineDaysQuery.equalTo('user', { __type: 'Pointer', className: '_User', objectId: ID });
     routineDaysQuery.ascending('date');
 
     const [taskResults, eventResults, routineResults] = await Promise.all([
@@ -221,7 +225,6 @@ export const CalendarOverview = ({ navigation }) => {
     ]);
 
     return { taskResults, eventResults, routineResults };
-
   }
 
   async function setMarkedDays() {
@@ -231,14 +234,14 @@ export const CalendarOverview = ({ navigation }) => {
 
     const processItems = (items) => {
       items.forEach(item => {
-        const date = item.get('date')
+        const date = item.get('date');
         const color = item.get('color');
         if (!newMarked[date]) {
           newMarked[date] = { dots: [] };
         }
 
         const colorObject = colorMarkings[color];
-        if (!newMarked[date].dots.includes(colorObject)) {
+        if (!newMarked[date].dots.some(dot => dot.key === colorObject.key)) {
           newMarked[date].dots.push(colorObject);
         }
       });
@@ -249,22 +252,21 @@ export const CalendarOverview = ({ navigation }) => {
     processItems(routineResults);
 
     setMarked(newMarked);
-    console.log(marked)
+    console.log(marked);
   }
 
   const completeTask = async (task) => {
-    isCompleted = task.get('completed');
+    const isCompleted = task.get('completed');
     console.log(task.get('completed'))
     task.set('completed', !isCompleted);
     await task.save();
 
-    getDayEvents();
-
+    getDayEvents(chosenDate);
   }
 
   function LightenDarkenColor(col, amt) {
     var usePound = false;
-    if (col[0] == "#") {
+    if (col[0] === "#") {
       col = col.slice(1);
       usePound = true;
     }

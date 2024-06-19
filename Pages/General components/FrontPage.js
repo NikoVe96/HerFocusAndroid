@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-  Dimensions
+  Dimensions,
+  Button
 } from 'react-native';
 import Parse from 'parse/react-native';
 import { useNavigation, useTheme } from '@react-navigation/native';
@@ -30,6 +31,15 @@ export const FrontPage = () => {
     }
     getCurrentUser();
   }, [username]);
+
+  async function sendNotification() {
+    try {
+      await Parse.Cloud.run('sendPush');
+      console.log('Success!');
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>

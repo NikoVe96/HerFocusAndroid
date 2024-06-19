@@ -8,7 +8,7 @@ import {
 import Post from './Post';
 import { useTheme } from '@react-navigation/native';
 
-const Feed = ({ posts, setPosts }) => {
+const Feed = ({ posts, setPosts, navigation }) => {
   const { colors } = useTheme();
 
   const handleDeletePost = (postId) => {
@@ -19,17 +19,17 @@ const Feed = ({ posts, setPosts }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.view}>
-        <View
-          style={[
-            styles.seperator,
-            { backgroundColor: colors.border }]}></View>
         <View style={styles.feedContent}>
           {posts.length == 0 ? (
             <Text></Text>
           ) : (
             posts.map((post, index) => (
-              <Post style={styles.postSize} key={post.id} postObject={post}
-                onDelete={handleDeletePost}></Post>
+              <Post
+                style={styles.postSize}
+                key={post.id}
+                postObject={post}
+                onDelete={handleDeletePost}
+                navigation={navigation}></Post>
             ))
           )}
         </View>

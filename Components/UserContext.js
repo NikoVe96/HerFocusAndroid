@@ -3,9 +3,8 @@ import Parse from 'parse/react-native';
 
 export const UserContext = createContext(null);
 
-
 export const UserProvider = ({ children }) => {
-  const today = new Date;
+  const today = new Date();
   const currentDate = today.toISOString().slice(0, 10);
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
@@ -16,36 +15,27 @@ export const UserProvider = ({ children }) => {
   const [remainingTasks, setRemainingTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ID, setID] = useState('');
 
-  // useEffect(() => {
-  //   const checkUser = async () => {
-  //     const currentUser = await Parse.User.currentAsync();
-  //     if (currentUser) {
-  //       setUsername(currentUser.getUsername());
-  //       console.log('username success: ' + username);
-  //     } else {
-  //       setUsername(''); // Ensure username is empty if no user is logged in
-  //       console.log('username fail: ' + username);
-  //     }
-  //   };
-  //   checkUser();
+  useEffect(() => {
+    const checkUser = async () => {
+      const currentUser = await Parse.User.currentAsync();
+      if (currentUser) {
+        setUsername(currentUser.getUsername());
+        setID(currentUser.id);
+        setIsLoggedIn(true);
+      } else {
+        setUsername('');
+        setID('');
+        setIsLoggedIn(false);
+      }
+    };
+    checkUser();
+  }, []);
 
-  // }, []);
-
-
-  const handleSignup = async (
-    name,
-    username,
-    email,
-    password,
-    confirmPassword,
-    navigation,
-    avatar,
-  ) => {
+  const handleSignup = async (name, username, email, password, confirmPassword, navigation, avatar) => {
     setError('');
-
     const lowerCaseEmail = email.toLowerCase();
-
     const userNameExist = new Parse.Query('User');
     userNameExist.equalTo('username', username);
     const userExists = await userNameExist.first();
@@ -93,12 +83,12 @@ export const UserProvider = ({ children }) => {
 
   const handleLogin = async (email, password, navigation) => {
     setError('');
-
     const lowerCaseEmail = email.toLowerCase();
 
     try {
       const user = await Parse.User.logIn(lowerCaseEmail, password);
       setIsLoggedIn(true);
+      setID(user.id);
       console.log('Success! User ID:', user.id);
       navigation.navigate('Front page');
       setUsername(user.getUsername());
@@ -113,6 +103,7 @@ export const UserProvider = ({ children }) => {
       await Parse.User.logOut();
       setIsLoggedIn(false);
       setUsername('');
+      setID('');
       navigation.navigate('Login');
     } catch (error) {
       console.error('Error logging out', error);
@@ -132,12 +123,10 @@ export const UserProvider = ({ children }) => {
   const updateTaskProgress = async () => {
     const completed = await getCompletedTasks();
     const remaining = await getRemainingTasks();
-    console.log('hej' + remaining.length);
-    console.log('hej' + completed.length);
     const totalTasks = remainingTasks.length + completedTasks.length;
     const completedPercentage = totalTasks > 0 ? (completedTasks.length / totalTasks * 100).toFixed(0) : 0;
     setTaskProgress(completedPercentage);
-  }
+  };
 
   const getRemainingTasks = async () => {
     const currentUser = Parse.User.current();
@@ -146,31 +135,28 @@ export const UserProvider = ({ children }) => {
     TaskQuery.contains('date', currentDate);
     TaskQuery.equalTo('completed', false);
     TaskQuery.notEqualTo('futureTask', true);
-    TaskQuery.ascending('startTime')
+    TaskQuery.ascending('startTime');
     let Results = await TaskQuery.find();
     setRemainingTasks(Results);
-    console.log('remaining: ' + Results)
     return Results;
-  }
+  };
 
   const getCompletedTasks = async () => {
     const currentUser = Parse.User.current();
-    console.log('dateCompleted: ' + currentDate);
     let TaskQuery = new Parse.Query('Task');
     TaskQuery.contains('user', currentUser.id);
     TaskQuery.contains('date', currentDate);
     TaskQuery.equalTo('completed', true);
-    TaskQuery.ascending('startTime')
+    TaskQuery.ascending('startTime');
     let Results = await TaskQuery.find();
     setCompletedTasks(Results);
-    console.log('completed: ' + Results)
     return Results;
-  }
+  };
 
   return (
     <UserContext.Provider
       value={{
-        username, email, name, error, avatar, taskProgress, remainingTasks, completedTasks, isLoggedIn,
+        username, email, name, error, avatar, taskProgress, remainingTasks, completedTasks, isLoggedIn, ID,
         updateUserProfile, handleLogin, handleLogout, handleSignup, updateTaskProgress, getRemainingTasks, getCompletedTasks
       }}>
       {children}

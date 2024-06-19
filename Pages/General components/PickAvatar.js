@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginHorizontal: '1%',
     justifyContent: 'space-between',
-    elevation: 5,
+    //elevation: 5,
     shadowColor: 'black',
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },

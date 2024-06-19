@@ -1,9 +1,0 @@
- const startDateTime = new Date(taskDate)
-      //  const [startHours, startMinutes] = taskStartTime.split(':');
-      //  startDateTime.setHours(startHours, startMinutes);
-
-       const endDateTime = new Date(taskDate)
-      //  const [endHours, endMinutes] = taskEndTime.split(':');
-      //  endDateTime.setHours(endHours, endMinutes);
-
-      // console.log(endDateTime);

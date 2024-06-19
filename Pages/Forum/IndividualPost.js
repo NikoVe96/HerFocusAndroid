@@ -11,8 +11,8 @@ import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from '@react-navigation/native';
 
-function IndividualPost({ route }) {
-  const { postObject } = route.params;
+function IndividualPost({ route, navigation }) {
+  const { postObject, onDelete } = route.params;
   const [postedBy, setPostedBy] = useState('');
   const [postContent, setPostContent] = useState('');
   const [numberOfComments, setCommentCount] = useState(0);
@@ -40,6 +40,11 @@ function IndividualPost({ route }) {
     fetchComments();
   }
 
+  function handleDeletePost() {
+    onDelete(postObject.id);
+    navigation.goBack();
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -57,6 +62,7 @@ function IndividualPost({ route }) {
             comments={allComments}
             setComments={fetchComments}
             onNewComment={handleNewComment}
+            onDelete={handleDeletePost}
           />
         </View>
       </ScrollView>
