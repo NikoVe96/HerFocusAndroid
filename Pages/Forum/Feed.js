@@ -1,24 +1,22 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import Post from './Post';
-import { useTheme } from '@react-navigation/native';
+import {useTheme, useNavigation} from '@react-navigation/native';
 
-const Feed = ({ posts, setPosts, navigation }) => {
-  const { colors } = useTheme();
+const Feed = ({posts, setPosts}) => {
+  const {colors} = useTheme();
+  const navigation = useNavigation();
 
-  const handleDeletePost = (postId) => {
+  const handleDeletePost = postId => {
     const updatedPosts = posts.filter(post => post.id !== postId);
     setPosts(updatedPosts);
-  }
+  };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.view}>
+        <View
+          style={[styles.seperator, {backgroundColor: colors.border}]}></View>
         <View style={styles.feedContent}>
           {posts.length == 0 ? (
             <Text></Text>
