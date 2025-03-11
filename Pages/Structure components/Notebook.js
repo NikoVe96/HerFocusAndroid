@@ -170,7 +170,7 @@ export const Notebook = () => {
                   alignSelf: 'flex-end',
                 }}
                 onPress={() => updateNote(item, updatedNoteContent[item.id])}>
-                <Text style={{ fontSize: 16 }}>Opdater note</Text>
+                <Text style={{ fontSize: 16 }}>Gem</Text>
               </TouchableOpacity>
             </AccordionItem>
           ))

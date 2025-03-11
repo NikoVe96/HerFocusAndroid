@@ -8,17 +8,21 @@ import {
   Alert,
   Dimensions,
   TextInput
+  Dimensions,
+  TextInput
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
-import AddTask from './AddTask';
 import Parse from 'parse/react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { DateTimePickerModal } from 'react-native-modal-datetime-picker';
-import BottomNavigation from '../../Navigation/BottomNav';
 import EmojiPicker from "rn-emoji-picker"
 import DatePicker from "react-native-date-picker";
 import { emojis } from "rn-emoji-picker/dist/data"
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { Calendar } from 'react-native-calendars';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 export const FutureTodo = ({ navigation }) => {
   const today = new Date;
@@ -158,6 +162,7 @@ export const FutureTodo = ({ navigation }) => {
     await todo.save();
 
     ToDoQuery();
+    clearInput();
 
     setToCalendarModalVisible(false);
     Alert.alert(todo.get('name') + ' er blevet rykket til din kalender!');
@@ -206,19 +211,32 @@ export const FutureTodo = ({ navigation }) => {
       newTask.set('user', currentUser);
       newTask.set('color', taskColor);
       newTask.set('type', 'task');
+      newTask.set('futureTask', true);
+      newTask.set('startTime', '00:00');
+      newTask.set('endTime', '00:00');
+      newTask.set('date', '0000-00-00')
       newTask.set('description', description);
       // If time, add recurring option
       await newTask.save();
       console.log('Success: task saved')
       clearInput();
+      ToDoQuery();
+      setToDoModalVisible(false)
       Alert.alert('En ny to-do er blevet oprettet!');
-      //clearInput();
     } catch (error) {
       console.log('Error saving new task: ', error);
       Alert.alert('Hovsa!',
         'Det ser ud til at du mangler at udfylde enten navn eller farve 😉')
     }
   }
+
+  const completeTask = async (task) => {
+    isCompleted = task.get('completed');
+    console.log(task.get('completed'))
+    task.set('completed', !isCompleted);
+    await task.save();
+  }
+
 
   return (
     <View style={styles.container}>
@@ -231,15 +249,16 @@ export const FutureTodo = ({ navigation }) => {
           Fremtidige to-dos
         </Text>
         {toDoList.map((item, index) => (
-          <View key={index} style={{ flexDirection: 'row' }}>
+          <View key={index} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <BouncyCheckbox
               size={30}
               fillColor={colors.mainButton}
-              unfillColor="#FFFFFF"
-              iconStyle={{ borderColor: 'black' }}
-              innerIconStyle={{ borderWidth: 2 }}
-              textStyle={{ fontFamily: 'JosefinSans-Regular' }}
-              onPress={isChecked => { }}
+              unfillColor={colors.mainButton}
+              iconStyle={{ elevation: 5, }}
+              innerIconStyle={{ borderWidth: 15, borderColor: item.get('color') }}
+              textStyle={{ fontFamily: "JosefinSans-Regular" }}
+              onPress={() => { completeTask(item) }}
+              isChecked={item.get('completed')}
               style={{ marginHorizontal: 10, flex: 0.5 }}
             />
             <TouchableOpacity
@@ -259,22 +278,22 @@ export const FutureTodo = ({ navigation }) => {
               }}
               onLongPress={() => toCalendarModal(item)}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ fontSize: 20, marginRight: 10 }}>
+                <Text style={{ fontSize: 20, marginRight: 10, color: colors.text }}>
                   {item.get('emoji')}
                 </Text>
-                <Text style={{ marginHorizontal: 1, fontSize: 14 }}>
-                  {item.get('startTime')} - {item.get('endTime')}
-                </Text>
               </View>
-              <Text style={{ fontSize: 24, marginHorizontal: 5 }}>|</Text>
-              <Text style={{ fontSize: 18 }}>{item.get('name')}</Text>
+              <Text style={{ fontSize: 18, color: colors.text }}>{item.get('name')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => toCalendarModal(item)}>
+              <FontAwesomeIcon icon={faCalendar} size={25} color={colors.border} style={{ flex: 0.5, marginRight: '5%' }} />
             </TouchableOpacity>
           </View>
         ))}
         <TouchableOpacity
           style={[styles.addTodo, { backgroundColor: colors.mainButton }]}
           onPress={() => setToDoModalVisible(true)}>
-          <Text style={{ fontSize: 18 }}>Tilføj en ny to-do</Text>
+          <Text style={{ fontSize: 18, color: colors.text }}>Tilføj en ny fremtidig to-do</Text>
         </TouchableOpacity>
 
         <Modal
@@ -286,10 +305,12 @@ export const FutureTodo = ({ navigation }) => {
               padding: 10,
               borderWidth: 1,
               borderColor: colors.background,
-              borderTopRightRadius: 10,
-              borderTopLeftRadius: 10,
-              height: 500
+              borderRadius: 10
             }}>
+            <TouchableOpacity
+              onPress={() => setToDoModalVisible(false)}>
+              <FontAwesomeIcon icon={faCircleXmark} size={30} style={{ alignSelf: 'flex-end', marginBottom: '5%' }} />
+            </TouchableOpacity>
             <View style={{ alignItems: 'center', padding: 10 }}>
               <Text style={{ fontSize: 24, color: colors.text, marginTop: 15 }}>
                 {' '}
@@ -324,11 +345,22 @@ export const FutureTodo = ({ navigation }) => {
                   <TouchableOpacity
                     style={{
                       borderWidth: taskColor === '#FAEDCB' ? 1.5 : 1,
-                      borderRadius: taskColor === '#FAEDCB' ? 30 : 20,
-                      width: taskColor === '#FAEDCB' ? 45 : 40,
-                      height: taskColor === '#FAEDCB' ? 45 : 40,
+                      borderRadius:
+                        taskColor === '#FAEDCB'
+                          ? 30 * scaleFactor
+                          : 20 * scaleFactor,
+                      width:
+                        taskColor === '#FAEDCB'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
+                      height:
+                        taskColor === '#FAEDCB'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
                       backgroundColor: '#FAEDCB',
-                      borderColor: '#FAEDCB',
+                      borderColor: taskColor === '#FAEDCB'
+                        ? 'grey'
+                        : '#FAEDCB',
                       elevation: 5,
                       shadowColor: 'black',
                       shadowOpacity: 0.5,
@@ -339,26 +371,48 @@ export const FutureTodo = ({ navigation }) => {
                   <TouchableOpacity
                     style={{
                       borderWidth: taskColor === '#C9E4DE' ? 1.5 : 1,
-                      borderRadius: taskColor === '#C9E4DE' ? 30 : 20,
-                      width: taskColor === '#C9E4DE' ? 45 : 40,
-                      height: taskColor === '#C9E4DE' ? 45 : 40,
+                      borderRadius:
+                        taskColor === '#C9E4DE'
+                          ? 30 * scaleFactor
+                          : 20 * scaleFactor,
+                      width:
+                        taskColor === '#C9E4DE'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
+                      height:
+                        taskColor === '#C9E4DE'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
                       backgroundColor: '#C9E4DE',
-                      borderColor: '#C9E4DE',
+                      borderColor: taskColor === '#C9E4DE'
+                        ? 'grey'
+                        : '#C9E4DE',
                       elevation: 5,
-                      shadowColor: 'black',
-                      shadowOpacity: 0.5,
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowRadius: 2,
+                      shadowColor: 'grey',
+                      shadowOffset: { width: 1, height: 2 },
+                      shadowOpacity: 0.8,
+                      shadowRadius: 1,
                     }}
                     onPress={() => handleColorPick('#C9E4DE')}></TouchableOpacity>
                   <TouchableOpacity
                     style={{
                       borderWidth: taskColor === '#C6DEF1' ? 1.5 : 1,
-                      borderRadius: taskColor === '#C6DEF1' ? 30 : 20,
-                      width: taskColor === '#C6DEF1' ? 45 : 40,
-                      height: taskColor === '#C6DEF1' ? 45 : 40,
+                      borderRadius:
+                        taskColor === '#C6DEF1'
+                          ? 30 * scaleFactor
+                          : 20 * scaleFactor,
+                      width:
+                        taskColor === '#C6DEF1'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
+                      height:
+                        taskColor === '#C6DEF1'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
                       backgroundColor: '#C6DEF1',
-                      borderColor: '#C6DEF1',
+                      borderColor: taskColor === '#C6DEF1'
+                        ? 'grey'
+                        : '#C6DEF1',
                       elevation: 5,
                       shadowColor: 'black',
                       shadowOpacity: 0.5,
@@ -369,11 +423,22 @@ export const FutureTodo = ({ navigation }) => {
                   <TouchableOpacity
                     style={{
                       borderWidth: taskColor === '#DBCDF0' ? 1.5 : 1,
-                      borderRadius: taskColor === '#DBCDF0' ? 30 : 20,
-                      width: taskColor === '#DBCDF0' ? 45 : 40,
-                      height: taskColor === '#DBCDF0' ? 45 : 40,
+                      borderRadius:
+                        taskColor === '#DBCDF0'
+                          ? 30 * scaleFactor
+                          : 20 * scaleFactor,
+                      width:
+                        taskColor === '#DBCDF0'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
+                      height:
+                        taskColor === '#DBCDF0'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
                       backgroundColor: '#DBCDF0',
-                      borderColor: '#DBCDF0',
+                      borderColor: taskColor === '#DBCDF0'
+                        ? 'grey'
+                        : '#DBCDF0',
                       elevation: 5,
                       shadowColor: 'black',
                       shadowOpacity: 0.5,
@@ -384,11 +449,22 @@ export const FutureTodo = ({ navigation }) => {
                   <TouchableOpacity
                     style={{
                       borderWidth: taskColor === '#FFADAD' ? 1.5 : 1,
-                      borderRadius: taskColor === '#FFADAD' ? 30 : 20,
-                      width: taskColor === '#FFADAD' ? 45 : 40,
-                      height: taskColor === '#FFADAD' ? 45 : 40,
+                      borderRadius:
+                        taskColor === '#FFADAD'
+                          ? 30 * scaleFactor
+                          : 20 * scaleFactor,
+                      width:
+                        taskColor === '#FFADAD'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
+                      height:
+                        taskColor === '#FFADAD'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
                       backgroundColor: '#FFADAD',
-                      borderColor: '#FFADAD',
+                      borderColor: taskColor === '#FFADAD'
+                        ? 'grey'
+                        : '#FFADAD',
                       elevation: 5,
                       shadowColor: 'black',
                       shadowOpacity: 0.5,
@@ -399,11 +475,22 @@ export const FutureTodo = ({ navigation }) => {
                   <TouchableOpacity
                     style={{
                       borderWidth: taskColor === '#FFD6A5' ? 1.5 : 1,
-                      borderRadius: taskColor === '#FFD6A5' ? 30 : 20,
-                      width: taskColor === '#FFD6A5' ? 45 : 40,
-                      height: taskColor === '#FFD6A5' ? 45 : 40,
+                      borderRadius:
+                        taskColor === '#FFD6A5'
+                          ? 30 * scaleFactor
+                          : 20 * scaleFactor,
+                      width:
+                        taskColor === '#FFD6A5'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
+                      height:
+                        taskColor === '#FFD6A5'
+                          ? 45 * scaleFactor
+                          : 40 * scaleFactor,
                       backgroundColor: '#FFD6A5',
-                      borderColor: '#FFD6A5',
+                      borderColor: taskColor === '#FFD6A5'
+                        ? 'grey'
+                        : '#FFD6A5',
                       elevation: 5,
                       shadowColor: 'black',
                       shadowOpacity: 0.5,
@@ -477,128 +564,6 @@ export const FutureTodo = ({ navigation }) => {
                   <Text style={{ fontSize: 26, color: colors.text }}> {emoji}</Text>
                 </View>
               </View>
-              <View style={{ flexDirection: 'row', marginVertical: 2 }}>
-                <View style={styles.rowView}>
-                  <TouchableOpacity
-                    style={[
-                      styles.buttonSmall,
-                      {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
-                      },
-                    ]}
-                    onPress={showStartTimePicker}>
-                    <Text style={[styles.buttonText, { color: colors.text }]}>
-                      Start tidspunkt
-                    </Text>
-                  </TouchableOpacity>
-                  <DatePicker
-                    mode="time"
-                    modal
-                    open={isStartTimePickerVisible}
-                    date={today}
-                    title={'Start tid'}
-                    confirmText="Bekræft"
-                    cancelText="Annuler"
-                    buttonColor={colors.border}
-                    dividerColor={colors.border}
-                    onConfirm={(date) => {
-                      setStartTimePickerVisibility(false)
-                      handleStartTimeConfirm(date)
-                      setEndTimePickerVisibility(true)
-                    }}
-                    onCancel={() => {
-                      setStartTimePickerVisibility(false)
-                    }}
-                  />
-                </View>
-                <View style={[styles.rowView, { alignItems: 'center' }]}>
-                  <Text style={[styles.text, { fontWeight: 'bold', color: colors.text }]}>
-                    {taskStartTime == '' ? '' : `${taskStartTime}`}
-                  </Text>
-                </View>
-              </View>
-              <View style={{ flexDirection: 'row', marginVertical: 2 }}>
-                <View style={styles.rowView}>
-                  <TouchableOpacity
-                    style={[
-                      styles.buttonSmall,
-                      {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
-                      },
-                    ]}
-                    onPress={showEndTimePicker}>
-                    <Text style={[styles.buttonText, { color: colors.text }]}>
-                      Slut tidspunkt
-                    </Text>
-                  </TouchableOpacity>
-                  <DatePicker
-                    mode="time"
-                    modal
-                    open={isEndTimePickerVisible}
-                    date={today}
-                    title={'Slut tid'}
-                    confirmText="Bekræft"
-                    cancelText="Annuler"
-                    buttonColor={colors.border}
-                    dividerColor={colors.border}
-                    onConfirm={(date) => {
-                      setEndTimePickerVisibility(false)
-                      handleEndTimeConfirm(date)
-                      setDatePickerVisibility(true)
-                    }}
-                    onCancel={() => {
-                      setEndTimePickerVisibility(false)
-                    }}
-                  />
-                </View>
-                <View style={[styles.rowView, { alignItems: 'center' }]}>
-                  <Text style={[styles.text, { fontWeight: 'bold', color: colors.text }]}>
-                    {taskEndTime == '' ? '' : `${taskEndTime}`}
-                  </Text>
-                </View>
-              </View>
-              <View style={{ flexDirection: 'row', marginVertical: 2 }}>
-                <View style={styles.rowView}>
-                  <TouchableOpacity
-                    style={[
-                      styles.buttonSmall,
-                      {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
-                      },
-                    ]}
-                    onPress={showDatePicker}>
-                    <Text style={[styles.buttonText, { color: colors.text }]}>
-                      Dato
-                    </Text>
-                  </TouchableOpacity>
-                  <DatePicker
-                    mode="date"
-                    modal
-                    open={isDatePickerVisible}
-                    date={today}
-                    title={'Dato'}
-                    confirmText="Bekræft"
-                    cancelText="Annuler"
-                    buttonColor={colors.border}
-                    dividerColor={colors.border}
-                    onConfirm={(date) => {
-                      setDatePickerVisibility(false)
-                      handleDateConfirm(date)
-                    }}
-                    onCancel={() => {
-                      setDatePickerVisibility(false)
-                    }}
-                  />
-                </View>
-                <View style={[styles.rowView, { alignItems: 'center' }]}>
-                  <Text style={[styles.text, { fontWeight: 'bold', color: colors.text }]}>
-                    {`${taskDate}`}
-                  </Text>
-                </View>
-              </View>
             </View>
             <View
               style={{
@@ -626,24 +591,10 @@ export const FutureTodo = ({ navigation }) => {
               ]}
               onPress={newTask}>
               <Text style={{ color: colors.text, fontSize: 18 * scaleFactor }}>
-                Tilføj til kalender
+                Tilføj ny to-do
               </Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={{
-              backgroundColor: colors.border,
-              alignItems: 'center',
-              height: '7%',
-              justifyContent: 'center',
-              borderBottomRightRadius: 10,
-              borderBottomLeftRadius: 10,
-            }}
-            onPress={() => setToDoModalVisible(false)}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
-              LUK
-            </Text>
-          </TouchableOpacity>
         </Modal>
 
         <Modal
@@ -658,6 +609,10 @@ export const FutureTodo = ({ navigation }) => {
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
             }}>
+            <TouchableOpacity
+              onPress={() => setToCalendarModalVisible(false)}>
+              <FontAwesomeIcon icon={faCircleXmark} size={30} style={{ alignSelf: 'flex-end', marginBottom: '5%' }} />
+            </TouchableOpacity>
             <View>
               <View style={{ flexDirection: 'row', marginVertical: 2 }}>
                 <View style={styles.rowView}>
@@ -672,11 +627,18 @@ export const FutureTodo = ({ navigation }) => {
                     onPress={() => setStartTimePickerVisibility(true)}>
                     <Text style={styles.buttonText}>Start tidspunkt</Text>
                   </TouchableOpacity>
-                  <DateTimePickerModal
-                    isVisible={isStartTimePickerVisible}
+                  <DatePicker
                     mode="time"
-                    onConfirm={date => handleStartTimeConfirm(date)}
-                    onCancel={() => setStartTimePickerVisibility(false)}
+                    modal
+                    open={isStartTimePickerVisible}
+                    date={today}
+                    onConfirm={(date) => {
+                      setStartTimePickerVisibility(false)
+                      handleStartTimeConfirm(date)
+                    }}
+                    onCancel={() => {
+                      setStartTimePickerVisibility(false)
+                    }}
                   />
                 </View>
                 <View style={[styles.rowView, { alignItems: 'center' }]}>
@@ -698,11 +660,18 @@ export const FutureTodo = ({ navigation }) => {
                     onPress={() => setEndTimePickerVisibility(true)}>
                     <Text style={styles.buttonText}>Slut tidspunkt</Text>
                   </TouchableOpacity>
-                  <DateTimePickerModal
-                    isVisible={isEndTimePickerVisible}
+                  <DatePicker
                     mode="time"
-                    onConfirm={date => handleEndTimeConfirm(date)}
-                    onCancel={() => setEndTimePickerVisibility(false)}
+                    modal
+                    open={isEndTimePickerVisible}
+                    date={today}
+                    onConfirm={(date) => {
+                      setEndTimePickerVisibility(false)
+                      handleEndTimeConfirm(date)
+                    }}
+                    onCancel={() => {
+                      setEndTimePickerVisibility(false)
+                    }}
                   />
                 </View>
                 <View style={[styles.rowView, { alignItems: 'center' }]}>
@@ -724,11 +693,18 @@ export const FutureTodo = ({ navigation }) => {
                     onPress={() => setDatePickerVisibility(true)}>
                     <Text style={styles.buttonText}>Dato</Text>
                   </TouchableOpacity>
-                  <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
+                  <DatePicker
                     mode="date"
-                    onConfirm={date => handleDateConfirm(date)}
-                    onCancel={() => setDatePickerVisibility(false)}
+                    modal
+                    open={isDatePickerVisible}
+                    date={today}
+                    onConfirm={(date) => {
+                      setDatePickerVisibility(false)
+                      handleDateConfirm(date)
+                    }}
+                    onCancel={() => {
+                      setDatePickerVisibility(false)
+                    }}
                   />
                 </View>
                 <View style={[styles.rowView, { alignItems: 'center' }]}>
@@ -737,17 +713,6 @@ export const FutureTodo = ({ navigation }) => {
                   </Text>
                 </View>
               </View>
-              <TouchableOpacity
-                style={[
-                  styles.buttonSmall,
-                  {
-                    backgroundColor: colors.subButton,
-                    borderColor: colors.subButton,
-                  },
-                ]}
-                onPress={() => moveToCalendar()}>
-                <Text style={styles.buttonText}>Tilføj til kalender</Text>
-              </TouchableOpacity>
             </View>
           </View>
           <TouchableOpacity
@@ -759,9 +724,9 @@ export const FutureTodo = ({ navigation }) => {
               borderBottomRightRadius: 10,
               borderBottomLeftRadius: 10,
             }}
-            onPress={() => setToCalendarModalVisible(false)}>
+            onPress={() => moveToCalendar()}>
             <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
-              LUK
+              Tilføj til kalender
             </Text>
           </TouchableOpacity>
         </Modal>
@@ -812,6 +777,98 @@ const styles = StyleSheet.create({
     marginVertical: '20%',
     alignSelf: 'center',
     alignItems: 'center'
+  },
+  Button: {
+    borderRadius: 10,
+    padding: 5,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    borderWidth: 1,
+    marginVertical: '4%',
+    paddingHorizontal: '3%',
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+  },
+  buttonSmall: {
+    justifyContent: 'center',
+    padding: '2%',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 10,
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+    marginBottom: 8,
+  },
+  modalButton: {
+    backgroundColor: 'lightgrey',
+    width: '95%',
+    height: '8%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 20,
+    borderWidth: 1,
+    borderRadius: 20,
+  },
+  emojiPickerContainer: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 10,
+    width: '95%',
+    height: '95%',
+  },
+  text: {
+    marginVertical: 10,
+    fontSize: 18,
+  },
+  textInput: {
+    padding: 8,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderRadius: 10,
+    fontSize: 16,
+    borderColor: 'white',
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+  },
+  border: {
+    borderWidth: 1,
+    width: 300,
+    alignSelf: 'center',
+    marginTop: 10,
+    borderRadius: 10,
+  },
+  colorOptions: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  rowView: {
+    flex: 1,
   },
 });
 

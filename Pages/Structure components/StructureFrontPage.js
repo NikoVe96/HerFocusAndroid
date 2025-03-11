@@ -30,7 +30,7 @@ export const StructureFrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Add task')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}
+            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}
             onPress={() => navigation.navigate('Add task')}>
             <Text
               style={[
@@ -54,7 +54,7 @@ export const StructureFrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Add event')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
             <Text
               style={[
                 styles.text,
@@ -77,7 +77,7 @@ export const StructureFrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Add routine')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
             <Text
               style={[
                 styles.text,
@@ -100,7 +100,7 @@ export const StructureFrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Future todo')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
             <Text
               style={[
                 styles.text,

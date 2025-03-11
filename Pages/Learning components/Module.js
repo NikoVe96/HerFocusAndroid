@@ -10,20 +10,21 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Swiper from 'react-native-swiper';
 import LearningProgressHeader from '../../Components/LearningProgressHeader';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import Parse from 'parse/react-native';
 import Quiz from '../../Components/Quiz';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBookmark, faCheck } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faBookmark, faCheck} from '@fortawesome/free-solid-svg-icons';
+import Markdown from 'react-native-markdown-display';
 
-export const Module = ({ route }) => {
+export const Module = ({route}) => {
   const [progress, setProgress] = useState(new Animated.Value(1));
   const moduleLength = 7;
   const navigation = useNavigation();
-  const { module, subject, description, image } = route.params;
+  const {module, subject, description, image, onNewCompletion} = route.params;
   const [intro1, setIntro1] = useState('');
   const [intro2, setIntro2] = useState('');
   const [intro3, setIntro3] = useState('');
@@ -33,10 +34,10 @@ export const Module = ({ route }) => {
   const [author, setAuthor] = useState('');
   const [book, setBook] = useState('');
   const swiperRef = useRef(null);
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const moduleName = `${module.get('name')} ${module.get('subject')}`;
   const [expanded, setExpanded] = useState(-1);
-  const { width, height } = Dimensions.get('window');
+  const {width, height} = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
   const [saved, setSaved] = useState({});
   const [notebookExercises, setNotebookExercises] = useState({});
@@ -79,8 +80,11 @@ export const Module = ({ route }) => {
     query.contains('user', currentUser.id);
     const result = await query.first();
 
+    const moduleName = `${module.get('name')} ${module.get('subject')}`;
     result.addUnique('modulesCompleted', moduleName);
     result.save();
+
+    onNewCompletion();
 
     navigation.navigate('Module overview', {
       subject: subject,
@@ -136,7 +140,6 @@ export const Module = ({ route }) => {
     }
   }
 
-
   function exercises() {
     switch (moduleName) {
       case '1 Struktur og planlægning':
@@ -148,25 +151,25 @@ export const Module = ({ route }) => {
         const tænkefejl6 = 'Følelses ræsonnement';
 
         return (
-          <View style={{ backgroundColor: colors.background, padding: '2%' }}>
+          <View style={{backgroundColor: colors.background, padding: '2%'}}>
             <Text
               style={[
                 styles.title,
-                { fontSize: 20 * scaleFactor, color: colors.text },
+                {fontSize: 20 * scaleFactor, color: colors.text},
               ]}>
               Identificer dine egne tænkefejl
             </Text>
             <Text
               style={[
                 styles.exercise,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               Øvelse
             </Text>
             <Text
               style={[
                 styles.exerciseDesc,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               I denne øvelse skal du tjekke de bokse af, hvor du kan genkende
               dig selv i tankefejlen. I tekstfeltet skriver du derefter et
@@ -176,7 +179,7 @@ export const Module = ({ route }) => {
             <Text
               style={[
                 styles.exerciseDesc,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               Udfyld kun de tekstfelter, der tilhører tænkefejl, som du kan
               genkende dig selv i.
@@ -184,7 +187,7 @@ export const Module = ({ route }) => {
             <Text
               style={[
                 styles.exerciseDesc,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               Tryk på "gem" ikonet ved siden af tekstfeltet for at gemme øvelsen
               i din notesbog.
@@ -193,13 +196,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {tænkefejl1}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(tænkefejl1, text)}
                   value={answer}
                   multiline={true}
@@ -208,7 +211,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -218,7 +221,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -228,13 +231,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {tænkefejl2}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(tænkefejl2, text)}
                   value={answer}
                   multiline={true}
@@ -243,7 +246,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -253,7 +256,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -263,13 +266,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {tænkefejl3}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(tænkefejl3, text)}
                   value={answer}
                   multiline={true}
@@ -278,7 +281,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -288,7 +291,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -298,13 +301,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {tænkefejl4}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(tænkefejl4, text)}
                   value={answer}
                   multiline={true}
@@ -313,7 +316,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -323,7 +326,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -333,13 +336,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {tænkefejl5}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(tænkefejl5, text)}
                   value={answer}
                   multiline={true}
@@ -348,7 +351,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -358,7 +361,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -368,13 +371,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {tænkefejl6}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(tænkefejl6, text)}
                   value={answer}
                   multiline={true}
@@ -383,7 +386,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -393,7 +396,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -403,29 +406,32 @@ export const Module = ({ route }) => {
         );
         break;
       case '2 Struktur og planlægning':
-        const overspringshandling1 = 'Hvilke(n) typer af overspringshandlinger kan du identificere dig med?';
-        const overspringshandling2 = 'Giv et eksempel på hvornår, du har lavet en overspringshandling af denne type';
-        const overspringshandling3 = 'Hvad kan du gøre for at lave færre overspringshandlinger af denne type?';
+        const overspringshandling1 =
+          'Hvilke(n) typer af overspringshandlinger kan du identificere dig med?';
+        const overspringshandling2 =
+          'Giv et eksempel på hvornår, du har lavet en overspringshandling af denne type';
+        const overspringshandling3 =
+          'Hvad kan du gøre for at lave færre overspringshandlinger af denne type?';
         return (
-          <View style={{ backgroundColor: colors.background, padding: '2%' }}>
+          <View style={{backgroundColor: colors.background, padding: '2%'}}>
             <Text
               style={[
                 styles.title,
-                { fontSize: 20 * scaleFactor, color: colors.text },
+                {fontSize: 20 * scaleFactor, color: colors.text},
               ]}>
               Identificer typen af dine overspringshandlinger
             </Text>
             <Text
               style={[
                 styles.exercise,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               Øvelse
             </Text>
             <Text
               style={[
                 styles.exerciseDesc,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               I denne øvelse skal du udfylde felterne for at identificere og
               reflektere ove, hvilke typer af overspringshandlinger, du typisk
@@ -434,7 +440,7 @@ export const Module = ({ route }) => {
             <Text
               style={[
                 styles.exerciseDesc,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               Tryk på "gem" ikonet ved siden af tekstfeltet for at gemme øvelsen
               i din notesbog.
@@ -443,13 +449,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {overspringshandling1}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text =>
                     handleAnswerChange(overspringshandling1, text)
                   }
@@ -460,7 +466,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -474,7 +480,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -484,13 +490,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {overspringshandling2}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text =>
                     handleAnswerChange(overspringshandling2, text)
                   }
@@ -501,7 +507,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -515,7 +521,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -525,13 +531,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {overspringshandling3}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text =>
                     handleAnswerChange(overspringshandling3, text)
                   }
@@ -542,7 +548,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -556,7 +562,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -575,25 +581,25 @@ export const Module = ({ route }) => {
         const steps6 = 'f.  ';
         const steps7 = 'g. ';
         return (
-          <View style={{ backgroundColor: colors.background, padding: '2%' }}>
+          <View style={{backgroundColor: colors.background, padding: '2%'}}>
             <Text
               style={[
                 styles.title,
-                { fontSize: 20 * scaleFactor, color: colors.text },
+                {fontSize: 20 * scaleFactor, color: colors.text},
               ]}>
               Planlæg dine rutiner
             </Text>
             <Text
               style={[
                 styles.exercise,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               Øvelse
             </Text>
             <Text
               style={[
                 styles.exerciseDesc,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               I denne øvelse skal du tænke på en rutine, du har. Skriv hvilke
               steps rutinen indeholder. Du kan derefter skrive rutinen ind i din
@@ -602,25 +608,25 @@ export const Module = ({ route }) => {
             <Text
               style={[
                 styles.exerciseDesc,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               Tryk på "gem" ikonet ved siden af tekstfeltet for at gemme øvelsen
               i din notesbog.
             </Text>
             <Text
-              style={{ fontWeight: 'bold', marginBottom: 5, color: colors.text }}>
+              style={{fontWeight: 'bold', marginBottom: 5, color: colors.text}}>
               Rutine
             </Text>
             <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View>
                 <View style={styles.rutineView}>
                   <Text
-                    style={{ fontSize: 14 * scaleFactor, color: colors.text }}>
+                    style={{fontSize: 14 * scaleFactor, color: colors.text}}>
                     {rutine}
                   </Text>
                   <TextInput
-                    style={[styles.rutineText, { color: colors.text }]}
+                    style={[styles.rutineText, {color: colors.text}]}
                     onChangeText={text => handleAnswerChange(rutine, text)}
                     value={answer}
                     multiline={true}
@@ -629,7 +635,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faCheck}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   ) : (
                     <TouchableOpacity
@@ -639,7 +645,7 @@ export const Module = ({ route }) => {
                       <FontAwesomeIcon
                         icon={faBookmark}
                         size={20}
-                        style={{ marginRight: 10, marginTop: 10 }}
+                        style={{marginRight: 10, marginTop: 10}}
                         color={colors.border}></FontAwesomeIcon>
                     </TouchableOpacity>
                   )}
@@ -668,7 +674,7 @@ export const Module = ({ route }) => {
                       </Text>
                       <View style={styles.inputView}>
                         <TextInput
-                          style={[styles.rutineText, { color: colors.text }]}
+                          style={[styles.rutineText, {color: colors.text}]}
                           onChangeText={text =>
                             handleAnswerChange(steps1, text)
                           }
@@ -679,7 +685,7 @@ export const Module = ({ route }) => {
                           <FontAwesomeIcon
                             icon={faCheck}
                             size={20}
-                            style={{ marginRight: 10, marginTop: 10 }}
+                            style={{marginRight: 10, marginTop: 10}}
                             color={colors.border}></FontAwesomeIcon>
                         ) : (
                           <TouchableOpacity
@@ -689,7 +695,7 @@ export const Module = ({ route }) => {
                             <FontAwesomeIcon
                               icon={faBookmark}
                               size={20}
-                              style={{ marginRight: 10, marginTop: 10 }}
+                              style={{marginRight: 10, marginTop: 10}}
                               color={colors.border}></FontAwesomeIcon>
                           </TouchableOpacity>
                         )}
@@ -705,7 +711,7 @@ export const Module = ({ route }) => {
                       </Text>
                       <View style={styles.inputView}>
                         <TextInput
-                          style={[styles.rutineText, { color: colors.text }]}
+                          style={[styles.rutineText, {color: colors.text}]}
                           onChangeText={text =>
                             handleAnswerChange(steps2, text)
                           }
@@ -716,7 +722,7 @@ export const Module = ({ route }) => {
                           <FontAwesomeIcon
                             icon={faCheck}
                             size={20}
-                            style={{ marginRight: 10, marginTop: 10 }}
+                            style={{marginRight: 10, marginTop: 10}}
                             color={colors.border}></FontAwesomeIcon>
                         ) : (
                           <TouchableOpacity
@@ -726,7 +732,7 @@ export const Module = ({ route }) => {
                             <FontAwesomeIcon
                               icon={faBookmark}
                               size={20}
-                              style={{ marginRight: 10, marginTop: 10 }}
+                              style={{marginRight: 10, marginTop: 10}}
                               color={colors.border}></FontAwesomeIcon>
                           </TouchableOpacity>
                         )}
@@ -742,7 +748,7 @@ export const Module = ({ route }) => {
                       </Text>
                       <View style={styles.inputView}>
                         <TextInput
-                          style={[styles.rutineText, { color: colors.text }]}
+                          style={[styles.rutineText, {color: colors.text}]}
                           onChangeText={text =>
                             handleAnswerChange(steps3, text)
                           }
@@ -753,7 +759,7 @@ export const Module = ({ route }) => {
                           <FontAwesomeIcon
                             icon={faCheck}
                             size={20}
-                            style={{ marginRight: 10, marginTop: 10 }}
+                            style={{marginRight: 10, marginTop: 10}}
                             color={colors.border}></FontAwesomeIcon>
                         ) : (
                           <TouchableOpacity
@@ -763,7 +769,7 @@ export const Module = ({ route }) => {
                             <FontAwesomeIcon
                               icon={faBookmark}
                               size={20}
-                              style={{ marginRight: 10, marginTop: 10 }}
+                              style={{marginRight: 10, marginTop: 10}}
                               color={colors.border}></FontAwesomeIcon>
                           </TouchableOpacity>
                         )}
@@ -779,7 +785,7 @@ export const Module = ({ route }) => {
                       </Text>
                       <View style={styles.inputView}>
                         <TextInput
-                          style={[styles.rutineText, { color: colors.text }]}
+                          style={[styles.rutineText, {color: colors.text}]}
                           onChangeText={text =>
                             handleAnswerChange(steps4, text)
                           }
@@ -790,7 +796,7 @@ export const Module = ({ route }) => {
                           <FontAwesomeIcon
                             icon={faCheck}
                             size={20}
-                            style={{ marginRight: 10, marginTop: 10 }}
+                            style={{marginRight: 10, marginTop: 10}}
                             color={colors.border}></FontAwesomeIcon>
                         ) : (
                           <TouchableOpacity
@@ -800,7 +806,7 @@ export const Module = ({ route }) => {
                             <FontAwesomeIcon
                               icon={faBookmark}
                               size={20}
-                              style={{ marginRight: 10, marginTop: 10 }}
+                              style={{marginRight: 10, marginTop: 10}}
                               color={colors.border}></FontAwesomeIcon>
                           </TouchableOpacity>
                         )}
@@ -816,7 +822,7 @@ export const Module = ({ route }) => {
                       </Text>
                       <View style={styles.inputView}>
                         <TextInput
-                          style={[styles.rutineText, { color: colors.text }]}
+                          style={[styles.rutineText, {color: colors.text}]}
                           onChangeText={text =>
                             handleAnswerChange(steps5, text)
                           }
@@ -827,7 +833,7 @@ export const Module = ({ route }) => {
                           <FontAwesomeIcon
                             icon={faCheck}
                             size={20}
-                            style={{ marginRight: 10, marginTop: 10 }}
+                            style={{marginRight: 10, marginTop: 10}}
                             color={colors.border}></FontAwesomeIcon>
                         ) : (
                           <TouchableOpacity
@@ -837,7 +843,7 @@ export const Module = ({ route }) => {
                             <FontAwesomeIcon
                               icon={faBookmark}
                               size={20}
-                              style={{ marginRight: 10, marginTop: 10 }}
+                              style={{marginRight: 10, marginTop: 10}}
                               color={colors.border}></FontAwesomeIcon>
                           </TouchableOpacity>
                         )}
@@ -853,7 +859,7 @@ export const Module = ({ route }) => {
                       </Text>
                       <View style={styles.inputView}>
                         <TextInput
-                          style={[styles.rutineText, { color: colors.text }]}
+                          style={[styles.rutineText, {color: colors.text}]}
                           onChangeText={text =>
                             handleAnswerChange(steps6, text)
                           }
@@ -864,7 +870,7 @@ export const Module = ({ route }) => {
                           <FontAwesomeIcon
                             icon={faCheck}
                             size={20}
-                            style={{ marginRight: 10, marginTop: 10 }}
+                            style={{marginRight: 10, marginTop: 10}}
                             color={colors.border}></FontAwesomeIcon>
                         ) : (
                           <TouchableOpacity
@@ -874,7 +880,7 @@ export const Module = ({ route }) => {
                             <FontAwesomeIcon
                               icon={faBookmark}
                               size={20}
-                              style={{ marginRight: 10, marginTop: 10 }}
+                              style={{marginRight: 10, marginTop: 10}}
                               color={colors.border}></FontAwesomeIcon>
                           </TouchableOpacity>
                         )}
@@ -890,7 +896,7 @@ export const Module = ({ route }) => {
                       </Text>
                       <View style={styles.inputView}>
                         <TextInput
-                          style={[styles.rutineText, { color: colors.text }]}
+                          style={[styles.rutineText, {color: colors.text}]}
                           onChangeText={text =>
                             handleAnswerChange(steps7, text)
                           }
@@ -901,7 +907,7 @@ export const Module = ({ route }) => {
                           <FontAwesomeIcon
                             icon={faCheck}
                             size={20}
-                            style={{ marginRight: 10, marginTop: 10 }}
+                            style={{marginRight: 10, marginTop: 10}}
                             color={colors.border}></FontAwesomeIcon>
                         ) : (
                           <TouchableOpacity
@@ -911,7 +917,7 @@ export const Module = ({ route }) => {
                             <FontAwesomeIcon
                               icon={faBookmark}
                               size={20}
-                              style={{ marginRight: 10, marginTop: 10 }}
+                              style={{marginRight: 10, marginTop: 10}}
                               color={colors.border}></FontAwesomeIcon>
                           </TouchableOpacity>
                         )}
@@ -932,25 +938,25 @@ export const Module = ({ route }) => {
         const beskriv2 = '2. Beskriv hvordan det gik';
         const beskriv3 = '3. Beskriv hvordan det gik';
         return (
-          <View style={{ backgroundColor: colors.background, padding: '2%' }}>
+          <View style={{backgroundColor: colors.background, padding: '2%'}}>
             <Text
               style={[
                 styles.title,
-                { fontSize: 20 * scaleFactor, color: colors.text },
+                {fontSize: 20 * scaleFactor, color: colors.text},
               ]}>
               Reflekter over dine præstationer
             </Text>
             <Text
               style={[
                 styles.exercise,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               Øvelse
             </Text>
             <Text
               style={[
                 styles.exerciseDesc,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               I denne øvelse skal du udvælge nogle af de opgaver du har haft i
               løbet af ugen, og reflektere over dem.
@@ -958,7 +964,7 @@ export const Module = ({ route }) => {
             <Text
               style={[
                 styles.exerciseDesc,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               Hvordan gik det med at klare opgaven? Oplevede du nogle tænkefejl
               undervejs? Hvordan kunne du vende de negative tanker til noget
@@ -967,7 +973,7 @@ export const Module = ({ route }) => {
             <Text
               style={[
                 styles.exerciseDesc,
-                { fontSize: 16 * scaleFactor, color: colors.text },
+                {fontSize: 16 * scaleFactor, color: colors.text},
               ]}>
               Tryk på "gem" ikonet ved siden af tekstfeltet for at gemme øvelsen
               i din notesbog.
@@ -976,13 +982,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {opgave1}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(opgave1, text)}
                   value={answer}
                   multiline={true}
@@ -991,7 +997,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -1001,7 +1007,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -1009,13 +1015,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {beskriv1}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(beskriv1, text)}
                   value={answer}
                   multiline={true}
@@ -1024,7 +1030,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -1034,7 +1040,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -1044,13 +1050,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {opgave2}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(opgave2, text)}
                   value={answer}
                   multiline={true}
@@ -1059,7 +1065,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -1069,7 +1075,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -1077,13 +1083,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {beskriv2}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(beskriv2, text)}
                   value={answer}
                   multiline={true}
@@ -1092,7 +1098,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -1102,7 +1108,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -1112,13 +1118,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {opgave3}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(opgave3, text)}
                   value={answer}
                   multiline={true}
@@ -1127,7 +1133,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -1137,7 +1143,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -1145,13 +1151,13 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.exerciseText,
-                  { fontSize: 16 * scaleFactor, color: colors.text },
+                  {fontSize: 16 * scaleFactor, color: colors.text},
                 ]}>
                 {beskriv3}
               </Text>
               <View style={styles.inputView}>
                 <TextInput
-                  style={[styles.inputText, { color: colors.text }]}
+                  style={[styles.inputText, {color: colors.text}]}
                   onChangeText={text => handleAnswerChange(beskriv3, text)}
                   value={answer}
                   multiline={true}
@@ -1160,7 +1166,7 @@ export const Module = ({ route }) => {
                   <FontAwesomeIcon
                     icon={faCheck}
                     size={20}
-                    style={{ marginRight: 10, marginTop: 10 }}
+                    style={{marginRight: 10, marginTop: 10}}
                     color={colors.border}></FontAwesomeIcon>
                 ) : (
                   <TouchableOpacity
@@ -1170,7 +1176,7 @@ export const Module = ({ route }) => {
                     <FontAwesomeIcon
                       icon={faBookmark}
                       size={20}
-                      style={{ marginRight: 10, marginTop: 10 }}
+                      style={{marginRight: 10, marginTop: 10}}
                       color={colors.border}></FontAwesomeIcon>
                   </TouchableOpacity>
                 )}
@@ -1184,7 +1190,7 @@ export const Module = ({ route }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       <LearningProgressHeader
         progress={progress}
         moduleLength={moduleLength}
@@ -1192,14 +1198,14 @@ export const Module = ({ route }) => {
         description={description}
         image={image}
       />
-      <View style={{ flex: 8, backgroundColor: colors.background }}>
+      <View style={{flex: 8, backgroundColor: colors.background}}>
         <Swiper
           loop={false}
           showsPagination={false}
           onIndexChanged={index => handleSlide(index)}
           scrollEnabled={false}
           ref={swiperRef}>
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView style={{flex: 1}}>
             <Image
               source={require('../../Assets/images/LearningFirst.png')}
               style={{
@@ -1208,7 +1214,20 @@ export const Module = ({ route }) => {
                 alignSelf: 'center',
               }}></Image>
             <View style={styles.textContainer}>
-              <Text style={[styles.text, { color: colors.text }]}>{intro1}</Text>
+              <Markdown
+                style={{
+                  paragraph: {fontSize: 18 * scaleFactor, color: colors.text},
+                  bullet_list: {fontSize: 18, color: colors.text},
+                  heading3: {
+                    color: colors.text,
+                    fontSize: 20 * scaleFactor,
+                    marginTop: 30,
+                    fontWeight: 'bold',
+                  },
+                  list_item: {marginVertical: 5},
+                }}>
+                {intro1}
+              </Markdown>
             </View>
             <View
               style={{
@@ -1217,7 +1236,7 @@ export const Module = ({ route }) => {
                 alignItems: 'baseline',
                 marginVertical: '3%',
               }}>
-              <View style={{ marginTop: '3%', marginRight: '5%' }}></View>
+              <View style={{marginTop: '3%', marginRight: '5%'}}></View>
               <TouchableOpacity
                 style={[
                   styles.swiperBtn,
@@ -1227,13 +1246,13 @@ export const Module = ({ route }) => {
                   },
                 ]}
                 onPress={() => swiperRef.current.scrollBy(1)}>
-                <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                <Text style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                   Næste
                 </Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView style={{flex: 1}}>
             <Image
               source={require('../../Assets/images/LearningSecond.png')}
               style={{
@@ -1242,7 +1261,26 @@ export const Module = ({ route }) => {
                 alignSelf: 'center',
               }}></Image>
             <View style={styles.textContainer}>
-              <Text style={[styles.text, { color: colors.text }]}>{intro2}</Text>
+              <Markdown
+                style={{
+                  paragraph: {fontSize: 18 * scaleFactor, color: colors.text},
+                  bullet_list: {fontSize: 18, color: colors.text},
+                  heading3: {
+                    color: colors.text,
+                    fontSize: 20 * scaleFactor,
+                    marginTop: 30,
+                    fontWeight: 'bold',
+                    alignSelf: 'center',
+                    backgroundColor: colors.mainButton,
+                    borderRadius: 8,
+                    paddingLeft: 15,
+                    paddingRight: 15,
+                    padding: 2,
+                  },
+                  list_item: {marginVertical: 5},
+                }}>
+                {intro2}
+              </Markdown>
             </View>
             <View
               style={{
@@ -1260,7 +1298,7 @@ export const Module = ({ route }) => {
                   },
                 ]}
                 onPress={() => swiperRef.current.scrollBy(-1)}>
-                <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                <Text style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                   Tilbage
                 </Text>
               </TouchableOpacity>
@@ -1273,13 +1311,13 @@ export const Module = ({ route }) => {
                   },
                 ]}
                 onPress={() => swiperRef.current.scrollBy(1)}>
-                <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                <Text style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                   Næste
                 </Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView style={{flex: 1}}>
             <Image
               source={require('../../Assets/images/LearningThird.png')}
               style={{
@@ -1288,7 +1326,26 @@ export const Module = ({ route }) => {
                 alignSelf: 'center',
               }}></Image>
             <View style={styles.textContainer}>
-              <Text style={[styles.text, { color: colors.text }]}>{intro3}</Text>
+              <Markdown
+                style={{
+                  paragraph: {fontSize: 18 * scaleFactor, color: colors.text},
+                  bullet_list: {fontSize: 18, color: colors.text},
+                  heading3: {
+                    color: colors.text,
+                    fontSize: 20 * scaleFactor,
+                    marginTop: 30,
+                    fontWeight: 'bold',
+                    alignSelf: 'center',
+                    backgroundColor: colors.mainButton,
+                    borderRadius: 8,
+                    paddingLeft: 15,
+                    paddingRight: 15,
+                    padding: 2,
+                  },
+                  list_item: {marginVertical: 5},
+                }}>
+                {intro3}
+              </Markdown>
             </View>
             <View
               style={{
@@ -1306,7 +1363,7 @@ export const Module = ({ route }) => {
                   },
                 ]}
                 onPress={() => swiperRef.current.scrollBy(-1)}>
-                <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                <Text style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                   Tilbage
                 </Text>
               </TouchableOpacity>
@@ -1319,13 +1376,13 @@ export const Module = ({ route }) => {
                   },
                 ]}
                 onPress={() => swiperRef.current.scrollBy(1)}>
-                <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                <Text style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                   Næste
                 </Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView style={{flex: 1}}>
             <View>
               <Image
                 source={require('../../Assets/images/LearningQuiz.png')}
@@ -1337,7 +1394,7 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.takeawayHeader,
-                  { fontSize: 22 * scaleFactor, color: colors.text },
+                  {fontSize: 22 * scaleFactor, color: colors.text},
                 ]}>
                 Lad os tage en quiz for at hjælpe dig med at huske, hvad du har
                 lært!
@@ -1346,7 +1403,7 @@ export const Module = ({ route }) => {
                 key={module.id}
                 subject={subject}
                 module={module.get('name')}
-                style={{ color: colors.text }}
+                style={{color: colors.text}}
               />
               <View
                 style={{
@@ -1365,7 +1422,7 @@ export const Module = ({ route }) => {
                   ]}
                   onPress={() => swiperRef.current.scrollBy(-1)}>
                   <Text
-                    style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                    style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                     Tilbage
                   </Text>
                 </TouchableOpacity>
@@ -1379,15 +1436,15 @@ export const Module = ({ route }) => {
                   ]}
                   onPress={() => swiperRef.current.scrollBy(1)}>
                   <Text
-                    style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                    style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                     Næste
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
           </ScrollView>
-          <ScrollView style={{ flex: 1 }}>
-            <View style={{ alignItems: 'center' }}>
+          <ScrollView style={{flex: 1}}>
+            <View style={{alignItems: 'center'}}>
               <Image
                 source={require('../../Assets/images/LearningFourth.png')}
                 style={{
@@ -1414,7 +1471,7 @@ export const Module = ({ route }) => {
                   },
                 ]}
                 onPress={() => swiperRef.current.scrollBy(-1)}>
-                <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                <Text style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                   Tilbage
                 </Text>
               </TouchableOpacity>
@@ -1427,14 +1484,14 @@ export const Module = ({ route }) => {
                   },
                 ]}
                 onPress={() => swiperRef.current.scrollBy(1)}>
-                <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                <Text style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                   Næste
                 </Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
-          <ScrollView style={{ flex: 1 }}>
-            <View style={{ alignItems: 'center' }}>
+          <ScrollView style={{flex: 1}}>
+            <View style={{alignItems: 'center'}}>
               <Image
                 source={require('../../Assets/images/LearningFifth.png')}
                 style={{
@@ -1445,7 +1502,7 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.takeawayHeader,
-                  { fontSize: 22 * scaleFactor, color: colors.text },
+                  {fontSize: 22 * scaleFactor, color: colors.text},
                 ]}>
                 Her er der {keyPoints.length} takeaways fra dette modul
               </Text>
@@ -1463,11 +1520,11 @@ export const Module = ({ route }) => {
                     <Text
                       style={[
                         styles.takeawayHeader,
-                        { fontSize: 22 * scaleFactor, color: colors.text },
+                        {fontSize: 22 * scaleFactor, color: colors.text},
                       ]}>
                       Takeaway {index + 1}
                     </Text>
-                    <Text style={[styles.text, { color: colors.text }]}>{item}</Text>
+                    <Text style={styles.text}>{item}</Text>
                   </View>
                 );
               })}
@@ -1488,7 +1545,7 @@ export const Module = ({ route }) => {
                   },
                 ]}
                 onPress={() => swiperRef.current.scrollBy(-1)}>
-                <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                <Text style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                   Tilbage
                 </Text>
               </TouchableOpacity>
@@ -1501,14 +1558,14 @@ export const Module = ({ route }) => {
                   },
                 ]}
                 onPress={() => swiperRef.current.scrollBy(1)}>
-                <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                <Text style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                   Næste
                 </Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
           <ScrollView>
-            <View style={{ flex: 1, alignItems: 'center' }}>
+            <View style={{flex: 1, alignItems: 'center'}}>
               <Image
                 source={require('../../Assets/images/fireworks.png')}
                 style={{
@@ -1519,11 +1576,11 @@ export const Module = ({ route }) => {
               <Text
                 style={[
                   styles.takeawayHeader,
-                  { fontSize: 22 * scaleFactor, color: colors.text },
+                  {fontSize: 22 * scaleFactor, color: colors.text},
                 ]}>
                 Tillykke!{' '}
               </Text>
-              <Text style={[styles.text, { color: colors.text }]}>
+              <Text style={[styles.text, {color: colors.text}]}>
                 Du har færdiggjort et læringsmodul!
               </Text>
               <Text
@@ -1553,7 +1610,7 @@ export const Module = ({ route }) => {
                   ]}
                   onPress={() => swiperRef.current.scrollBy(-1)}>
                   <Text
-                    style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                    style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                     Tilbage
                   </Text>
                 </TouchableOpacity>
@@ -1567,7 +1624,7 @@ export const Module = ({ route }) => {
                   ]}
                   onPress={() => handleCompletion()}>
                   <Text
-                    style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+                    style={{fontSize: 20 * scaleFactor, color: colors.text}}>
                     Færdiggør modulet
                   </Text>
                 </TouchableOpacity>
@@ -1592,7 +1649,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     shadowColor: 'black',
     shadowOpacity: 0.5,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowRadius: 2,
   },
   keyTakeaways: {
@@ -1606,7 +1663,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     shadowColor: 'black',
     shadowOpacity: 0.5,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowRadius: 2,
   },
   takeawayHeader: {
@@ -1627,7 +1684,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     shadowColor: 'black',
     shadowOpacity: 0.5,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowRadius: 2,
   },
   text: {
@@ -1688,7 +1745,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     width: '88%',
-    textAlignVertical: 'top'
   },
   answerView: {
     marginBottom: 10,

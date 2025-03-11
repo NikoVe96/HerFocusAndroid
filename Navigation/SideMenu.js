@@ -14,6 +14,19 @@ import {
   faComments,
   faUsers,
   faRightFromBracket,
+  faClock,
+  faCalendarDay,
+  faClipboardCheck,
+  faCalendar,
+  faSpinner,
+  faPeopleRoof,
+  faHeart,
+  faPills,
+  faLightbulb,
+  faRectangleList,
+  faGear,
+  faLandmark,
+  faAddressCard,
 } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
 import AccordionItem from '../Components/AccordionItem';
@@ -45,7 +58,10 @@ import { useUser } from '../Components/UserContext';
 import Notebook from '../Pages/Structure components/Notebook';
 import Todos from '../Pages/Structure components/Todos';
 import FutureTodo from '../Pages/Structure components/FutureTodo';
+import Calendar from '../Pages/Structure components/Calendar';
 import CompletedModules from '../Pages/Learning components/CompletedModules';
+import Home from '../Pages/Homepage/Home';
+import Add from '../Pages/Structure components/Add';
 
 const Drawer = createDrawerNavigator();
 
@@ -73,8 +89,8 @@ function CustomDrawerContent({ navigation }) {
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
           onPress={() => navigation.navigate('Add routine')}>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faClock}
+            size={15}
             style={{ marginRight: 10 }}
             color={colors.text}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.text }}>
@@ -88,14 +104,31 @@ function CustomDrawerContent({ navigation }) {
           ]}></View>
         <TouchableOpacity
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
-          onPress={() => navigation.navigate('Add task')}>
+          onPress={() => navigation.navigate('Add event')}>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faCalendarDay}
+            size={15}
             style={{ marginRight: 10 }}
             color={colors.text}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.text }}>
-            Tilføj en ny opgave{' '}
+            Tilføj en ny begivenhed{' '}
+          </Text>
+        </TouchableOpacity>
+        <View
+          style={[
+            styles.divider,
+            { backgroundColor: colors.text, textColor: colors.text },
+          ]}></View>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
+          onPress={() => navigation.navigate('Add task')}>
+          <FontAwesomeIcon
+            icon={faClipboardCheck}
+            size={15}
+            style={{ marginRight: 10 }}
+            color={colors.text}></FontAwesomeIcon>
+          <Text style={{ fontSize: 18, color: colors.text }}>
+            Tilføj en ny todo{' '}
           </Text>
         </TouchableOpacity>
         <View
@@ -107,8 +140,8 @@ function CustomDrawerContent({ navigation }) {
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
           onPress={() => navigation.navigate('Calendar')}>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faCalendar}
+            size={15}
             color={colors.text}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.text }}>
@@ -124,8 +157,8 @@ function CustomDrawerContent({ navigation }) {
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
           onPress={() => navigation.navigate('Daily overview')}>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faSpinner}
+            size={15}
             color={colors.text}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.text }}>
@@ -147,8 +180,8 @@ function CustomDrawerContent({ navigation }) {
             })
           }>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faPeopleRoof}
+            size={15}
             color={colors.text}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.text }}>Familie </Text>
@@ -168,8 +201,8 @@ function CustomDrawerContent({ navigation }) {
             })
           }>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faHeart}
+            size={15}
             color={colors.text}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.text }}>Relationer </Text>
@@ -189,8 +222,8 @@ function CustomDrawerContent({ navigation }) {
             })
           }>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faPills}
+            size={15}
             color={colors.text}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.text }}>Medicin </Text>
@@ -210,8 +243,8 @@ function CustomDrawerContent({ navigation }) {
             })
           }>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faLightbulb}
+            size={15}
             color={colors.text}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.text }}>Gode tips </Text>
@@ -231,8 +264,8 @@ function CustomDrawerContent({ navigation }) {
             })
           }>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faRectangleList}
+            size={15}
             color={colors.text}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <View>
@@ -286,7 +319,7 @@ function CustomDrawerContent({ navigation }) {
           onPress={() => navigation.navigate('Settings')}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <FontAwesomeIcon
-              icon={faUser}
+              icon={faGear}
               size={20}
               color={colors.text}
               style={{ marginRight: 10 }}
@@ -305,8 +338,8 @@ function CustomDrawerContent({ navigation }) {
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
           onPress={() => navigation.navigate('App history')}>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faLandmark}
+            size={15}
             color={colors.text}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.text }}>
@@ -322,8 +355,8 @@ function CustomDrawerContent({ navigation }) {
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
           onPress={() => navigation.navigate('Contact information')}>
           <FontAwesomeIcon
-            icon={faCircle}
-            size={13}
+            icon={faAddressCard}
+            size={15}
             color={colors.text}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.text }}>Kontakt os</Text>
@@ -423,6 +456,9 @@ function SideMenu() {
         component={StructureFrontPage}></Drawer.Screen>
       <Drawer.Screen name="Add event" component={AddEvent}></Drawer.Screen>
       <Drawer.Screen name="Notebook" component={Notebook}></Drawer.Screen>
+      <Drawer.Screen name="Home" component={Home}></Drawer.Screen>
+      <Drawer.Screen name="Add" component={Add}></Drawer.Screen>
+      <Drawer.Screen name="CalendarTest" component={Calendar}></Drawer.Screen>
     </Drawer.Navigator>
   );
 }

@@ -143,6 +143,35 @@ export const PickSubject = () => {
               ]}></Image>
           </View>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.press}
+          onPress={() =>
+            navigation.navigate('Forum', {
+              forumTitle: 'Andet',
+              forumDescription:
+                'Her kan man skrive om alt det andet, som ikke falder ind under de andre emner.',
+            })
+          }>
+          <View
+            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            <Text
+              style={[
+                styles.text,
+                { color: colors.text, fontSize: 18 * scaleFactor },
+              ]}>
+              Andet
+            </Text>
+            <Image
+              source={require('../../Assets/images/learning_think.png')}
+              style={[
+                styles.images,
+                {
+                  width: 70 * scaleFactor,
+                  height: 70 * scaleFactor,
+                },
+              ]}></Image>
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

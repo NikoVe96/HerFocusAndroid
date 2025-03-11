@@ -9,12 +9,11 @@ export const TopNavigation = ({ navigation: { goBack } }) => {
   const navigation = useNavigation();
   const { colors } = useTheme();
 
-   const logoSource =
-     colors.border === '#533440' ||
-     colors.border === '#131227' ||
-     colors.border === '#000000'
-     ? require('../Assets/images/logo_simple_dark.png') 
-    : require('../Assets/images/logo_simple_light.png'); 
+  const logoSource =
+    colors.border === '#131227' ||
+      colors.border === '#000000'
+      ? require('../Assets/images/logo_simple_dark.png')
+      : require('../Assets/images/logo_simple_light.png');
 
   return (
     <View
@@ -30,8 +29,8 @@ export const TopNavigation = ({ navigation: { goBack } }) => {
       <TouchableOpacity onPress={() => goBack()}>
         <FontAwesomeIcon icon={faCircleLeft} size={25} color={colors.barText} />
       </TouchableOpacity>
-      <View style={{justifyContent: 'center'}}>
-        <Image source={logoSource} style={{width: 110, height: 30}} />
+      <View style={{ justifyContent: 'center' }}>
+        <Image source={logoSource} style={{ width: 110, height: 30 }} />
       </View>
       <TouchableOpacity onPress={() => navigation.openDrawer()}>
         <FontAwesomeIcon icon={faBars} size={25} color={colors.barText} />

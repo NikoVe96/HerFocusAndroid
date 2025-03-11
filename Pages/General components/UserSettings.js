@@ -210,15 +210,6 @@ export const UserSettings = ({ navigation }) => {
         </View>
         <View
           style={[styles.deleteView, { backgroundColor: colors.subButton }]}>
-          <Text
-            style={{
-              fontSize: 20 * scaleFactor,
-              flex: 1,
-              alignSelf: 'center',
-              color: colors.text,
-            }}>
-            Slet konto
-          </Text>
           <TouchableOpacity
             onPress={showModal}
             style={[styles.deleteBtn, { backgroundColor: colors.mainButton, borderColor: colors.mainButton }]}>
@@ -441,7 +432,9 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   deleteView: {
-    marginTop: 15,
+    marginVertical: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '90%',
     height: 90,
     borderRadius: 10,
@@ -461,7 +454,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
     elevation: 5,
     shadowColor: 'black',
     shadowOpacity: 0.5,

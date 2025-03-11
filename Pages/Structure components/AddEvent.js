@@ -11,6 +11,8 @@ import { useTheme } from "@react-navigation/native";
 import BottomNavigation from '../../Navigation/BottomNav';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import DatePicker from "react-native-date-picker";
+import { Picker } from '@react-native-picker/picker';
+import { format, addDays, addWeeks, addMonths, isBefore, isEqual } from 'date-fns';
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize('JgIXR8AGoB3f1NzklRf0k9IlIWLORS7EzWRsFIUb', 'NBIxAIeWCONMHjJRL96JpIFh9pRKzJgb6t4lQUJD');
@@ -26,6 +28,8 @@ export const AddEvent = () => {
   const [username, setUsername] = useState('');
   const [ID, setID] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
+  const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
   const [isStartTimePickerVisible, setStartTimePickerVisibility] = useState(false);
   const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState(false);
   const [recent, setRecent] = useState([]);
@@ -34,11 +38,17 @@ export const AddEvent = () => {
   const [eventColor, setEventColor] = useState('');
   const { colors } = useTheme();
   const [isAllDayEnabled, setIsAllDayEnabled] = useState(false);
+  const [isRecurringEnabled, setRecurringDayEnabled] = useState(false);
   const [dayEvent, setDayEvent] = useState(false);
   const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
   const [description, setDescription] = useState('');
   const today = new Date;
+  const [tStart, setTstart] = useState(null);
+  const [recurrence, setRecurrence] = useState('none');
+  const [interval, setInterval] = useState(1);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
 
   useEffect(() => {
@@ -54,13 +64,28 @@ export const AddEvent = () => {
     getCurrentUser();
   }, [username]);
 
-  async function newEvent() {
+  async function saveEvent() {
+    if (isRecurringEnabled) {
+      const recurringDates = generateRecurringDates();
+      for (const date of recurringDates) {
+        await newEvent(date);
+      }
+      Alert.alert('Dine begivenheder er blevet tilføjet til din kalender!')
+      clearInput();
+    } else {
+      await newEvent(eventDate);
+    }
+    Alert.alert('En ny begivenhed er blevet tilføjet til din kalender!')
+    clearInput();
+  }
+
+  async function newEvent(date) {
     try {
       const newEvent = new Parse.Object('Events');
       const currentUser = await Parse.User.currentAsync();
 
       newEvent.set('name', eventName);
-      newEvent.set('date', eventDate);
+      newEvent.set('date', date);
       newEvent.set('startTime', eventStartTime);
       newEvent.set('endTime', eventEndTime);
       newEvent.set('emoji', emoji);
@@ -69,16 +94,40 @@ export const AddEvent = () => {
       newEvent.set('type', 'event');
       newEvent.set('allDay', dayEvent);
       newEvent.set('description', description);
-      // If time, add recurring option
+      newEvent.set('tStart', tStart);
       await newEvent.save();
-      console.log('Success: event saved')
-      Alert.alert('En ny begivenhed er blevet tilføjet til din kalender!')
-      clearInput();
+      console.log('Success: event saved');
     } catch (error) {
       console.log('Error saving new event: ', error);
       Alert.alert('Hovsa!',
         'Det ser ud til at du har glemt at udfylde enten navn, farve, dato, start eller slut tidspunkt 😉')
     }
+  }
+
+  const generateRecurringDates = () => {
+    const dates = [];
+    let currentDate = startDate;
+    console.log('interval: ' + interval);
+
+    while (isBefore(currentDate, endDate) || isEqual(currentDate, endDate)) {
+      dates.push(format(currentDate, 'yyyy-MM-dd'));
+
+      switch (recurrence) {
+        case 'daily':
+          currentDate = addDays(currentDate, interval);
+          break;
+        case 'weekly':
+          currentDate = addWeeks(currentDate, interval);
+          break;
+        case 'monthly':
+          currentDate = addMonths(currentDate, interval);
+          break;
+        default:
+          break;
+      }
+    }
+
+    return dates;
   }
 
   const showDatePicker = () => {
@@ -117,7 +166,13 @@ export const AddEvent = () => {
 
     setStartTime(hours
       + ':' + minutes);
+    setTstart(date);
     hideStartTimePicker();
+  };
+
+  const dateDisplay = (date) => {
+    let month = date.getMonth() + 1;
+    return date.getDate() + '/' + month + '/' + date.getFullYear();
   };
 
   const showEndTimePicker = () => {
@@ -155,6 +210,10 @@ export const AddEvent = () => {
     setDescription('');
     setDayEvent(false);
     setIsAllDayEnabled(false);
+    setInterval();
+    setStartDate();
+    setEndDate();
+    setRecurringDayEnabled(false);
   }
 
   function showEmojiModal() {
@@ -245,7 +304,9 @@ export const AddEvent = () => {
                       ? 45 * scaleFactor
                       : 40 * scaleFactor,
                   backgroundColor: '#FAEDCB',
-                  borderColor: '#FAEDCB',
+                  borderColor: eventColor === '#FAEDCB'
+                    ? 'grey'
+                    : '#FAEDCB',
                   elevation: 5,
                   shadowColor: 'black',
                   shadowOpacity: 0.5,
@@ -269,7 +330,9 @@ export const AddEvent = () => {
                       ? 45 * scaleFactor
                       : 40 * scaleFactor,
                   backgroundColor: '#C9E4DE',
-                  borderColor: '#C9E4DE',
+                  borderColor: eventColor === '#C9E4DE'
+                    ? 'grey'
+                    : '#C9E4DE',
                   elevation: 5,
                   shadowColor: 'grey',
                   shadowOffset: { width: 1, height: 2 },
@@ -293,7 +356,9 @@ export const AddEvent = () => {
                       ? 45 * scaleFactor
                       : 40 * scaleFactor,
                   backgroundColor: '#C6DEF1',
-                  borderColor: '#C6DEF1',
+                  borderColor: eventColor === '#C6DEF1'
+                    ? 'grey'
+                    : '#C6DEF1',
                   elevation: 5,
                   shadowColor: 'black',
                   shadowOpacity: 0.5,
@@ -317,7 +382,9 @@ export const AddEvent = () => {
                       ? 45 * scaleFactor
                       : 40 * scaleFactor,
                   backgroundColor: '#DBCDF0',
-                  borderColor: '#DBCDF0',
+                  borderColor: eventColor === '#DBCDF0'
+                    ? 'grey'
+                    : '#DBCDF0',
                   elevation: 5,
                   shadowColor: 'black',
                   shadowOpacity: 0.5,
@@ -341,7 +408,9 @@ export const AddEvent = () => {
                       ? 45 * scaleFactor
                       : 40 * scaleFactor,
                   backgroundColor: '#FFADAD',
-                  borderColor: '#FFADAD',
+                  borderColor: eventColor === '#FFADAD'
+                    ? 'grey'
+                    : '#FFADAD',
                   elevation: 5,
                   shadowColor: 'black',
                   shadowOpacity: 0.5,
@@ -365,7 +434,9 @@ export const AddEvent = () => {
                       ? 45 * scaleFactor
                       : 40 * scaleFactor,
                   backgroundColor: '#FFD6A5',
-                  borderColor: '#FFD6A5',
+                  borderColor: eventColor === '#FFD6A5'
+                    ? 'grey'
+                    : '#FFD6A5',
                   elevation: 5,
                   shadowColor: 'black',
                   shadowOpacity: 0.5,
@@ -376,14 +447,20 @@ export const AddEvent = () => {
             </View>
           </View>
           <View
+            style={[
+              styles.border,
+              { backgroundColor: colors.border, borderColor: colors.border, marginBottom: '5%' },
+            ]}></View>
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
+              marginVertical: '2%'
             }}>
             <Text
               style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.text }}>
-              Hele dagen
+              Heldags begivenhed
             </Text>
             <Switch
               trackColor={{ false: colors.mainButton, true: colors.subButton }}
@@ -393,6 +470,30 @@ export const AddEvent = () => {
               value={isAllDayEnabled}
             />
           </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginVertical: '2%'
+            }}>
+            <Text
+              style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.text }}>
+              Tilbagevendene begivenhed
+            </Text>
+            <Switch
+              trackColor={{ false: colors.mainButton, true: colors.subButton }}
+              thumbColor={isRecurringEnabled ? colors.border : colors.background}
+              ios_backgroundColor={colors.mainButton}
+              onValueChange={() => setRecurringDayEnabled(previousState => !previousState)}
+              value={isRecurringEnabled}
+            />
+          </View>
+          <View
+            style={[
+              styles.border,
+              { backgroundColor: colors.border, borderColor: colors.border, marginTop: '5%' },
+            ]}></View>
           <View style={{ marginVertical: '4%', flexDirection: 'row' }}>
             <View style={styles.rowView}>
               <TouchableOpacity
@@ -481,14 +582,14 @@ export const AddEvent = () => {
                         borderColor: colors.subButton,
                       },
                     ]}
-                    onPress={showStartTimePicker}>
+                    onPress={() => setStartTimePickerVisibility(true)}>
                     <Text
                       style={[
                         styles.buttonText,
                         { fontSize: 20 * scaleFactor },
                         { color: colors.text },
                       ]}>
-                      Starttidspunkt
+                      Start tidspunkt
                     </Text>
                   </TouchableOpacity>
                   <DatePicker
@@ -499,6 +600,7 @@ export const AddEvent = () => {
                     onConfirm={(date) => {
                       setStartTimePickerVisibility(false)
                       handleStartTimeConfirm(date)
+                      setEndTimePickerVisibility(true)
                     }}
                     onCancel={() => {
                       setStartTimePickerVisibility(false)
@@ -544,6 +646,7 @@ export const AddEvent = () => {
                     onConfirm={(date) => {
                       setEndTimePickerVisibility(false)
                       handleEndTimeConfirm(date)
+                      setDatePickerVisibility(true)
                     }}
                     onCancel={() => {
                       setEndTimePickerVisibility(false)
@@ -563,52 +666,168 @@ export const AddEvent = () => {
               </View>
             </View>
           )}
-
-          <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
-            <View style={styles.rowView}>
-              <TouchableOpacity
-                style={[
-                  styles.buttonSmall,
-                  {
-                    backgroundColor: colors.subButton,
-                    borderColor: colors.subButton,
-                  },
-                ]}
-                onPress={showDatePicker}>
+          {isRecurringEnabled ?
+            <View>
+              <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                <View style={[styles.rowView, { alignItems: 'center', flex: 1, justifyContent: 'center' }]}>
+                  <Text style={styles.text}>Gentages hver: </Text>
+                </View>
+                <View style={[styles.rowView, { alignItems: 'center', alignSelf: 'center', flex: 0.5 }]}>
+                  <TextInput style={[styles.textInput, {}]} keyboardType="numeric" onChangeText={(interval) => setInterval(parseInt(interval))} />
+                </View>
+                <View style={[styles.rowView, { flex: 1, marginHorizontal: '2%' }]}>
+                  <Picker selectedValue={recurrence} onValueChange={(recurrence) => setRecurrence(recurrence)} style={[
+                    styles.buttonSmall,
+                    {
+                      backgroundColor: colors.subButton,
+                      borderColor: colors.subButton,
+                    },
+                  ]}>
+                    <Picker.Item label="Dag" value="daily" />
+                    <Picker.Item label="Uge" value="weekly" />
+                    <Picker.Item label="Måned" value="monthly" />
+                  </Picker>
+                </View>
+              </View>
+              <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                <View style={styles.rowView}>
+                  <TouchableOpacity
+                    style={[
+                      styles.buttonSmall,
+                      {
+                        backgroundColor: colors.subButton,
+                        borderColor: colors.subButton,
+                      },
+                    ]}
+                    onPress={() => setStartDatePickerVisibility(true)}>
+                    <Text
+                      style={[
+                        styles.buttonText,
+                        { fontSize: 20 * scaleFactor },
+                        { color: colors.text },
+                      ]}>
+                      Start dato
+                    </Text>
+                  </TouchableOpacity>
+                  <DatePicker
+                    mode="date"
+                    modal
+                    open={isStartDatePickerVisible}
+                    date={today}
+                    onConfirm={(date) => {
+                      setStartDate(date)
+                      setStartDatePickerVisibility(false)
+                      setEndDatePickerVisibility(true)
+                    }}
+                    onCancel={() => {
+                      setStartDatePickerVisibility(false)
+                    }}
+                  />
+                </View>
+                <View style={[styles.rowView, { alignItems: 'center' }]}>
+                  <Text
+                    style={[
+                      styles.text,
+                      { fontWeight: 'bold', fontSize: 18 * scaleFactor },
+                      { color: colors.text },
+                    ]}>
+                    {startDate == null ? null : dateDisplay(startDate)}
+                  </Text>
+                </View>
+              </View>
+              <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                <View style={styles.rowView}>
+                  <TouchableOpacity
+                    style={[
+                      styles.buttonSmall,
+                      {
+                        backgroundColor: colors.subButton,
+                        borderColor: colors.subButton,
+                      },
+                    ]}
+                    onPress={() => setEndDatePickerVisibility(true)}>
+                    <Text
+                      style={[
+                        styles.buttonText,
+                        { fontSize: 20 * scaleFactor },
+                        { color: colors.text },
+                      ]}>
+                      Slut dato
+                    </Text>
+                  </TouchableOpacity>
+                  <DatePicker
+                    mode="date"
+                    modal
+                    open={isEndDatePickerVisible}
+                    date={today}
+                    onConfirm={(date) => {
+                      setEndDate(date)
+                      setEndDatePickerVisibility(false)
+                    }}
+                    onCancel={() => {
+                      setEndDatePickerVisibility(false)
+                    }}
+                  />
+                </View>
+                <View style={[styles.rowView, { alignItems: 'center' }]}>
+                  <Text
+                    style={[
+                      styles.text,
+                      { fontWeight: 'bold', fontSize: 18 * scaleFactor },
+                      { color: colors.text },
+                    ]}>
+                    {endDate == null ? null : dateDisplay(endDate)}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            : <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+              <View style={styles.rowView}>
+                <TouchableOpacity
+                  style={[
+                    styles.buttonSmall,
+                    {
+                      backgroundColor: colors.subButton,
+                      borderColor: colors.subButton,
+                    },
+                  ]}
+                  onPress={() => showDatePicker}>
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      { fontSize: 20 * scaleFactor },
+                      { color: colors.text },
+                    ]}>
+                    Dato
+                  </Text>
+                </TouchableOpacity>
+                <DatePicker
+                  mode="date"
+                  modal
+                  open={isDatePickerVisible}
+                  date={today}
+                  onConfirm={(date) => {
+                    setDatePickerVisibility(false)
+                    handleDateConfirm(date)
+                  }}
+                  onCancel={() => {
+                    setDatePickerVisibility(false)
+                  }}
+                />
+              </View>
+              <View style={[styles.rowView, { alignItems: 'center' }]}>
                 <Text
                   style={[
-                    styles.buttonText,
-                    { fontSize: 20 * scaleFactor },
+                    styles.text,
+                    { fontWeight: 'bold', fontSize: 18 * scaleFactor },
                     { color: colors.text },
                   ]}>
-                  Dato
+                  {`${eventDate}`}
                 </Text>
-              </TouchableOpacity>
-              <DatePicker
-                mode="date"
-                modal
-                open={isDatePickerVisible}
-                date={today}
-                onConfirm={(date) => {
-                  setDatePickerVisibility(false)
-                  handleDateConfirm(date)
-                }}
-                onCancel={() => {
-                  setDatePickerVisibility(false)
-                }}
-              />
+              </View>
             </View>
-            <View style={[styles.rowView, { alignItems: 'center' }]}>
-              <Text
-                style={[
-                  styles.text,
-                  { fontWeight: 'bold', fontSize: 18 * scaleFactor },
-                  { color: colors.text },
-                ]}>
-                {`${eventDate}`}
-              </Text>
-            </View>
-          </View>
+          }
+
           <View
             style={{
               alignContent: 'center',
@@ -633,7 +852,7 @@ export const AddEvent = () => {
               borderColor: colors.mainButton,
             },
           ]}
-          onPress={newEvent}>
+          onPress={() => saveEvent()}>
           <Text
             style={{
               fontSize: 18 * scaleFactor,
