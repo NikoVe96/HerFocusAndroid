@@ -8,7 +8,8 @@ import {
   ScrollView,
   Image,
   Dimensions,
-  Button
+  Button,
+  Pressable
 } from 'react-native';
 import Parse from 'parse/react-native';
 import { useNavigation, useTheme } from '@react-navigation/native';
@@ -19,6 +20,7 @@ export const FrontPage = () => {
   const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
   const [username, setUsername] = useState('');
+  const [disabled, setDisabled] = useState(false)
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -39,6 +41,10 @@ export const FrontPage = () => {
     } catch (error) {
       console.log(`Error: ${error}`);
     }
+  }
+
+  function onPress() {
+    console.log('Button pressed');
   }
 
   return (
@@ -62,7 +68,7 @@ export const FrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Structure')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
             <Text
               style={[
                 styles.text,
@@ -85,7 +91,7 @@ export const FrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Pick module')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
             <Text
               style={[
                 styles.text,
@@ -109,7 +115,7 @@ export const FrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Pick subject')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonContainer, { backgroundColor: colors.subButton }]}>
             <Text
               style={[
                 styles.text,
@@ -132,7 +138,7 @@ export const FrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Pick topic')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
             <Text
               style={[
                 styles.text,
@@ -217,6 +223,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
+
   },
   press: {
     marginBottom: 15,
@@ -225,6 +232,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     marginRight: 20,
+  },
+  buttonContainer: {
+    borderWidth: 0.4,
+    width: '85%',
+    borderBottomWidth: 4,
+    alignSelf: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderColor: "#F8B52D",
+    borderRadius: 15,
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+    flexDirection: 'row'
+
   },
 });
 

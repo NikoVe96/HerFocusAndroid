@@ -4,6 +4,7 @@ import Parse from 'parse/react-native';
 import { DefaultTheme } from '@react-navigation/native';
 import { useUser } from '../../Components/UserContext';
 
+
 const ThemeContext = createContext();
 
 const themes = {
@@ -57,34 +58,38 @@ const themes = {
   },
   yellow: {
     ...DefaultTheme,
+    gradient: true, // flag to indicate this theme uses a gradient
+    gradientColors: ['#DC9B18', '#F9C459', '#FFF6ED', '#FFF6ED', '#FFF6ED', '#FFF6ED', '#FFF6ED'],
     colors: {
       ...DefaultTheme.colors,
       bars: '#DC9B18',
       background: '#FFF6ED',
-      text: 'black',
-      barText: 'black',
+      text: '#DC9B18',
+      barText: 'white',
       border: '#DC9B18',
       notification: '#FFEABF',
       iconLight: 'white',
       iconDark: 'black',
-      mainButton: '#F2C56B',
+      mainButton: '#DC9B18',
       subButton: '#FFEABF',
     },
   },
   green: {
     ...DefaultTheme,
+    gradient: true, // flag to indicate this theme uses a gradient
+    gradientColors: ['#427248', '#E6F6E8', '#E6F6E8'],
     colors: {
       ...DefaultTheme.colors,
       bars: '#69A046',
-      background: '#E7F7ED',
+      background: '#E6F6E8',
       text: 'black',
-      barText: 'black',
+      barText: 'white',
       border: '#69A046',
       notification: '#94C973',
       iconLight: 'white',
       iconDark: 'black',
-      mainButton: '#94C973',
-      subButton: '#C1E3B0',
+      mainButton: '#427248',
+      subButton: '#85C88D',
     },
   },
   blue: {

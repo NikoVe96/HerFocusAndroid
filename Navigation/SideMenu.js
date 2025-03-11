@@ -14,9 +14,6 @@ import {
   faComments,
   faUsers,
   faRightFromBracket,
-  faArrowRight,
-  faCaretRight,
-  faMinus,
   faClock,
   faCalendarDay,
   faClipboardCheck,
@@ -60,7 +57,10 @@ import IndividualPost from '../Pages/Forum/IndividualPost';
 import { useUser } from '../Components/UserContext';
 import Notebook from '../Pages/Structure components/Notebook';
 import FutureTodo from '../Pages/Structure components/FutureTodo';
+import Calendar from '../Pages/Structure components/Calendar';
 import CompletedModules from '../Pages/Learning components/CompletedModules';
+import Home from '../Pages/Homepage/Home';
+import Add from '../Pages/Structure components/Add';
 
 const Drawer = createDrawerNavigator();
 
@@ -454,6 +454,9 @@ function SideMenu() {
         component={StructureFrontPage}></Drawer.Screen>
       <Drawer.Screen name="Add event" component={AddEvent}></Drawer.Screen>
       <Drawer.Screen name="Notebook" component={Notebook}></Drawer.Screen>
+      <Drawer.Screen name="Home" component={Home}></Drawer.Screen>
+      <Drawer.Screen name="Add" component={Add}></Drawer.Screen>
+      <Drawer.Screen name="CalendarTest" component={Calendar}></Drawer.Screen>
     </Drawer.Navigator>
   );
 }
