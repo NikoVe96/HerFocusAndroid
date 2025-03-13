@@ -8,8 +8,6 @@ import {
   Alert,
   Dimensions,
   TextInput
-  Dimensions,
-  TextInput
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';

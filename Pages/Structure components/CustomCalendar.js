@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const CustomCalendar = ({
-    initialDate = new Date(),
     onDayPress,
     selectedDate,
     containerStyle,
@@ -12,14 +11,12 @@ const CustomCalendar = ({
     selectedDayStyle,
     selectedDayTextStyle,
 }) => {
-    const [currentDate, setCurrentDate] = useState(initialDate);
+    const today = new Date();
+    const [currentDate, setCurrentDate] = useState(today);
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
-
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-    const firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay();
-
+    const firstDayOfWeek = new Date(currentYear, currentMonth, 0).getDay();
     const calendarCells = [];
 
     for (let i = 0; i < firstDayOfWeek; i++) {
@@ -42,7 +39,7 @@ const CustomCalendar = ({
     };
 
     return (
-        <View style={[styles.container, containerStyle]}>
+        <View style={[styles.container]}>
             <View style={[styles.header, headerStyle]}>
                 <TouchableOpacity onPress={previousMonth}>
                     <Text style={styles.navButton}>{'<'}</Text>
@@ -55,7 +52,7 @@ const CustomCalendar = ({
                 </TouchableOpacity>
             </View>
             <View style={styles.dayNamesContainer}>
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((dayName, index) => (
+                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((dayName, index) => (
                     <Text key={index} style={styles.dayName}>
                         {dayName}
                     </Text>

@@ -1,147 +1,327 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { View, Text, SafeAreaView } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faStopwatch } from '@fortawesome/free-solid-svg-icons';
+import { faStopwatch, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { useFocusEffect, useTheme } from '@react-navigation/native';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { getDayEvents, getAllDayEvents } from './DayEvents';
+import { LightenDarkenColor } from './ColorChange';
+import Parse from 'parse/react-native';
 
 const TaskSorter = ({
-    dayTasksArray,
-    allDayArray,
-    completeTask,
-    colors,
-    LightenDarkenColor,
-    sorting,
+    date,
+    selectedWeekDays
 }) => {
-    // Example: sorting by time (tid). You can expand this to handle other sorting types.
-    if (sorting === 'tid') {
-        return (
-            <View>
-                {dayTasksArray.length === 0 && allDayArray.length === 0 ? (
-                    <View
-                        style={{
-                            marginHorizontal: 15,
-                            alignItems: 'center',
-                            marginVertical: '25%',
-                        }}
-                    >
-                        <Text style={{ textAlign: 'center', fontSize: 18 }}>
-                            Der er ingen opgaver eller begivenheder i din kalender i dag!
-                        </Text>
-                    </View>
-                ) : (
-                    <View>
-                        {/* Render all-day events */}
-                        {allDayArray.map((item, index) => (
-                            <View
-                                key={index}
-                                style={{
-                                    alignItems: 'center',
-                                    borderWidth: 1,
-                                    padding: 5,
-                                    marginVertical: 5,
-                                    marginHorizontal: 15,
-                                    flexDirection: 'row',
-                                    backgroundColor: item.get('color'),
-                                    borderRadius: 10,
-                                    borderColor: item.get('color'),
-                                }}
-                            >
-                                <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.text }}>
-                                    {item.get('emoji')}
-                                </Text>
-                                <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>
-                                    {item.get('name')}
-                                </Text>
+
+    const { colors } = useTheme();
+    const [open, setOpen] = useState(false);
+    const [sorting, setSorting] = useState('type');
+    const [sortingOptions, setSortingOptions] = useState([
+        { label: 'Tid', value: 'tid' },
+        { label: 'Type', value: 'type' }
+    ]);
+    const [allDayArray, setAllDayArray] = useState([]);
+    const [dayTasksArray, setDayTasksArray] = useState([]);
+    const [ID, setID] = useState('');
+    const [username, setUsername] = useState('');
+    const [tasksArray, setTasksArray] = useState([]);
+    const [eventsArray, setEventsArray] = useState([]);
+    const [routinesArray, setRoutinesArray] = useState([]);
+
+    useEffect(() => {
+        async function getCurrentUser() {
+            if (username === '') {
+                const currentUser = await Parse.User.currentAsync();
+                if (currentUser !== null) {
+                    setUsername(currentUser.getUsername());
+                    setID(currentUser.id);
+                }
+            }
+        }
+
+        getCurrentUser();
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            async function fetchEvents() {
+                console.log(date);
+                const formattedDate = formatDate(date);
+                if (!formattedDate) {
+                    console.error('Invalid date format:', date);
+                    return;
+                }
+                try {
+                    const dayEvents = await getDayEvents(formattedDate, ID);
+                    const allDayEvents = await getAllDayEvents(formattedDate, ID);
+                    setDayTasksArray(dayEvents);
+                    setAllDayArray(allDayEvents);
+                    setTasksArray(dayEvents.tasks);
+                    setEventsArray(dayEvents.events);
+                    setRoutinesArray(dayEvents.routines);
+                    console.log('Day tasks:', dayEvents);
+                    console.log('All day events:', allDayEvents);
+                } catch (error) {
+                    console.error('Error fetching events:', error);
+                }
+            }
+            fetchEvents();
+        }, [date, ID])
+    );
+
+    const formatDate = (date) => {
+        if (date instanceof Date && date.getFullYear) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        if (date.year && date.month && date.day) {
+            return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+        }
+        return '';
+    };
+
+
+
+    function sortEventView() {
+        if (sorting == 'tid') {
+            return (
+                <View>
+                    {
+                        dayTasksArray.length == 0 && allDayArray.length == 0 ?
+                            <View style={{ marginHorizontal: 15, alignItems: 'center', marginVertical: '25%' }}>
+                                <Text style={{ textAlign: 'center', fontSize: 18, }}>Der er ingen opgaver eller begivenheder i din kalender i dag!</Text>
                             </View>
-                        ))}
-                        {dayTasksArray.length === 0 ? null : (
-                            <View
-                                style={{
-                                    borderWidth: 1,
-                                    marginHorizontal: 15,
-                                    marginVertical: 20,
-                                    backgroundColor: colors.border,
-                                    width: 250,
-                                    alignSelf: 'center',
-                                    borderColor: colors.border,
-                                    borderRadius: 10,
-                                }}
-                            />
-                        )}
-                        {/* Render day tasks */}
-                        {dayTasksArray.map((item, index) => (
-                            <View key={index} style={{ flexDirection: 'row' }}>
-                                {item.get('type') === 'task' ? (
-                                    <BouncyCheckbox
-                                        size={30}
-                                        fillColor={colors.mainButton}
-                                        unfillColor={colors.mainButton}
-                                        iconStyle={{ elevation: 5 }}
-                                        innerIconStyle={{ borderWidth: 15, borderColor: item.get('color') }}
-                                        textStyle={{ fontFamily: 'JosefinSans-Regular' }}
-                                        onPress={() => completeTask(item)}
-                                        isChecked={item.get('completed')}
-                                        style={{ marginHorizontal: 10, flex: 0.5 }}
-                                    />
-                                ) : (
-                                    <View style={{ marginLeft: '11%' }} />
-                                )}
-                                {item.get('type') === 'routine' ? (
-                                    <View
-                                        style={{
-                                            flex: 1,
-                                            alignItems: 'center',
-                                            borderWidth: 1,
-                                            marginVertical: 5,
-                                            marginHorizontal: 15,
-                                            flexDirection: 'row',
-                                            backgroundColor: item.get('color'),
-                                            borderRadius: 10,
-                                            borderColor: item.get('color'),
-                                            elevation: 5,
-                                        }}
-                                    >
-                                        {/* You could also extract your AccordionItem as a separate component */}
-                                        <Text style={{ fontSize: 18, color: colors.text }}>{item.get('name')}</Text>
-                                    </View>
-                                ) : (
-                                    <View
-                                        style={{
-                                            flex: 7,
-                                            padding: '3%',
-                                            borderWidth: 1,
-                                            marginVertical: 5,
-                                            marginHorizontal: 15,
-                                            backgroundColor: item.get('color'),
-                                            borderRadius: 10,
-                                            borderColor: item.get('color'),
-                                            elevation: 5,
-                                            flexDirection: 'row',
-                                        }}
-                                    >
-                                        <Text style={{ fontSize: 22, marginRight: 10, color: colors.text }}>
-                                            {item.get('emoji')}
-                                        </Text>
-                                        <View>
-                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>
-                                                {item.get('name')}
-                                            </Text>
-                                            <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.text }}>
-                                                {item.get('startTime')} - {item.get('endTime')}
-                                            </Text>
+                            :
+                            <View>
+                                <View>
+                                    {allDayArray.map((item, index) => (
+                                        <View key={index} style={{ alignItems: 'center', borderWidth: 1, padding: 5, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), }}>
+                                            <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.text }}>{item.get('emoji')}</Text>
+                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{item.get('name')}</Text>
                                         </View>
-                                    </View>
-                                )}
+                                    ))}
+                                    {dayTasksArray.length == 0 ?
+                                        null
+                                        : <View style={{ borderWidth: 1, marginHorizontal: 15, marginVertical: 20, backgroundColor: colors.border, width: 250, alignSelf: 'center', borderColor: colors.border, borderRadius: 10 }}></View>
+                                    }
+                                </View>
+                                <View style={{ marginBottom: '5%' }}>
+                                    {dayTasksArray.map((item, index) => (
+                                        <View key={index} style={{ flexDirection: 'row' }}>
+                                            {item.get('type') == 'task' ?
+                                                <BouncyCheckbox
+                                                    size={30}
+                                                    fillColor={colors.mainButton}
+                                                    unfillColor={colors.mainButton}
+                                                    iconStyle={{ elevation: 5, }}
+                                                    innerIconStyle={{ borderWidth: 15, borderColor: item.get('color') }}
+                                                    textStyle={{ fontFamily: "JosefinSans-Regular" }}
+                                                    onPress={() => { completeTask(item) }}
+                                                    isChecked={item.get('completed')}
+                                                    style={{ marginHorizontal: 10, flex: 0.5 }}
+                                                />
+                                                : <View style={{ marginLeft: '11%' }} />
+                                            }
+                                            {item.get('type') == 'routine' ?
+                                                <View style={{ flex: 1, alignItems: 'center', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5 }}>
+                                                    <AccordionItem
+                                                        title={item.get('name')}
+                                                        time={item.get('startTime') + ' - ' + item.get('endTime')}
+                                                        icon={null}
+                                                        emoji={item.get('emoji')}
+                                                        titleStyle={{ fontSize: 18, color: 'black', fontWeight: 'normal' }}
+                                                        emojiStyle={{ fontSize: 22 }}
+                                                        toggleStyle={'black'}>
+                                                        {item.get('routineSteps').map((step, index) => (
+                                                            <View key={index} style={{ flexDirection: 'row' }}>
+                                                                <View style={{ justifyContent: 'center' }}>
+                                                                    <BouncyCheckbox
+                                                                        size={30}
+                                                                        fillColor={colors.mainButton}
+                                                                        unfillColor={colors.mainButton}
+                                                                        iconStyle={{ elevation: 5, }}
+                                                                        innerIconStyle={{ borderWidth: 15, borderColor: LightenDarkenColor(item.get('color'), -30) }}
+                                                                        textStyle={{ fontFamily: "JosefinSans-Regular" }}
+                                                                        onPress={() => { }}
+                                                                        style={{ flex: 0.5 }}
+                                                                    />
+                                                                </View>
+                                                                <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: LightenDarkenColor(item.get('color'), -30), borderColor: LightenDarkenColor(item.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
+                                                                    <View style={{ justifyContent: 'center' }}>
+                                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{step.stepName}</Text>
+                                                                    </View>
+                                                                    {step.stepTime !== '' ?
+                                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                                            <FontAwesomeIcon icon={faStopwatch} style={{ marginHorizontal: 5 }} size={20} color={'white'} />
+                                                                            <Text style={{ fontSize: 18, color: colors.text }}>{step.stepTime}</Text>
+                                                                        </View>
+                                                                        : null}
+                                                                </View>
+                                                            </View>
+                                                        ))}
+                                                    </AccordionItem>
+                                                </View>
+                                                : <View style={{ flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5, flexDirection: 'row' }}>
+                                                    <Text style={{ fontSize: 22, marginRight: 10, color: colors.text }}>{item.get('emoji')}</Text>
+                                                    <View>
+                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{item.get('name')}</Text>
+                                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.text }}>{item.get('startTime')} - {item.get('endTime')}</Text>
+                                                    </View>
+                                                </View>
+                                            }
+                                        </View>
+                                    ))}
+                                </View>
                             </View>
-                        ))}
-                    </View>
-                )}
-            </View>
-        );
-    } else {
-        // Add alternative sorting view if needed.
-        return <View>{/* Alternative sorted view here */}</View>;
+                    }
+                </View>
+            );
+        } else {
+            return (
+                <View>
+                    {
+                        dayTasksArray.length == 0 && allDayArray.length == 0 ?
+                            <View style={{ marginHorizontal: 15, alignItems: 'center', marginVertical: '25%' }}>
+                                <Text style={{ textAlign: 'center', fontSize: 18 }}>Der er ingen opgaver eller begivenheder i din kalender i dag!</Text>
+                            </View>
+                            :
+                            <View>
+                                <View>
+                                    {allDayArray.map((item, index) => (
+                                        <View key={index} style={{ alignItems: 'center', borderWidth: 1, padding: 5, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), }}>
+                                            <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.text }}>{item.get('emoji')}</Text>
+                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{item.get('name')}</Text>
+                                        </View>
+                                    ))}
+                                </View>
+                                {tasksArray.length == 0 ?
+                                    null
+                                    : <View>
+                                        <View style={{ borderWidth: 1, marginHorizontal: 15, marginVertical: '2%', backgroundColor: colors.border, width: 250, alignSelf: 'center', borderColor: colors.border, borderRadius: 10 }}></View>
+                                        <Text style={{ fontSize: 16, marginLeft: '2%', textAlign: 'center', marginTop: '5%' }}>To-do's</Text>
+                                        {tasksArray.map((item, index) => (
+                                            <View key={index} style={{ flexDirection: 'row', marginBottom: '5%' }}>
+                                                <BouncyCheckbox
+                                                    size={30}
+                                                    fillColor={colors.mainButton}
+                                                    unfillColor={colors.mainButton}
+                                                    iconStyle={{ elevation: 5, }}
+                                                    innerIconStyle={{ borderWidth: 15, borderColor: item.get('color') }}
+                                                    textStyle={{ fontFamily: "JosefinSans-Regular" }}
+                                                    onPress={() => { completeTask(item) }}
+                                                    isChecked={item.get('completed')}
+                                                    style={{ marginHorizontal: 10, flex: 0.5 }}
+                                                />
+                                                <View style={{ flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5, flexDirection: 'row' }}>
+                                                    <Text style={{ fontSize: 22, marginRight: 10, color: colors.text }}>{item.get('emoji')}</Text>
+                                                    <View>
+                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{item.get('name')}</Text>
+                                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.text }}>{item.get('startTime')} - {item.get('endTime')}</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        ))}
+                                    </View>
+                                }
+                                {eventsArray.length == 0 ?
+                                    null
+                                    : <View>
+                                        <Text style={{ fontSize: 16, marginLeft: '2%', textAlign: 'center', marginTop: '5%' }}>Begivenheder</Text>
+                                        {eventsArray.map((item, index) => (
+                                            <View key={index}
+                                                style={{ marginLeft: '15%', flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5, flexDirection: 'row' }}>
+                                                <Text style={{ fontSize: 22, marginRight: 10, color: colors.text }}>{item.get('emoji')}</Text>
+                                                <View>
+                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{item.get('name')}</Text>
+                                                    <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.text }}>{item.get('startTime')} - {item.get('endTime')}</Text>
+                                                </View>
+                                            </View>
+                                        ))}
+                                    </View>
+                                }
+                                {routinesArray.length == 0 ?
+                                    null
+                                    : <View>
+                                        <Text style={{ fontSize: 16, marginLeft: '2%', textAlign: 'center', marginTop: '5%' }}>Rutiner</Text>
+                                        {routinesArray.map((item, index) => (
+                                            <View key={index}
+                                                style={{ marginLeft: '15%', flex: 1, alignItems: 'center', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5 }}>
+                                                <AccordionItem
+                                                    title={item.get('name')}
+                                                    time={item.get('startTime') + ' - ' + item.get('endTime')}
+                                                    icon={null}
+                                                    emoji={item.get('emoji')}
+                                                    titleStyle={{ fontSize: 18, color: 'black', fontWeight: 'normal' }}
+                                                    emojiStyle={{ fontSize: 22 }}
+                                                    toggleStyle={'black'}>
+                                                    {item.get('routineSteps').map((step, index) => (
+                                                        <View key={index} style={{ flexDirection: 'row', }}>
+                                                            <View style={{ justifyContent: 'center' }}>
+                                                                <BouncyCheckbox
+                                                                    size={40}
+                                                                    fillColor={LightenDarkenColor(item.get('color'), -30)}
+                                                                    unfillColor={colors.mainButton}
+                                                                    iconStyle={{ elevation: 5, }}
+                                                                    innerIconStyle={{ borderWidth: 20, borderColor: LightenDarkenColor(item.get('color'), -30) }}
+                                                                    textStyle={{ fontFamily: "JosefinSans-Regular" }}
+                                                                    style={{ flex: 0.5 }}
+                                                                />
+                                                            </View>
+                                                            <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: LightenDarkenColor(item.get('color'), -30), borderColor: LightenDarkenColor(item.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
+                                                                <View style={{ justifyContent: 'center' }}>
+                                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{step.stepName}</Text>
+                                                                </View>
+                                                                {step.stepTime !== '' ?
+                                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                                        <FontAwesomeIcon icon={faStopwatch} style={{ marginHorizontal: 5 }} size={20} color={'white'} />
+                                                                        <Text style={{ fontSize: 18, color: colors.text }}>{step.stepTime}</Text>
+                                                                    </View>
+                                                                    : <Text></Text>}
+                                                            </View>
+                                                        </View>
+                                                    ))}
+                                                </AccordionItem>
+                                            </View>
+                                        ))}
+                                    </View>}
+                            </View>
+                    }
+                </View>
+            );
+        }
     }
-};
+
+    return (
+        <SafeAreaView style={{ marginHorizontal: '5%', marginBottom: '20%' }}>
+            <View style={{ alignItems: 'center', marginVertical: 10, flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10 }}>
+                <View style={{ flex: 6, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Text style={{ fontSize: 24, color: colors.bars, flex: 6, marginLeft: '5%' }}>Dagens planer</Text>
+                    <DropDownPicker
+                        open={open}
+                        value={sorting}
+                        items={sortingOptions}
+                        setOpen={setOpen}
+                        setValue={setSorting}
+                        setItems={setSortingOptions}
+                        placeholder={
+                            <FontAwesomeIcon icon={faFilter} size={20} color={colors.bars} />}
+                        style={{ width: '100%', borderColor: colors.border, elevation: 5 }}
+                        containerStyle={{
+                            width: '30%',
+                        }}
+                        textStyle={{ fontSize: 14 }}
+                    />
+                </View>
+            </View>
+            <View >
+                {sortEventView()}
+            </View>
+        </SafeAreaView>
+    );
+}
+
 
 export default TaskSorter;
