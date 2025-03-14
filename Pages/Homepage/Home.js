@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DailyOverview from "./Widgets/DailyOverviewW";
 import Mood from "./Widgets/MoodW";
 import { useNavigation, useTheme } from '@react-navigation/native';
@@ -19,38 +19,22 @@ function Home() {
     ]);
 
     return (
-        <View style={{ flex: 1, }}>
-            <Text style={styles.header}>
-                Hej Niko!
-            </Text>
-            <Text style={styles.text}>
-                Hvordan har du det i dag?
-                Er du klar til at tackle dagen?
-            </Text>
-            <View style={styles.divider} />
-            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'flex-end', bottom: '3%', justifyContent: 'flex-end', right: '2%' }}>
-                <DropDownPicker
-                    open={open}
-                    value={sorting}
-                    items={sortingOptions}
-                    setOpen={setOpen}
-                    setValue={setSorting}
-                    setItems={setSortingOptions}
-                    placeholder={
-                        <FontAwesomeIcon icon={faFilter} size={10} color={colors.bars} />}
-                    style={{ borderColor: colors.border, elevation: 5, right: '30%' }}
-                    containerStyle={{
-                        width: '25%',
-                    }}
-                    textStyle={{ fontSize: 14 }}
-                />
-                <TouchableOpacity>
+        <SafeAreaView>
+            <ScrollView>
+
+                <Text style={styles.header}>
+                    Hej Niko!
+                </Text>
+                <Text style={styles.text}>
+                    Hvordan har du det i dag?
+                    Er du klar til at tackle dagen?
+                </Text>
+                <View style={styles.divider} />
+                <TouchableOpacity style={{ alignSelf: 'flex-end', marginRight: '5%', marginBottom: '5%' }}>
                     <FontAwesomeIcon
                         icon={faGear} size={25} />
                 </TouchableOpacity>
-            </View>
-            <View>
-                <View style={styles.row}>
+                <View>
                     <TouchableOpacity style={styles.widget}>
                         <DailyOverview />
                     </TouchableOpacity>
@@ -58,8 +42,8 @@ function Home() {
                         <Mood />
                     </TouchableOpacity>
                 </View>
-            </View>
-        </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 
 }
@@ -94,5 +78,6 @@ const styles = StyleSheet.create({
     widget: {
         flex: 1,
         marginHorizontal: '1%',
+        padding: '2%'
     }
 })

@@ -17,7 +17,7 @@ export const BottomNavigation = () => {
   return (
     <View style={[styles.container, { backgroundColor: colors.mainButton }]}>
       <TouchableOpacity style={styles.Button}
-        onPress={() => navigation.navigate('CalendarTest')}>
+        onPress={() => navigation.navigate('Home')}>
         <FontAwesomeIcon icon={faHouse} size={30} color={colors.text} />
         <Text style={{ fontSize: 13, color: 'white' }}>Hjem</Text>
       </TouchableOpacity>
