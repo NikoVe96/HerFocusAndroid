@@ -77,16 +77,13 @@ const moduleSubjects = [
 
 function CustomDrawerContent({ navigation }) {
   const { colors } = useTheme();
-  const { handleLogout } = useUser();
+  const { handleLogout, profilePicture, username } = useUser();
 
   return (
     <DrawerContentScrollView style={{ backgroundColor: colors.background }}>
       <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-        <Image
-          source={require('../Assets/images/butterfly_light-removebg-preview.png')}
-          style={{ width: 70, height: 70, alignSelf: 'center', marginTop: '2%' }}
-        />
-        <Text style={{ alignSelf: 'center', fontSize: 26, fontWeight: 'bold', marginTop: '2%' }}>Niko</Text>
+        {profilePicture && <Image source={{ uri: profilePicture.url() }} style={{ width: 70, height: 70, alignSelf: 'center', marginTop: '2%' }} />}
+        <Text style={{ alignSelf: 'center', fontSize: 26, fontWeight: 'bold', marginTop: '2%' }}>{username}</Text>
         <View
           style={{
             borderWidth: 1,
