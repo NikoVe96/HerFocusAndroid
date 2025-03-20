@@ -12,6 +12,9 @@ import { useTheme } from '@react-navigation/native';
 import WeeklyCalendar from './WeeklyCalendar';
 import TaskSorter from './TaskSorter';
 import CustomCalendar from './CustomCalendar';
+import WeeklyTaskView from './WeeklyTaskView';
+import { weekdays } from 'moment';
+import { useUser } from '../../Components/UserContext';
 
 const CalendarOverview = ({ navigation }) => {
 
@@ -20,9 +23,8 @@ const CalendarOverview = ({ navigation }) => {
     const { width, height } = Dimensions.get('window');
     const scaleFactor = Math.min(width / 375, height / 667);
     const [enabled, setEnabled] = useState('daily');
-    const [marked, setMarked] = useState({});
     const [chosenDate, setChosenDate] = useState(today);
-    const [ID, setID] = useState('');
+    const { ID } = useUser();
     const [selectedWeekDates, setSelectedWeekDates] = useState([]);
 
     const calendarLayout = () => {
@@ -30,22 +32,28 @@ const CalendarOverview = ({ navigation }) => {
             return (
                 <View>
                     <CustomCalendar
+                        selectedDate={chosenDate}
+                        onDayPress={handleSelectedDay}
                     />
                     <TaskSorter
-                        date={today}
+                        date={chosenDate}
                     />
                 </View>
             );
         } else if (enabled === 'weekly') {
             return (
-                <WeeklyCalendar
-                    onWeekChange={handleWeekChange} />
+                <View>
+                    <WeeklyCalendar
+                        onWeekChange={handleWeekChange} />
+                    <WeeklyTaskView
+                        weekDates={selectedWeekDates}
+                        userID={ID} />
+                </View>
             );
         } else if (enabled == 'daily') {
             return (
                 <TaskSorter
                     date={today}
-                    selectedWeekDays={selectedWeekDates}
                 />
             );
         }
@@ -53,6 +61,10 @@ const CalendarOverview = ({ navigation }) => {
 
     const handleWeekChange = (weekDates) => {
         setSelectedWeekDates(weekDates);
+    };
+
+    const handleSelectedDay = (date) => {
+        setChosenDate(date);
     };
 
     return (

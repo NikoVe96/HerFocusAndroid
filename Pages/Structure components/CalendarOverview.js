@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo, useContext, useCallback } from 'react';
 import { Text, View, TouchableOpacity, SafeAreaView, ScrollView, StyleSheet, Dimensions } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Parse from 'parse/react-native';
 import { Calendar, LocaleConfig, CalendarContext } from 'react-native-calendars';
 import Modal from "react-native-modal";
@@ -530,6 +529,7 @@ export const CalendarOverview = ({ navigation }) => {
             }}
             markedDates={marked}
             calendarHeight={500}
+            ID={ID}
           >
           </Calendar>
         </View>
