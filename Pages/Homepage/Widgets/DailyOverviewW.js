@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 import { useTheme } from '@react-navigation/native';
 import TaskProgress from "../../Structure components/TaskProgress";
 
-function DailyOverview() {
+function DailyOverviewW() {
 
     const { colors } = useTheme();
 
@@ -17,4 +17,4 @@ function DailyOverview() {
 
 }
 
-export default DailyOverview;
+export default DailyOverviewW;
