@@ -4,7 +4,7 @@ import {
 } from '@react-navigation/drawer';
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Image } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
   faListCheck,
@@ -77,10 +77,24 @@ const moduleSubjects = [
 
 function CustomDrawerContent({ navigation }) {
   const { colors } = useTheme();
-  const { handleLogout } = useUser();
+  const { handleLogout, profilePicture, username } = useUser();
 
   return (
     <DrawerContentScrollView style={{ backgroundColor: colors.background }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+        {profilePicture && <Image source={{ uri: profilePicture.url() }} style={{ width: 70, height: 70, alignSelf: 'center', marginTop: '2%' }} />}
+        <Text style={{ alignSelf: 'center', fontSize: 26, fontWeight: 'bold', marginTop: '2%' }}>{username}</Text>
+        <View
+          style={{
+            borderWidth: 1,
+            marginHorizontal: 15,
+            marginBottom: 20,
+            backgroundColor: colors.border,
+            borderRadius: 10,
+            borderColor: colors.border,
+            marginTop: '5%'
+          }}></View>
+      </TouchableOpacity>
       <AccordionItem
         title="Planlægning"
         icon={faListCheck}
@@ -292,23 +306,6 @@ function CustomDrawerContent({ navigation }) {
             />
             <Text style={[styles.accordTitle, { color: colors.text }]}>
               Vidensbank
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.accordContainer}>
-        <TouchableOpacity
-          style={styles.accordHeader}
-          onPress={() => navigation.navigate('Profile')}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <FontAwesomeIcon
-              icon={faUser}
-              size={20}
-              color={colors.text}
-              style={{ marginRight: 10 }}
-            />
-            <Text style={[styles.accordTitle, { color: colors.text }]}>
-              Profil
             </Text>
           </View>
         </TouchableOpacity>

@@ -5,7 +5,10 @@ import {
   View,
   ScrollView,
   Image,
-  Dimensions
+  Dimensions,
+  TouchableOpacity,
+  Modal,
+  FlatList
 } from 'react-native';
 import Parse from 'parse/react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -14,19 +17,20 @@ import {
   faEnvelope,
   faImage,
 } from '@fortawesome/free-solid-svg-icons';
-import PickAvatar from './PickAvatar';
-import getAvatarImage from './AvatarUtils';
 import { useTheme } from '@react-navigation/native';
 import { useUser } from '../../Components/UserContext';
 import { useFocusEffect } from '@react-navigation/native';
+import SelectAvatar from './SelectAvatar';
 
 
 export const Profile = () => {
-  let [avatar, setAvatar] = useState('');
   const { colors } = useTheme();
-  const { username, name, email, updateUserProfile } = useUser();
+  const { username, name, email, updateUserProfile, ID } = useUser();
   const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
+  const [profilePicture, setProfilePicture] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [newAvatar, setNewAvatar] = useState();
 
   useFocusEffect(
     useCallback(() => {
@@ -39,23 +43,30 @@ export const Profile = () => {
     async function getCurrentUser() {
       const currentUser = await Parse.User.currentAsync();
       if (currentUser !== null) {
-        setAvatar(currentUser.get('avatar'));
+        setProfilePicture(currentUser.get('profilePicture'));
+        console.log('Profile picture: ' + profilePicture.url());
       }
     }
     getCurrentUser();
   }, [username]);
 
-  const handleAvatarSelect = selectedAvatar => {
-    setAvatar(selectedAvatar);
+  const handleAvatarSelect = (avatar) => {
+    setNewAvatar(avatar);
+    setModalVisible(false);
+    console.log(newAvatar);
   };
 
-  const avatarImageSource = getAvatarImage(avatar);
+  async function save() {
+    const currentUser = await Parse.User.currentAsync();
+    currentUser.set('profilePicture', newAvatar)
+    console.log('New profile picture has been set');
+  }
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.userNameContainer}>
-          <Image source={avatarImageSource} style={styles.avatarImage} />
+          {profilePicture && <Image source={{ uri: profilePicture.url() }} style={styles.avatarImage} />}
           <Text
             style={[
               styles.user,
@@ -110,25 +121,30 @@ export const Profile = () => {
             styles.seperator,
             { backgroundColor: colors.mainButton },
           ]}></View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <FontAwesomeIcon
-            icon={faImage}
-            style={[styles.icons, { color: colors.text }]}
-            size={20}
-          />
-          <Text
-            style={[
-              styles.userInfo,
-              { color: colors.text, fontSize: 18 * scaleFactor },
-            ]}>
-            Skift avatar
+        <TouchableOpacity style={{ padding: '5%', backgroundColor: 'white', marginHorizontal: '5%', marginBottom: '10%' }}
+          onPress={() => setModalVisible(true)}>
+          <Text>
+            Change profile picture
           </Text>
-        </View>
-        <View style={styles.changeAvatar}>
-          <PickAvatar
-            onAvatarSelect={handleAvatarSelect}
-            picked={avatar}></PickAvatar>
-        </View>
+        </TouchableOpacity>
+        <Modal
+          visible={modalVisible}
+          transparent={true}
+          animationType='slide'
+          backdropColor='black'
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <SelectAvatar
+                onSelect={handleAvatarSelect} />
+            </View>
+          </View>
+        </Modal>
+        <TouchableOpacity style={{ backgroundColor: 'white', padding: '5%', marginHorizontal: '5%' }}
+          onPress={() => save()}>
+          <Text>Gem</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -144,8 +160,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   avatarImage: {
-    width: 80,
-    height: 80,
+    width: 130,
+    height: 130,
   },
   user: {
     marginTop: 20,
@@ -175,6 +191,29 @@ const styles = StyleSheet.create({
   },
   changeAvatar: {
     marginLeft: 10,
+    marginBottom: '5%'
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgb(0, 0, 0, 0.9)',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: '2%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    height: '80%'
   },
 });
 

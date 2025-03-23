@@ -8,12 +8,9 @@ export const UserProvider = ({ children }) => {
   const currentDate = today.toISOString().slice(0, 10);
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
-  const [avatar, setAvatar] = useState('');
+  const [profilePicture, setProfilePicture] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [taskProgress, setTaskProgress] = useState(0);
-  const [remainingTasks, setRemainingTasks] = useState([]);
-  const [completedTasks, setCompletedTasks] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [ID, setID] = useState('');
 
@@ -33,7 +30,7 @@ export const UserProvider = ({ children }) => {
     checkUser();
   }, []);
 
-  const handleSignup = async (name, username, email, password, confirmPassword, navigation, avatar) => {
+  const handleSignup = async (name, username, email, password, confirmPassword, navigation, profilePicture) => {
     setError('');
     const lowerCaseEmail = email.toLowerCase();
     const userNameExist = new Parse.Query('User');
@@ -55,7 +52,7 @@ export const UserProvider = ({ children }) => {
     user.set('username', username);
     user.set('email', lowerCaseEmail);
     user.set('password', password);
-    user.set('avatar', avatar);
+    user.set('profilePicture', profilePicture);
 
     const userSettings = new Parse.Object('Settings');
     userSettings.set('theme', 'yellow');
@@ -114,50 +111,17 @@ export const UserProvider = ({ children }) => {
     const currentUser = await Parse.User.currentAsync();
     if (currentUser) {
       setUsername(currentUser.get('username'));
-      setAvatar(currentUser.get('avatar'));
+      setProfilePicture(currentUser.get('profilePicture'));
       setEmail(currentUser.get('email'));
       setName(currentUser.get('name'));
     }
   };
 
-  const updateTaskProgress = async () => {
-    const completed = await getCompletedTasks();
-    const remaining = await getRemainingTasks();
-    const totalTasks = remainingTasks.length + completedTasks.length;
-    const completedPercentage = totalTasks > 0 ? (completedTasks.length / totalTasks * 100).toFixed(0) : 0;
-    setTaskProgress(completedPercentage);
-  };
-
-  const getRemainingTasks = async () => {
-    const currentUser = Parse.User.current();
-    let TaskQuery = new Parse.Query('Task');
-    TaskQuery.contains('user', currentUser.id);
-    TaskQuery.contains('date', currentDate);
-    TaskQuery.equalTo('completed', false);
-    TaskQuery.notEqualTo('futureTask', true);
-    TaskQuery.ascending('startTime');
-    let Results = await TaskQuery.find();
-    setRemainingTasks(Results);
-    return Results;
-  };
-
-  const getCompletedTasks = async () => {
-    const currentUser = Parse.User.current();
-    let TaskQuery = new Parse.Query('Task');
-    TaskQuery.contains('user', currentUser.id);
-    TaskQuery.contains('date', currentDate);
-    TaskQuery.equalTo('completed', true);
-    TaskQuery.ascending('startTime');
-    let Results = await TaskQuery.find();
-    setCompletedTasks(Results);
-    return Results;
-  };
-
   return (
     <UserContext.Provider
       value={{
-        username, email, name, error, avatar, taskProgress, remainingTasks, completedTasks, isLoggedIn, ID,
-        updateUserProfile, handleLogin, handleLogout, handleSignup, updateTaskProgress, getRemainingTasks, getCompletedTasks
+        username, email, name, error, profilePicture, isLoggedIn, ID,
+        updateUserProfile, handleLogin, handleLogout, handleSignup
       }}>
       {children}
     </UserContext.Provider>
