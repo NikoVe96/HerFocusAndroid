@@ -101,9 +101,9 @@ export const DailyOverview = () => {
   }
 
   const updateTaskProgress = async function () {
-    const completed = await completedTasks(); // Fetch new completed tasks
-    const remaining = await remainingTasks(); // Fetch new remaining tasks
-    taskPercentage(completed, remaining); // Recalculate progress
+    const completed = await completedTasks();
+    const remaining = await remainingTasks();
+    taskPercentage(completed, remaining);
   }
 
   async function remainingTasks() {

@@ -1,65 +1,116 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import DailyOverview from "./Widgets/DailyOverviewW";
-import Mood from "./Widgets/MoodW";
-import { useNavigation, useTheme } from '@react-navigation/native';
+import React, { useState, useCallback } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useNavigation, useTheme, useFocusEffect } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faFilter, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
+import NextTaskW from './Widgets/NextTaskW';
+import { useUser } from '../../Components/UserContext';
+import TaskProgress from '../Structure components/TaskProgress';
+import Parse from 'parse/react-native';
+import Streak from './Widgets/Streak';
+
 
 function Home() {
 
+    const today = new Date();
+    const currentDate = today.toISOString().slice(0, 10);
+    const { width, height, colors } = useTheme();
+    const scaleFactor = Math.min(width / 375, height / 667);
     const navigation = useNavigation();
-    const { colors } = useTheme();
     const [sorting, setSorting] = useState('boxes');
     const [open, setOpen] = useState(false);
     const [sortingOptions, setSortingOptions] = useState([
         { label: 'Liste', value: 'list' },
         { label: 'Ruder', value: 'boxes' }
     ]);
+    const [taskProgress, setTaskProgress] = useState(0);
+    const { ID, username } = useUser();
+    const [remainingTasksArray, setRemainingTasks] = useState([]);
+    const [completedTasksArray, setCompletedTasks] = useState([]);
+    const [checked, setChecked] = useState(false);
+
+    useFocusEffect(
+        useCallback(() => {
+            remainingTasks();
+            updateTaskProgress();
+            return () => { };
+        }, [])
+    );
+
+    const taskPercentage = async function (completedTasks, remainingTasks) {
+        const totalTasks = remainingTasks.length + completedTasks.length;
+        const completedPercentage = totalTasks > 0 ? ((completedTasks.length / totalTasks) * 100).toFixed(0) : 0;
+        setTaskProgress(completedPercentage);
+    };
+
+    const updateTaskProgress = async function () {
+        const completed = await completedTasks();
+        const remaining = await remainingTasks();
+        taskPercentage(completed, remaining);
+    };
+
+    async function remainingTasks() {
+        let TaskQuery = new Parse.Query('Task');
+        TaskQuery.contains('user', ID);
+        TaskQuery.contains('date', currentDate);
+        TaskQuery.equalTo('completed', false);
+        TaskQuery.notEqualTo('futureTask', true);
+        TaskQuery.ascending('startTime');
+        let Results = await TaskQuery.find();
+        setRemainingTasks(Results);
+        return Results;
+    }
+
+    async function completedTasks() {
+        let TaskQuery = new Parse.Query('Task');
+        TaskQuery.contains('user', ID);
+        TaskQuery.contains('date', currentDate);
+        TaskQuery.equalTo('completed', true);
+        TaskQuery.ascending('startTime');
+        let Results = await TaskQuery.find();
+        setCompletedTasks(Results);
+        return Results;
+    }
+
+    const taskCompleted = async function (task) {
+        task.set('completed', true);
+        await task.save();
+        updateTaskProgress();
+        setChecked(false);
+    };
 
     return (
-        <View style={{ flex: 1, }}>
-            <Text style={styles.header}>
-                Hej Niko!
-            </Text>
-            <Text style={styles.text}>
-                Hvordan har du det i dag?
-                Er du klar til at tackle dagen?
-            </Text>
-            <View style={styles.divider} />
-            <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'flex-end', bottom: '3%', justifyContent: 'flex-end', right: '2%' }}>
-                <DropDownPicker
-                    open={open}
-                    value={sorting}
-                    items={sortingOptions}
-                    setOpen={setOpen}
-                    setValue={setSorting}
-                    setItems={setSortingOptions}
-                    placeholder={
-                        <FontAwesomeIcon icon={faFilter} size={10} color={colors.bars} />}
-                    style={{ borderColor: colors.border, elevation: 5, right: '30%' }}
-                    containerStyle={{
-                        width: '25%',
-                    }}
-                    textStyle={{ fontSize: 14 }}
-                />
-                <TouchableOpacity>
+        <SafeAreaView>
+            <ScrollView>
+                <Text style={styles.header}>
+                    Hej Niko!
+                </Text>
+                <Text style={styles.text}>
+                    Hvordan har du det i dag?
+                    Er du klar til at tackle dagen?
+                </Text>
+                <TouchableOpacity style={{ alignSelf: 'flex-end', marginRight: '5%', marginBottom: '5%' }}>
                     <FontAwesomeIcon
                         icon={faGear} size={25} />
                 </TouchableOpacity>
-            </View>
-            <View>
-                <View style={styles.row}>
-                    <TouchableOpacity style={styles.widget}>
-                        <DailyOverview />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.widget}>
-                        <Mood />
-                    </TouchableOpacity>
+                <View style={{ marginBottom: '5%' }}>
+                    <View style={styles.widget}>
+                        <TaskProgress
+                            taskProgress={taskProgress} />
+                    </View>
+                    <View style={styles.widget}>
+                        <NextTaskW
+                            remainingTasksArray={remainingTasksArray}
+                            checked={checked}
+                            taskCompleted={taskCompleted} />
+                    </View>
+                    <View style={styles.widget}>
+                        <Streak />
+                    </View>
                 </View>
-            </View>
-        </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 
 }
@@ -94,5 +145,6 @@ const styles = StyleSheet.create({
     widget: {
         flex: 1,
         marginHorizontal: '1%',
+        padding: '2%'
     }
 })
