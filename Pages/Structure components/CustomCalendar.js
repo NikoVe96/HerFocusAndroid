@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import Parse from 'parse/react-native';
+import { useTheme } from '@react-navigation/native';
 
 const CustomCalendar = ({
-    initialDate = new Date(),
     onDayPress,
     selectedDate,
-    containerStyle,
-    headerStyle,
-    dayCellStyle,
-    dayTextStyle,
-    selectedDayStyle,
-    selectedDayTextStyle,
+    ID,
 }) => {
-    const [currentDate, setCurrentDate] = useState(initialDate);
+    const today = new Date();
+    const [currentDate, setCurrentDate] = useState(today);
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
-
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-    const firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay();
-
+    const firstDayOfWeek = new Date(currentYear, currentMonth, 0).getDay();
     const calendarCells = [];
+    const [marked, setMarked] = useState({});
+    const { colors } = useTheme()
+
+    useEffect(() => {
+        setMarkedDays();
+        console.log(marked)
+    }, [currentDate]);
 
     for (let i = 0; i < firstDayOfWeek; i++) {
         calendarCells.push(null);
@@ -41,9 +42,66 @@ const CustomCalendar = ({
         setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
     };
 
+    async function getMarkedDates() {
+        let taskDaysQuery = new Parse.Query('Task');
+        taskDaysQuery.equalTo('user', { __type: 'Pointer', className: '_User', objectId: ID });
+        taskDaysQuery.ascending('date');
+
+        let eventDaysQuery = new Parse.Query('Events');
+        eventDaysQuery.equalTo('user', { __type: 'Pointer', className: '_User', objectId: ID });
+        eventDaysQuery.ascending('date');
+
+        const routineDaysQuery = new Parse.Query('Routine');
+        routineDaysQuery.equalTo('user', { __type: 'Pointer', className: '_User', objectId: ID });
+        routineDaysQuery.ascending('date');
+
+        const [taskResults, eventResults, routineResults] = await Promise.all([
+            taskDaysQuery.find(),
+            eventDaysQuery.find(),
+            routineDaysQuery.find()
+        ]);
+
+        return { taskResults, eventResults, routineResults };
+    }
+
+    async function setMarkedDays() {
+        const { taskResults, eventResults, routineResults } = await getMarkedDates();
+
+        const newMarked = {};
+
+        const processItems = (items) => {
+            items.forEach(item => {
+                const date = item.get('date');
+                const color = item.get('color');
+                if (!newMarked[date]) {
+                    newMarked[date] = { dots: [] };
+                }
+
+                const colorObject = colorMarkings[color];
+                if (!newMarked[date].dots.some(dot => dot.key === colorObject.key)) {
+                    newMarked[date].dots.push(colorObject);
+                }
+            });
+        };
+
+        processItems(taskResults);
+        processItems(eventResults);
+        processItems(routineResults);
+
+        setMarked(newMarked);
+        console.log('Marked days: ' + marked);
+    }
+
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     return (
-        <View style={[styles.container, containerStyle]}>
-            <View style={[styles.header, headerStyle]}>
+        <View style={[styles.container]}>
+            <View style={[styles.header]}>
                 <TouchableOpacity onPress={previousMonth}>
                     <Text style={styles.navButton}>{'<'}</Text>
                 </TouchableOpacity>
@@ -55,7 +113,7 @@ const CustomCalendar = ({
                 </TouchableOpacity>
             </View>
             <View style={styles.dayNamesContainer}>
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((dayName, index) => (
+                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((dayName, index) => (
                     <Text key={index} style={styles.dayName}>
                         {dayName}
                     </Text>
@@ -69,28 +127,36 @@ const CustomCalendar = ({
                     const isSelected =
                         selectedDate &&
                         day.toDateString() === selectedDate.toDateString();
-
+                    const formatted = formatDate(day);
+                    const dotInfo = marked[formatted];
                     return (
                         <TouchableOpacity
                             key={index}
                             style={[
                                 styles.dayCell,
-                                dayCellStyle,
                                 isSelected && styles.selectedDay,
-                                isSelected && selectedDayStyle,
+                                isSelected && { backgroundColor: colors.border }
                             ]}
                             onPress={() => onDayPress && onDayPress(day)}
                         >
                             <Text
                                 style={[
                                     styles.dayText,
-                                    dayTextStyle,
                                     isSelected && styles.selectedDayText,
-                                    isSelected && selectedDayTextStyle,
                                 ]}
                             >
                                 {day.getDate()}
                             </Text>
+                            {dotInfo && dotInfo.dots && (
+                                <View style={styles.dotContainer}>
+                                    {dotInfo.dots.map((dot, i) => (
+                                        <View
+                                            key={i}
+                                            style={[styles.dot, { backgroundColor: dot.color }]}
+                                        />
+                                    ))}
+                                </View>
+                            )}
                         </TouchableOpacity>
                     );
                 })}
@@ -146,11 +212,22 @@ const styles = StyleSheet.create({
         color: '#333',
     },
     selectedDay: {
-        backgroundColor: '#8C5581',
-        borderRadius: 20,
+        borderRadius: 30,
     },
     selectedDayText: {
         color: '#fff',
+        fontSize: 20
+    },
+    dotContainer: {
+        position: 'absolute',
+        bottom: 2,
+        flexDirection: 'row',
+    },
+    dot: {
+        width: 6,
+        height: 6,
+        borderRadius: 3,
+        marginHorizontal: 1,
     },
 });
 

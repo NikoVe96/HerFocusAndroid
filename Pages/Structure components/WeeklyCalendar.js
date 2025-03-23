@@ -1,109 +1,144 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import CalendarStrip from 'react-native-calendar-strip';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { faArrowRight, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const WeeklyCalendar = ({
-    today,
-    onDateSelected,
-    sorting,
-    setSorting,
-    sortingOptions,
-    open,
-    setOpen,
-    sortEventView,
-    colors,
-}) => {
+// Helper to get the start of the week (Monday) for a given date.
+const getStartOfWeek = (date) => {
+    const d = new Date(date);
+    // JavaScript getDay(): 0 = Sunday, 1 = Monday, etc.
+    // For a week starting on Monday, if Sunday (0) then subtract 6 days.
+    const day = d.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
+    const monday = new Date(d);
+    monday.setDate(d.getDate() + diff);
+    monday.setHours(0, 0, 0, 0);
+    return monday;
+};
+
+// Helper to generate an array of 7 dates starting from startDate.
+const getWeekDates = (startDate) => {
+    const dates = [];
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(startDate);
+        d.setDate(startDate.getDate() + i);
+        dates.push(d);
+    }
+    return dates;
+};
+
+// Helper to calculate ISO week number.
+const getWeekNumber = (date) => {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    // Set to nearest Thursday: current date + 4 - current day number
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    return weekNo;
+};
+
+const dayNames = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+
+const WeeklyCalendar = ({ onWeekChange }) => {
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const startOfWeek = getStartOfWeek(currentDate);
+    const weekDates = getWeekDates(startOfWeek);
+    const weekNumber = getWeekNumber(startOfWeek);
+
+    useEffect(() => {
+        if (onWeekChange) {
+            onWeekChange(weekDates);
+        }
+    }, [currentDate]);
+
+    const goToPreviousWeek = () => {
+        setCurrentDate(prev => {
+            const newDate = new Date(prev);
+            newDate.setDate(newDate.getDate() - 7);
+            return newDate;
+        });
+    };
+
+    const goToNextWeek = () => {
+        setCurrentDate(prev => {
+            const newDate = new Date(prev);
+            newDate.setDate(newDate.getDate() + 7);
+            return newDate;
+        });
+    };
+
     return (
-        <View>
-            <CalendarStrip
-                calendarAnimation={{ type: 'sequence', duration: 30 }}
-                daySelectionAnimation={{
-                    type: 'border',
-                    duration: 200,
-                    borderWidth: 1,
-                    borderHighlightColor: 'white',
-                }}
-                style={{
-                    height: 100,
-                    padding: 5,
-                    marginTop: '2%',
-                    marginHorizontal: 10,
-                    borderWidth: 1,
-                    borderColor: colors.mainButton,
-                    borderTopRightRadius: 10,
-                    borderTopLeftRadius: 10,
-                    elevation: 5,
-                }}
-                calendarHeaderStyle={{ color: 'white', fontSize: 20 }}
-                calendarColor={colors.mainButton}
-                dateNumberStyle={{ color: 'white', fontSize: 18 }}
-                dateNameStyle={{ color: 'white', fontSize: 12 }}
-                highlightDateNumberStyle={{ color: colors.bars, fontSize: 16 }}
-                highlightDateNameStyle={{ color: colors.bars, fontSize: 9 }}
-                iconContainer={{ flex: 0.1 }}
-                onDateSelected={onDateSelected}
-                scrollable={true}
-                selectedDate={today}
-            />
-            <View
-                style={{
-                    backgroundColor: 'white',
-                    borderWidth: 1,
-                    borderBottomRightRadius: 10,
-                    borderBottomLeftRadius: 10,
-                    borderColor: 'white',
-                    marginHorizontal: 10,
-                    elevation: 5,
-                }}
-            >
-                <View
-                    style={{
-                        alignItems: 'center',
-                        marginVertical: 10,
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        marginHorizontal: 10,
-                    }}
-                >
-                    <View
-                        style={{
-                            flex: 6,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Text
-                            style={{
-                                fontSize: 24,
-                                color: colors.bars,
-                                flex: 6,
-                                marginLeft: '5%',
-                            }}
-                        >
-                            Dagens planer
-                        </Text>
-                        <DropDownPicker
-                            open={open}
-                            value={sorting}
-                            items={sortingOptions}
-                            setOpen={setOpen}
-                            setValue={setSorting}
-                            setItems={() => { }}
-                            placeholder={<FontAwesomeIcon icon={faFilter} size={20} color={colors.bars} />}
-                            style={{ width: '100%', borderColor: colors.border, elevation: 5 }}
-                            containerStyle={{ width: '30%' }}
-                            textStyle={{ fontSize: 18 }}
-                        />
-                    </View>
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <TouchableOpacity onPress={goToPreviousWeek} style={styles.arrow}>
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                </TouchableOpacity>
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={styles.weekText}>Uge</Text>
+                    <Text style={styles.weekNumber}>{weekNumber}</Text>
                 </View>
-                <ScrollView style={{ height: 250 }}>{sortEventView()}</ScrollView>
+                <TouchableOpacity onPress={goToNextWeek} style={styles.arrow}>
+                    <FontAwesomeIcon icon={faChevronRight} />
+                </TouchableOpacity>
+            </View>
+            <View style={styles.datesRow}>
+                {weekDates.map((date, index) => (
+                    <View key={index} style={styles.dateContainer}>
+                        <Text style={styles.dayName}>{dayNames[index]}</Text>
+                        <Text style={styles.dateNumber}>{date.getDate()}</Text>
+                    </View>
+                ))}
             </View>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        paddingVertical: 10,
+        marginTop: '10%'
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        marginBottom: 5,
+    },
+    arrow: {
+        padding: 10,
+    },
+    arrowText: {
+        fontSize: 20,
+        color: '#333',
+    },
+    weekText: {
+        fontSize: 16,
+        color: '#333',
+    },
+    weekNumber: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    datesRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+    dateContainer: {
+        alignItems: 'center',
+        flex: 1,
+    },
+    dayName: {
+        fontSize: 14,
+        color: '#666',
+    },
+    dateNumber: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+});
 
 export default WeeklyCalendar;

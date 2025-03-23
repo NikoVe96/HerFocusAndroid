@@ -1,16 +1,12 @@
 import React, { useContext, useState, d } from 'react';
 import { Text, View, TouchableOpacity, SafeAreaView, ScrollView, StyleSheet, Dimensions } from "react-native";
 import { Calendar, LocaleConfig, CalendarContext } from 'react-native-calendars';
-import Modal from "react-native-modal";
 
-const MonthlyCalendar = ({
-    onDayPress,
-    markedDates,
-    scaleFactor,
-    colors,
-}) => {
+const MonthlyCalendar = ({ }) => {
 
     const today = new Date;
+    const { width, height } = Dimensions.get('window');
+    const scaleFactor = Math.min(width / 375, height / 667);
     LocaleConfig.locales['da'] = {
         monthNames: [
             'Januar',
