@@ -21,7 +21,7 @@ export const PickSubject = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.text, fontSize: 22 * scaleFactor },
+            { color: colors.darkText, fontSize: 22 * scaleFactor },
           ]}>
           Hvilket emne vil du dykke ned i?
         </Text>
@@ -35,11 +35,11 @@ export const PickSubject = () => {
             })
           }>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Familie
             </Text>
@@ -64,11 +64,11 @@ export const PickSubject = () => {
             })
           }>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Relationer
             </Text>
@@ -94,11 +94,11 @@ export const PickSubject = () => {
             })
           }>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Medicin
             </Text>
@@ -124,11 +124,11 @@ export const PickSubject = () => {
             })
           }>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Gode tips
             </Text>
@@ -153,11 +153,11 @@ export const PickSubject = () => {
             })
           }>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Andet
             </Text>

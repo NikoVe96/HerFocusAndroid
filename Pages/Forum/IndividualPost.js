@@ -2,15 +2,13 @@ import Parse from 'parse/react-native';
 import CommentSection from './CommentSection';
 import WriteComment from './WriteComment';
 import Post from './Post';
-import {View, StyleSheet, SafeAreaView} from 'react-native';
-import {useEffect, useState} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
-import {useTheme} from '@react-navigation/native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ScrollView } from 'react-native-gesture-handler';
 
-function IndividualPost({route, navigation}) {
-  const {postObject, onDelete} = route.params;
+function IndividualPost({ route, navigation }) {
+  const { postObject, onDelete } = route.params;
   const [allComments, setAllComments] = useState([]);
-  const {colors} = useTheme();
 
   useEffect(() => {
     fetchComments();

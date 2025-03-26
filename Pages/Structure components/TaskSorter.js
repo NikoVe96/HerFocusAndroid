@@ -61,7 +61,7 @@ const TaskSorter = ({
                     setEventsArray(dayEvents.events);
                     setRoutinesArray(dayEvents.routines);
                     console.log('Day tasks:', dayEvents);
-                    console.log('All day events:', allDayEvents);
+                    console.log('All day events:', allDayEvents.length);
                 } catch (error) {
                     console.error('Error fetching events:', error);
                 }
@@ -99,13 +99,15 @@ const TaskSorter = ({
                                 <View>
                                     {allDayArray.map((item, index) => (
                                         <View key={index} style={{ alignItems: 'center', borderWidth: 1, padding: 5, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), }}>
-                                            <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.text }}>{item.get('emoji')}</Text>
-                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{item.get('name')}</Text>
+                                            <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.lightText }}>{item.get('emoji')}</Text>
+                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
                                         </View>
                                     ))}
-                                    {dayTasksArray.length == 0 ?
-                                        null
-                                        : <View style={{ borderWidth: 1, marginHorizontal: 15, marginVertical: 20, backgroundColor: colors.border, width: 250, alignSelf: 'center', borderColor: colors.border, borderRadius: 10 }}></View>
+                                    {allDayArray.length == 0 ?
+                                        <View />
+                                        :
+                                        <View style={{ borderWidth: 1, marginHorizontal: 15, marginVertical: 20, backgroundColor: colors.dark, width: 250, alignSelf: 'center', borderColor: colors.dark, borderRadius: 10 }}></View>
+
                                     }
                                 </View>
                                 <View style={{ marginBottom: '5%' }}>
@@ -114,8 +116,8 @@ const TaskSorter = ({
                                             {item.get('type') == 'task' ?
                                                 <BouncyCheckbox
                                                     size={30}
-                                                    fillColor={colors.mainButton}
-                                                    unfillColor={colors.mainButton}
+                                                    fillColor={colors.dark}
+                                                    unfillColor={colors.dark}
                                                     iconStyle={{ elevation: 5, }}
                                                     innerIconStyle={{ borderWidth: 15, borderColor: item.get('color') }}
                                                     textStyle={{ fontFamily: "JosefinSans-Regular" }}
@@ -140,8 +142,8 @@ const TaskSorter = ({
                                                                 <View style={{ justifyContent: 'center' }}>
                                                                     <BouncyCheckbox
                                                                         size={30}
-                                                                        fillColor={colors.mainButton}
-                                                                        unfillColor={colors.mainButton}
+                                                                        fillColor={colors.dark}
+                                                                        unfillColor={colors.dark}
                                                                         iconStyle={{ elevation: 5, }}
                                                                         innerIconStyle={{ borderWidth: 15, borderColor: LightenDarkenColor(item.get('color'), -30) }}
                                                                         textStyle={{ fontFamily: "JosefinSans-Regular" }}
@@ -151,12 +153,12 @@ const TaskSorter = ({
                                                                 </View>
                                                                 <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: LightenDarkenColor(item.get('color'), -30), borderColor: LightenDarkenColor(item.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
                                                                     <View style={{ justifyContent: 'center' }}>
-                                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{step.stepName}</Text>
+                                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{step.stepName}</Text>
                                                                     </View>
                                                                     {step.stepTime !== '' ?
                                                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                             <FontAwesomeIcon icon={faStopwatch} style={{ marginHorizontal: 5 }} size={20} color={'white'} />
-                                                                            <Text style={{ fontSize: 18, color: colors.text }}>{step.stepTime}</Text>
+                                                                            <Text style={{ fontSize: 18, color: colors.lightText }}>{step.stepTime}</Text>
                                                                         </View>
                                                                         : null}
                                                                 </View>
@@ -165,10 +167,10 @@ const TaskSorter = ({
                                                     </AccordionItem>
                                                 </View>
                                                 : <View style={{ flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5, flexDirection: 'row' }}>
-                                                    <Text style={{ fontSize: 22, marginRight: 10, color: colors.text }}>{item.get('emoji')}</Text>
+                                                    <Text style={{ fontSize: 22, marginRight: 10, color: colors.lightText }}>{item.get('emoji')}</Text>
                                                     <View>
-                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{item.get('name')}</Text>
-                                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.text }}>{item.get('startTime')} - {item.get('endTime')}</Text>
+                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
+                                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.lightText }}>{item.get('startTime')} - {item.get('endTime')}</Text>
                                                     </View>
                                                 </View>
                                             }
@@ -192,22 +194,22 @@ const TaskSorter = ({
                                 <View>
                                     {allDayArray.map((item, index) => (
                                         <View key={index} style={{ alignItems: 'center', borderWidth: 1, padding: 5, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), }}>
-                                            <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.text }}>{item.get('emoji')}</Text>
-                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{item.get('name')}</Text>
+                                            <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.lightText }}>{item.get('emoji')}</Text>
+                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
                                         </View>
                                     ))}
                                 </View>
                                 {tasksArray.length == 0 ?
                                     null
                                     : <View>
-                                        <View style={{ borderWidth: 1, marginHorizontal: 15, marginVertical: '2%', backgroundColor: colors.border, width: 250, alignSelf: 'center', borderColor: colors.border, borderRadius: 10 }}></View>
+                                        <View style={{ borderWidth: 1, marginHorizontal: 15, marginVertical: '2%', backgroundColor: colors.dark, width: 250, alignSelf: 'center', borderColor: colors.dark, borderRadius: 10 }}></View>
                                         <Text style={{ fontSize: 16, marginLeft: '2%', textAlign: 'center', marginTop: '5%' }}>To-do's</Text>
                                         {tasksArray.map((item, index) => (
                                             <View key={index} style={{ flexDirection: 'row', marginBottom: '5%' }}>
                                                 <BouncyCheckbox
                                                     size={30}
-                                                    fillColor={colors.mainButton}
-                                                    unfillColor={colors.mainButton}
+                                                    fillColor={colors.dark}
+                                                    unfillColor={colors.dark}
                                                     iconStyle={{ elevation: 5, }}
                                                     innerIconStyle={{ borderWidth: 15, borderColor: item.get('color') }}
                                                     textStyle={{ fontFamily: "JosefinSans-Regular" }}
@@ -216,10 +218,10 @@ const TaskSorter = ({
                                                     style={{ marginHorizontal: 10, flex: 0.5 }}
                                                 />
                                                 <View style={{ flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5, flexDirection: 'row' }}>
-                                                    <Text style={{ fontSize: 22, marginRight: 10, color: colors.text }}>{item.get('emoji')}</Text>
+                                                    <Text style={{ fontSize: 22, marginRight: 10, color: colors.lightText }}>{item.get('emoji')}</Text>
                                                     <View>
-                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{item.get('name')}</Text>
-                                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.text }}>{item.get('startTime')} - {item.get('endTime')}</Text>
+                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
+                                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.lightText }}>{item.get('startTime')} - {item.get('endTime')}</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -233,10 +235,10 @@ const TaskSorter = ({
                                         {eventsArray.map((item, index) => (
                                             <View key={index}
                                                 style={{ marginLeft: '15%', flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5, flexDirection: 'row' }}>
-                                                <Text style={{ fontSize: 22, marginRight: 10, color: colors.text }}>{item.get('emoji')}</Text>
+                                                <Text style={{ fontSize: 22, marginRight: 10, color: colors.lightText }}>{item.get('emoji')}</Text>
                                                 <View>
-                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{item.get('name')}</Text>
-                                                    <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.text }}>{item.get('startTime')} - {item.get('endTime')}</Text>
+                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
+                                                    <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.lightText }}>{item.get('startTime')} - {item.get('endTime')}</Text>
                                                 </View>
                                             </View>
                                         ))}
@@ -263,7 +265,7 @@ const TaskSorter = ({
                                                                 <BouncyCheckbox
                                                                     size={40}
                                                                     fillColor={LightenDarkenColor(item.get('color'), -30)}
-                                                                    unfillColor={colors.mainButton}
+                                                                    unfillColor={colors.dark}
                                                                     iconStyle={{ elevation: 5, }}
                                                                     innerIconStyle={{ borderWidth: 20, borderColor: LightenDarkenColor(item.get('color'), -30) }}
                                                                     textStyle={{ fontFamily: "JosefinSans-Regular" }}
@@ -272,12 +274,12 @@ const TaskSorter = ({
                                                             </View>
                                                             <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: LightenDarkenColor(item.get('color'), -30), borderColor: LightenDarkenColor(item.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
                                                                 <View style={{ justifyContent: 'center' }}>
-                                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.text }}>{step.stepName}</Text>
+                                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{step.stepName}</Text>
                                                                 </View>
                                                                 {step.stepTime !== '' ?
                                                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                         <FontAwesomeIcon icon={faStopwatch} style={{ marginHorizontal: 5 }} size={20} color={'white'} />
-                                                                        <Text style={{ fontSize: 18, color: colors.text }}>{step.stepTime}</Text>
+                                                                        <Text style={{ fontSize: 18, color: colors.lightText }}>{step.stepTime}</Text>
                                                                     </View>
                                                                     : <Text></Text>}
                                                             </View>
@@ -295,26 +297,26 @@ const TaskSorter = ({
     }
 
     return (
-        <SafeAreaView style={{ marginHorizontal: '5%', marginBottom: '20%' }}>
-            <View style={{ alignItems: 'center', marginVertical: 10, flexDirection: 'row', justifyContent: 'center', marginHorizontal: 10 }}>
-                <View style={{ flex: 6, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Text style={{ fontSize: 24, color: colors.bars, flex: 6, marginLeft: '5%' }}>Dagens planer</Text>
-                    <DropDownPicker
-                        open={open}
-                        value={sorting}
-                        items={sortingOptions}
-                        setOpen={setOpen}
-                        setValue={setSorting}
-                        setItems={setSortingOptions}
-                        placeholder={
-                            <FontAwesomeIcon icon={faFilter} size={20} color={colors.bars} />}
-                        style={{ width: '100%', borderColor: colors.border, elevation: 5 }}
-                        containerStyle={{
-                            width: '30%',
-                        }}
-                        textStyle={{ fontSize: 14 }}
-                    />
-                </View>
+        <SafeAreaView style={{ marginHorizontal: '5%', marginBottom: '2%' }}>
+            <View style={{ alignItems: 'center', marginVertical: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ fontSize: 24, color: colors.dark }}>Dagens planer</Text>
+                <DropDownPicker
+                    open={open}
+                    value={sorting}
+                    items={sortingOptions}
+                    setOpen={setOpen}
+                    setValue={setSorting}
+                    setItems={setSortingOptions}
+                    placeholder={
+                        <FontAwesomeIcon icon={faFilter} size={20} color={colors.dark} />}
+                    style={{ borderColor: colors.dark, elevation: 5 }}
+                    containerStyle={{
+                        width: '35%',
+
+                    }}
+                    textStyle={{ fontSize: 14 }}
+                />
+
             </View>
             <View >
                 {sortEventView()}

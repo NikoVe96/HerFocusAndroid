@@ -75,22 +75,22 @@ const CalendarOverview = ({ navigation }) => {
                 </View>
                 <View style={{ flexDirection: 'row', top: '2%', justifyContent: 'center' }}>
                     <TouchableOpacity style={{
-                        backgroundColor: enabled == 'daily' ? colors.mainButton : colors.subButton,
-                        padding: '2%', borderWidth: 1, borderColor: colors.border, borderTopLeftRadius: 10, borderBottomLeftRadius: 10, width: '30%', alignItems: 'center'
+                        backgroundColor: enabled == 'daily' ? colors.dark : colors.middle,
+                        padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopLeftRadius: 10, borderBottomLeftRadius: 10, width: '30%', alignItems: 'center'
                     }}
                         onPress={() => setEnabled('daily')}>
                         <Text style={{ fontSize: 18 }}>I dag</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{
-                        backgroundColor: enabled == 'weekly' ? colors.mainButton : colors.subButton,
-                        padding: '2%', borderWidth: 1, borderColor: colors.border, width: '30%', alignItems: 'center'
+                        backgroundColor: enabled == 'weekly' ? colors.dark : colors.middle,
+                        padding: '2%', borderWidth: 1, borderColor: colors.dark, width: '30%', alignItems: 'center'
                     }}
                         onPress={() => setEnabled('weekly')}>
                         <Text style={{ fontSize: 18 }}>Uge</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{
-                        backgroundColor: enabled == 'monthly' ? colors.mainButton : colors.subButton,
-                        padding: '2%', borderWidth: 1, borderColor: colors.border, borderTopRightRadius: 10, borderBottomRightRadius: 10, width: '30%', alignItems: 'center'
+                        backgroundColor: enabled == 'monthly' ? colors.dark : colors.middle,
+                        padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopRightRadius: 10, borderBottomRightRadius: 10, width: '30%', alignItems: 'center'
                     }}
                         onPress={() => setEnabled('monthly')}>
                         <Text style={{ fontSize: 18 }}>Måned</Text>

@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
-import AddTask from './AddTask';
 import Parse from 'parse/react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { DateTimePickerModal } from 'react-native-modal-datetime-picker';
@@ -49,19 +48,19 @@ export const Todos = ({ navigation }) => {
                 <Text
                     style={[
                         styles.title,
-                        { color: colors.text, fontSize: 30 * scaleFactor },
+                        { color: colors.darkText, fontSize: 30 * scaleFactor },
                     ]}>
                     To-do's
                 </Text>
                 <View style={{ alignItems: 'center', marginBottom: '5%' }}>
                     <CircularProgress
                         value={taskProgress}
-                        inActiveStrokeColor={colors.subButton}
+                        inActiveStrokeColor={colors.middle}
                         inActiveStrokeOpacity={0.3}
-                        progressValueColor={colors.mainButton}
+                        progressValueColor={colors.dark}
                         valueSuffix={'%'}
                         activeStrokeColor={colors.border}
-                        activeStrokeSecondaryColor={colors.subButton}
+                        activeStrokeSecondaryColor={colors.middle}
                         radius={60 * scaleFactor}
                     />
                 </View>
@@ -69,23 +68,23 @@ export const Todos = ({ navigation }) => {
                     style={[
                         styles.upNext,
                         {
-                            shadowColor: colors.border,
-                            borderColor: colors.subButton,
-                            backgroundColor: colors.subButton,
+                            shadowColor: colors.dark,
+                            borderColor: colors.middle,
+                            backgroundColor: colors.middle,
                         },
                     ]}>
                     <Swiper
                         loop={false}
                         showsPagination={true}
                         dotStyle={{
-                            backgroundColor: colors.mainButton,
+                            backgroundColor: colors.dark,
                             width: '40%',
                             height: '100%',
                             borderRadius: 4,
                             marginHorizontal: 4,
                         }}
                         activeDotStyle={{
-                            backgroundColor: colors.border,
+                            backgroundColor: colors.dark,
                             width: '40%',
                             height: '100%',
                             borderRadius: 4,
@@ -114,7 +113,7 @@ export const Todos = ({ navigation }) => {
                     <View key={index} style={{ flexDirection: 'row' }}>
                         <BouncyCheckbox
                             size={30}
-                            fillColor={colors.mainButton}
+                            fillColor={colors.dark}
                             unfillColor="#FFFFFF"
                             iconStyle={{ borderColor: 'black' }}
                             innerIconStyle={{ borderWidth: 2 }}
@@ -152,7 +151,7 @@ export const Todos = ({ navigation }) => {
                     </View>
                 ))}
                 <TouchableOpacity
-                    style={[styles.addTodo, { backgroundColor: colors.mainButton }]}
+                    style={[styles.addTodo, { backgroundColor: colors.dark }]}
                     onPress={() => setToDoModalVisible(true)}>
                     <Text style={{ fontSize: 18 }}>Tilføj en ny to-do</Text>
                 </TouchableOpacity>
@@ -161,19 +160,18 @@ export const Todos = ({ navigation }) => {
                     onBackdropPress={() => setToDoModalVisible(false)}>
                     <View
                         style={{
-                            backgroundColor: colors.background,
+                            backgroundColor: colors.light,
                             padding: 10,
                             borderWidth: 1,
-                            borderColor: colors.background,
+                            borderColor: colors.light,
                             borderTopRightRadius: 10,
                             borderTopLeftRadius: 10,
                             height: 500
                         }}>
-                        <AddTask />
                     </View>
                     <TouchableOpacity
                         style={{
-                            backgroundColor: colors.border,
+                            backgroundColor: colors.dark,
                             alignItems: 'center',
                             height: '7%',
                             justifyContent: 'center',

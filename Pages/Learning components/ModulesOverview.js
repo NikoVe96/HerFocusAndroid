@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -10,17 +10,17 @@ import {
   Dimensions,
 } from 'react-native';
 import Parse from 'parse/react-native';
-import {useNavigation, useTheme} from '@react-navigation/native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faDownLong, faCircleCheck} from '@fortawesome/free-solid-svg-icons';
+import { useNavigation, useTheme } from '@react-navigation/native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faDownLong, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
-export const ModulesOverview = ({route}) => {
-  const {subject, image, description} = route.params;
+export const ModulesOverview = ({ route }) => {
+  const { subject, image, description } = route.params;
   const [modules, setModules] = useState([]);
   const [completed, setCompleted] = useState([]);
   const navigation = useNavigation();
-  const {colors} = useTheme();
-  const {width, height} = Dimensions.get('window');
+  const { colors } = useTheme();
+  const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
   const moduleImages = {
     '1 Struktur og planlægning': require('../../Assets/images/learning_think.png'),
@@ -79,14 +79,14 @@ export const ModulesOverview = ({route}) => {
   // }, [navigation]);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
         <Text
           style={[
             styles.title,
             {
               fontSize: 30 * scaleFactor,
-              color: colors.text,
+              color: colors.darkText,
             },
           ]}>
           {subject}
@@ -101,16 +101,16 @@ export const ModulesOverview = ({route}) => {
         <Text
           style={[
             styles.description,
-            {fontSize: 16 * scaleFactor, color: colors.text},
+            { fontSize: 16 * scaleFactor, color: colors.darkText },
           ]}>
           {description}
         </Text>
         <View
           style={[
             styles.border,
-            {backgroundColor: colors.border, borderColor: colors.border},
+            { backgroundColor: colors.dark, borderColor: colors.dark },
           ]}></View>
-        <View style={{marginTop: '4%'}}>
+        <View style={{ marginTop: '4%' }}>
           {modules.length == 0 ? (
             <Text>Loading...</Text>
           ) : (
@@ -145,7 +145,7 @@ export const ModulesOverview = ({route}) => {
                         style={[
                           styles.buttonGrad,
                           {
-                            backgroundColor: colors.subButton,
+                            backgroundColor: colors.middle,
                             height: 90 * scaleFactor,
                             width: 250 * scaleFactor,
                           },
@@ -154,18 +154,18 @@ export const ModulesOverview = ({route}) => {
                           source={moduleImage}
                           style={[
                             styles.image,
-                            {height: 50 * scaleFactor, width: 50 * scaleFactor},
+                            { height: 50 * scaleFactor, width: 50 * scaleFactor },
                           ]}></Image>
-                        <View style={{width: '60%', marginLeft: '3%'}}>
+                        <View style={{ width: '60%', marginLeft: '3%' }}>
                           <Text
                             style={[
                               styles.moduleName,
-                              {fontSize: 16 * scaleFactor, color: colors.text},
+                              { fontSize: 16 * scaleFactor, color: colors.darkText },
                             ]}>
                             Modul {item.get('name')}
                           </Text>
                           <Text
-                            style={[styles.moduleDesc, {color: colors.text}]}>
+                            style={[styles.moduleDesc, { color: colors.darkText }]}>
                             {item.get('description')}
                           </Text>
                         </View>
@@ -176,7 +176,7 @@ export const ModulesOverview = ({route}) => {
                     <FontAwesomeIcon
                       icon={faDownLong}
                       size={30 * scaleFactor}
-                      style={{marginVertical: 15}}
+                      style={{ marginVertical: 15 }}
                     />
                   ) : (
                     <Text></Text>
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     shadowColor: 'black',
     shadowOpacity: 0.5,
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
   },
   progessionBar: {

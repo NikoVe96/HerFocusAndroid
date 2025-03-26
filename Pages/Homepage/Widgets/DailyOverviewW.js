@@ -1,17 +1,20 @@
 import { Text, View } from "react-native";
 import { useTheme } from '@react-navigation/native';
 import TaskProgress from "../../Structure components/TaskProgress";
+import TaskSorter from "../../Structure components/TaskSorter";
 
 function DailyOverviewW() {
 
     const { colors } = useTheme();
+    const today = new Date();
 
     return (
         <View style={{
-            height: 200, padding: 10, backgroundColor: '#FFF6ED', elevation: 10, borderColor: colors.subButton, borderWidth: 1,
+            backgroundColor: colors.light, elevation: 10, borderColor: colors.middle, borderWidth: 1,
             borderRadius: 10
         }}>
-            <TaskProgress />
+            <TaskSorter
+                date={today} />
         </View>
     );
 

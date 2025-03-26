@@ -15,10 +15,10 @@ export const BottomNavigation = () => {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.mainButton }]}>
+    <View style={[styles.container, { backgroundColor: colors.dark }]}>
       <TouchableOpacity style={styles.Button}
         onPress={() => navigation.navigate('Home')}>
-        <FontAwesomeIcon icon={faHouse} size={30} color={colors.text} />
+        <FontAwesomeIcon icon={faHouse} size={30} color={'white'} />
         <Text style={{ fontSize: 13, color: 'white' }}>Hjem</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.Button}
@@ -26,7 +26,7 @@ export const BottomNavigation = () => {
         <FontAwesomeIcon icon={faCalendar} size={30} color="white" />
         <Text style={{ fontSize: 13, color: 'white' }}>Kalender</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.floatButton, { backgroundColor: '#F2C56B', borderColor: '#F6BC47' }]}
+      <TouchableOpacity style={[styles.floatButton, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}
         onPress={() => navigation.navigate('Add')}>
         <FontAwesomeIcon icon={faPlus} size={40} color="white" style={{ transform: [{ rotate: '-45deg' }], }} />
       </TouchableOpacity>

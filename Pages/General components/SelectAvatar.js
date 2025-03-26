@@ -2,7 +2,11 @@ import { StyleSheet, View, Image, Text, TouchableOpacity, FlatList } from 'react
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
 import animals from '../../Components/AnimalAvatars';
+import emojis from '../../Components/EmojiAvatars';
+import monsters from '../../Components/MonsterAvatars';
+import plants from '../../Components/PlantAvatars';
 import UploadImage from '../../Components/UploadImage';
+import { convertAvatar } from '../../Components/ConvertAvatar';
 
 export const SelectAvatar = ({ onSelect }) => {
 
@@ -13,12 +17,24 @@ export const SelectAvatar = ({ onSelect }) => {
         setCategory(category);
     }
 
+    const handleAvatarSelect = async (avatarAsset) => {
+        try {
+            const parseFile = await convertAvatar(avatarAsset);
+            onSelect(parseFile);
+        } catch (error) {
+            console.error("Error processing avatar:", error);
+        }
+    };
+
     return (
         <View>
-            <View style={{ flexDirection: 'row', backgroundColor: colors.subButton }}>
+            <View style={{
+                flexDirection: 'row', backgroundColor: colors.middle, borderWidth: 1, borderColor: colors.middle,
+                borderTopLeftRadius: 20, borderTopRightRadius: 20
+            }}>
                 <TouchableOpacity style={styles.picturePickerImg}
                     onPress={() => handleCategoryChange('animals')}>
-                    <Image source={require('../../Assets/images/Avatars/Animals/bat.png')} style={{
+                    <Image source={require('../../Assets/images/Avatars/Animals/cow.png')} style={{
                         width: 40,
                         height: 40,
                     }} />
@@ -27,8 +43,18 @@ export const SelectAvatar = ({ onSelect }) => {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.picturePickerImg}
+                    onPress={() => handleCategoryChange('plants')}>
+                    <Image source={require('../../Assets/images/Avatars/Plants/fern.png')} style={{
+                        width: 40,
+                        height: 40,
+                    }} />
+                    <Text>
+                        Planter
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.picturePickerImg}
                     onPress={() => handleCategoryChange('monsters')}>
-                    <Image source={require('../../Assets/images/Avatars/Monsters/cyclops.png')} style={{
+                    <Image source={require('../../Assets/images/Avatars/Monsters/monster12.png')} style={{
                         width: 40,
                         height: 40,
                     }} />
@@ -38,7 +64,7 @@ export const SelectAvatar = ({ onSelect }) => {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.picturePickerImg}
                     onPress={() => handleCategoryChange('emoji')}>
-                    <Image source={require('../../Assets/images/Avatars/Monsters/monster.png')} style={{
+                    <Image source={require('../../Assets/images/Avatars/Emojis/winking-face.png')} style={{
                         width: 40,
                         height: 40,
                     }} />
@@ -48,7 +74,7 @@ export const SelectAvatar = ({ onSelect }) => {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.picturePickerImg}
                     onPress={() => handleCategoryChange('upload')}>
-                    <Image source={require('../../Assets/images/Avatars/Animals/bat.png')} style={{
+                    <Image source={require('../../Assets/images/camera.png')} style={{
                         width: 40,
                         height: 40,
                     }} />
@@ -64,7 +90,7 @@ export const SelectAvatar = ({ onSelect }) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            onPress={() => onSelect(item)}
+                            onPress={() => handleAvatarSelect(item)}
                             style={styles.avatarContainer}>
                             <Image
                                 source={item}
@@ -73,14 +99,14 @@ export const SelectAvatar = ({ onSelect }) => {
                     )}
                     contentContainerStyle={styles.avatarList}
                 />
-                : category == 'monsters' ?
+                : category == 'plants' ?
                     <FlatList
-                        data={animals}
+                        data={plants}
                         numColumns={4}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                onPress={() => onSelect(item)}
+                                onPress={() => handleAvatarSelect(item)}
                                 style={styles.avatarContainer}>
                                 <Image
                                     source={item}
@@ -89,14 +115,14 @@ export const SelectAvatar = ({ onSelect }) => {
                         )}
                         contentContainerStyle={styles.avatarList}
                     />
-                    : category == 'emoji' ?
+                    : category == 'monsters' ?
                         <FlatList
-                            data={animals}
+                            data={monsters}
                             numColumns={4}
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={({ item }) => (
                                 <TouchableOpacity
-                                    onPress={() => onSelect(item)}
+                                    onPress={() => handleAvatarSelect(item)}
                                     style={styles.avatarContainer}>
                                     <Image
                                         source={item}
@@ -105,7 +131,24 @@ export const SelectAvatar = ({ onSelect }) => {
                             )}
                             contentContainerStyle={styles.avatarList}
                         />
-                        : <UploadImage />
+                        : category == 'emoji' ?
+                            <FlatList
+                                data={emojis}
+                                numColumns={4}
+                                keyExtractor={(item, index) => index.toString()}
+                                renderItem={({ item }) => (
+                                    <TouchableOpacity
+                                        onPress={() => handleAvatarSelect(item)}
+                                        style={styles.avatarContainer}>
+                                        <Image
+                                            source={item}
+                                            style={styles.avatarListImage} />
+                                    </TouchableOpacity>
+                                )}
+                                contentContainerStyle={styles.avatarList}
+                            />
+                            : <UploadImage
+                                onSelect={onSelect} />
             }
         </View>
     );
@@ -114,8 +157,8 @@ export const SelectAvatar = ({ onSelect }) => {
 const styles = StyleSheet.create({
     picturePickerImg: {
         alignItems: 'center',
-        padding: '2%',
-        marginHorizontal: '4%'
+        padding: '1%',
+        marginHorizontal: '2%'
     },
     avatarList: {
         paddingVertical: 10,

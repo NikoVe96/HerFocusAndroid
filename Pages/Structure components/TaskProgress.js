@@ -10,16 +10,16 @@ export const TaskProgress = ({ taskProgress }) => {
     const { colors } = useTheme();
 
     return (
-        <View style={[styles.widget, { borderColor: colors.subButton }]}>
+        <View style={[styles.widget, { borderColor: colors.middle }]}>
             <CircularProgress
                 value={taskProgress}
-                inActiveStrokeColor={colors.subButton}
+                inActiveStrokeColor={colors.middle}
                 inActiveStrokeOpacity={0.3}
-                progressValueColor={colors.mainButton}
+                progressValueColor={colors.dark}
                 valueSuffix={'%'}
-                activeStrokeColor={colors.border}
-                activeStrokeSecondaryColor={colors.subButton}
-                radius={90 * scaleFactor}
+                activeStrokeColor={colors.dark}
+                activeStrokeSecondaryColor={colors.middle}
+                radius={70 * scaleFactor}
             />
             <View>
                 {taskProgress == 0 ?

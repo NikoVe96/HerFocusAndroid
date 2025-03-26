@@ -58,25 +58,25 @@ const themes = {
   },
   yellow: {
     ...DefaultTheme,
-    gradient: true, // flag to indicate this theme uses a gradient
+    gradient: true,
     gradientColors: ['#DC9B18', '#F9C459', '#FFF6ED', '#FFF6ED', '#FFF6ED', '#FFF6ED', '#FFF6ED'],
     colors: {
       ...DefaultTheme.colors,
-      bars: '#DC9B18',
-      background: '#FFF6ED',
-      text: '#DC9B18',
-      barText: 'white',
-      border: '#DC9B18',
-      notification: '#FFEABF',
-      iconLight: 'white',
-      iconDark: 'black',
-      mainButton: '#DC9B18',
-      subButton: '#FFEABF',
+      light: '#FFF6ED',
+      lightShadow: '#f5e4d3',
+      lightMiddle: '#FFEABF',
+      lightMiddleShadow: '#f5d79a',
+      middle: '#F9C459',
+      middleShadow: '#e0a938',
+      dark: '#DC9B18',
+      darkShadow: '#bd7f04',
+      lightText: 'white',
+      darkText: '#DC9B18',
     },
   },
   green: {
     ...DefaultTheme,
-    gradient: true, // flag to indicate this theme uses a gradient
+    gradient: true,
     gradientColors: ['#427248', '#E6F6E8', '#E6F6E8'],
     colors: {
       ...DefaultTheme.colors,

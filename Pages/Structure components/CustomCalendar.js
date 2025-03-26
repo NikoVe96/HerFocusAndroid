@@ -135,7 +135,7 @@ const CustomCalendar = ({
                             style={[
                                 styles.dayCell,
                                 isSelected && styles.selectedDay,
-                                isSelected && { backgroundColor: colors.border }
+                                isSelected && { backgroundColor: colors.dark }
                             ]}
                             onPress={() => onDayPress && onDayPress(day)}
                         >

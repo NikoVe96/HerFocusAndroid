@@ -13,6 +13,7 @@ export const UserProvider = ({ children }) => {
   const [name, setName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [ID, setID] = useState('');
+  const [age, setAge] = useState();
 
   useEffect(() => {
     const checkUser = async () => {
@@ -114,13 +115,14 @@ export const UserProvider = ({ children }) => {
       setProfilePicture(currentUser.get('profilePicture'));
       setEmail(currentUser.get('email'));
       setName(currentUser.get('name'));
+      setAge(currentUser.get('age'));
     }
   };
 
   return (
     <UserContext.Provider
       value={{
-        username, email, name, error, profilePicture, isLoggedIn, ID,
+        username, email, name, error, profilePicture, isLoggedIn, ID, age,
         updateUserProfile, handleLogin, handleLogout, handleSignup
       }}>
       {children}

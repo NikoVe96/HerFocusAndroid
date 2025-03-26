@@ -87,7 +87,7 @@ export const PickModule = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.text, fontSize: 22 * scaleFactor },
+            { color: colors.darkText, fontSize: 22 * scaleFactor },
           ]}>
           Hvad vil du gerne lære om i dag?
         </Text>
@@ -96,14 +96,14 @@ export const PickModule = () => {
             style={[
               styles.progessionBar,
               {
-                backgroundColor: colors.subButton,
-                borderColor: colors.subButton,
+                backgroundColor: colors.middle,
+                borderColor: colors.middle,
               },
             ]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               {structuringProgress}%
             </Text>
@@ -117,7 +117,7 @@ export const PickModule = () => {
               })
             }>
             <View
-              style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+              style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
               <Animated.Image
                 source={require('../../Assets/images/learning_notebook.png')}
                 style={{ width: 120, height: 100, marginTop: 5 }}
@@ -125,7 +125,7 @@ export const PickModule = () => {
               <Text
                 style={[
                   styles.text,
-                  { color: colors.text, fontSize: 18 * scaleFactor },
+                  { color: colors.darkText, fontSize: 18 * scaleFactor },
                 ]}>
                 Planlægning og strukturering af hverdagen
               </Text>
@@ -134,13 +134,13 @@ export const PickModule = () => {
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate('Completed modules')}>
-          <View style={[styles.done, { backgroundColor: colors.mainButton }]}>
+          <View style={[styles.done, { backgroundColor: colors.dark }]}>
             <FontAwesomeIcon
               icon={faCheck}
               size={35 * scaleFactor}
-              color={colors.border}
+              color={colors.dark}
             />
-            <Text style={[styles.doneText, { color: colors.text }]}>
+            <Text style={[styles.doneText, { color: colors.darkText }]}>
               Opgavesvar for fuldførte læringsmoduler
             </Text>
           </View>

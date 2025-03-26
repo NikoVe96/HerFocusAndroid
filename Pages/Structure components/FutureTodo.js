@@ -242,7 +242,7 @@ export const FutureTodo = ({ navigation }) => {
         <Text
           style={[
             styles.title,
-            { color: colors.text, fontSize: 30 * scaleFactor },
+            { color: colors.darkText, fontSize: 30 * scaleFactor },
           ]}>
           Fremtidige to-dos
         </Text>
@@ -250,8 +250,8 @@ export const FutureTodo = ({ navigation }) => {
           <View key={index} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <BouncyCheckbox
               size={30}
-              fillColor={colors.mainButton}
-              unfillColor={colors.mainButton}
+              fillColor={colors.dark}
+              unfillColor={colors.dark}
               iconStyle={{ elevation: 5, }}
               innerIconStyle={{ borderWidth: 15, borderColor: item.get('color') }}
               textStyle={{ fontFamily: "JosefinSans-Regular" }}
@@ -276,22 +276,22 @@ export const FutureTodo = ({ navigation }) => {
               }}
               onLongPress={() => toCalendarModal(item)}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ fontSize: 20, marginRight: 10, color: colors.text }}>
+                <Text style={{ fontSize: 20, marginRight: 10, color: colors.darkText }}>
                   {item.get('emoji')}
                 </Text>
               </View>
-              <Text style={{ fontSize: 18, color: colors.text }}>{item.get('name')}</Text>
+              <Text style={{ fontSize: 18, color: colors.darkText }}>{item.get('name')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => toCalendarModal(item)}>
-              <FontAwesomeIcon icon={faCalendar} size={25} color={colors.border} style={{ flex: 0.5, marginRight: '5%' }} />
+              <FontAwesomeIcon icon={faCalendar} size={25} color={colors.dark} style={{ flex: 0.5, marginRight: '5%' }} />
             </TouchableOpacity>
           </View>
         ))}
         <TouchableOpacity
-          style={[styles.addTodo, { backgroundColor: colors.mainButton }]}
+          style={[styles.addTodo, { backgroundColor: colors.dark }]}
           onPress={() => setToDoModalVisible(true)}>
-          <Text style={{ fontSize: 18, color: colors.text }}>Tilføj en ny fremtidig to-do</Text>
+          <Text style={{ fontSize: 18, color: colors.darkText }}>Tilføj en ny fremtidig to-do</Text>
         </TouchableOpacity>
 
         <Modal
@@ -299,10 +299,10 @@ export const FutureTodo = ({ navigation }) => {
           onBackdropPress={() => setToDoModalVisible(false)}>
           <View
             style={{
-              backgroundColor: colors.background,
+              backgroundColor: colors.light,
               padding: 10,
               borderWidth: 1,
-              borderColor: colors.background,
+              borderColor: colors.light,
               borderRadius: 10
             }}>
             <TouchableOpacity
@@ -310,14 +310,14 @@ export const FutureTodo = ({ navigation }) => {
               <FontAwesomeIcon icon={faCircleXmark} size={30} style={{ alignSelf: 'flex-end', marginBottom: '5%' }} />
             </TouchableOpacity>
             <View style={{ alignItems: 'center', padding: 10 }}>
-              <Text style={{ fontSize: 24, color: colors.text, marginTop: 15 }}>
+              <Text style={{ fontSize: 24, color: colors.darkText, marginTop: 15 }}>
                 {' '}
                 Tilføj en ny to-do{' '}
               </Text>
               <View
                 style={[
                   styles.border,
-                  { backgroundColor: colors.border, borderColor: colors.border },
+                  { backgroundColor: colors.dark, borderColor: colors.dark },
                 ]}></View>
             </View>
             <View
@@ -326,7 +326,7 @@ export const FutureTodo = ({ navigation }) => {
                 paddingHorizontal: 16,
               }}>
               <View>
-                <Text style={[styles.text, { color: colors.text }]}>
+                <Text style={[styles.text, { color: colors.darkText }]}>
                   Hvad skal din to-do hedde?
                 </Text>
                 <TextInput
@@ -336,7 +336,7 @@ export const FutureTodo = ({ navigation }) => {
                 />
               </View>
               <View>
-                <Text style={[styles.text, { color: colors.text }]}>
+                <Text style={[styles.text, { color: colors.darkText }]}>
                   Vælg en farve
                 </Text>
                 <View style={styles.colorOptions}>
@@ -505,15 +505,15 @@ export const FutureTodo = ({ navigation }) => {
                     style={[
                       styles.buttonSmall,
                       {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
+                        backgroundColor: colors.middle,
+                        borderColor: colors.middle,
                       },
                     ]}>
                     <Text
                       style={[
                         styles.buttonText,
                         { fontSize: 20 * scaleFactor },
-                        { color: colors.text },
+                        { color: colors.darkText },
                       ]}>
                       Emoji
                     </Text>
@@ -527,7 +527,7 @@ export const FutureTodo = ({ navigation }) => {
                       <View
                         style={[
                           styles.emojiPickerContainer,
-                          { backgroundColor: colors.background },
+                          { backgroundColor: colors.light },
                         ]}>
                         <EmojiPicker
                           emojis={emojis}
@@ -541,15 +541,15 @@ export const FutureTodo = ({ navigation }) => {
                             hideEmojiModal();
                           }}
                           onChangeRecent={setRecent}
-                          backgroundColor={colors.background}
+                          backgroundColor={colors.light}
                         />
                       </View>
                       <TouchableOpacity
                         style={[
                           styles.modalButton,
                           {
-                            backgroundColor: colors.mainButton,
-                            borderColor: colors.mainButton,
+                            backgroundColor: colors.dark,
+                            borderColor: colors.dark,
                           },
                         ]}
                         onPress={hideEmojiModal}>
@@ -559,7 +559,7 @@ export const FutureTodo = ({ navigation }) => {
                   </Modal>
                 </View>
                 <View style={[styles.rowView, { alignItems: 'center', }]}>
-                  <Text style={{ fontSize: 26, color: colors.text }}> {emoji}</Text>
+                  <Text style={{ fontSize: 26, color: colors.darkText }}> {emoji}</Text>
                 </View>
               </View>
             </View>
@@ -568,7 +568,7 @@ export const FutureTodo = ({ navigation }) => {
                 alignContent: 'center',
                 paddingHorizontal: 16,
               }}>
-              <Text style={[styles.text, { color: colors.text }]}>
+              <Text style={[styles.text, { color: colors.darkText }]}>
                 Tilføj en beskrivelse
               </Text>
               <TextInput
@@ -583,12 +583,12 @@ export const FutureTodo = ({ navigation }) => {
               style={[
                 styles.Button,
                 {
-                  backgroundColor: colors.mainButton,
-                  borderColor: colors.mainButton,
+                  backgroundColor: colors.dark,
+                  borderColor: colors.dark,
                 },
               ]}
               onPress={newTask}>
-              <Text style={{ color: colors.text, fontSize: 18 * scaleFactor }}>
+              <Text style={{ color: colors.darkText, fontSize: 18 * scaleFactor }}>
                 Tilføj ny to-do
               </Text>
             </TouchableOpacity>
@@ -600,10 +600,10 @@ export const FutureTodo = ({ navigation }) => {
           onBackdropPress={() => setToCalendarModalVisible(false)}>
           <View
             style={{
-              backgroundColor: colors.background,
+              backgroundColor: colors.light,
               padding: 10,
               borderWidth: 1,
-              borderColor: colors.background,
+              borderColor: colors.light,
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
             }}>
@@ -618,8 +618,8 @@ export const FutureTodo = ({ navigation }) => {
                     style={[
                       styles.buttonSmall,
                       {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
+                        backgroundColor: colors.middle,
+                        borderColor: colors.middle,
                       },
                     ]}
                     onPress={() => setStartTimePickerVisibility(true)}>
@@ -651,8 +651,8 @@ export const FutureTodo = ({ navigation }) => {
                     style={[
                       styles.buttonSmall,
                       {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
+                        backgroundColor: colors.middle,
+                        borderColor: colors.middle,
                       },
                     ]}
                     onPress={() => setEndTimePickerVisibility(true)}>
@@ -684,8 +684,8 @@ export const FutureTodo = ({ navigation }) => {
                     style={[
                       styles.buttonSmall,
                       {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
+                        backgroundColor: colors.middle,
+                        borderColor: colors.middle,
                       },
                     ]}
                     onPress={() => setDatePickerVisibility(true)}>
@@ -715,7 +715,7 @@ export const FutureTodo = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={{
-              backgroundColor: colors.border,
+              backgroundColor: colors.dark,
               alignItems: 'center',
               height: '7%',
               justifyContent: 'center',

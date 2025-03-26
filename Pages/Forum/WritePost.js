@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Switch,
 } from 'react-native';
 import React, { useState, useCallback } from 'react';
 import Parse from 'parse/react-native';
@@ -16,6 +17,7 @@ function WritePost({ forumTitle, onNewPost }) {
   const [post, setPost] = useState('');
   const { colors } = useTheme();
   const { username, avatar, updateUserProfile } = useUser();
+  const { anonymousEnabled, setAnonymousEnabled } = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -61,15 +63,31 @@ function WritePost({ forumTitle, onNewPost }) {
           }}
           onChangeText={setPost}></TextInput>
       </View>
-      <TouchableOpacity
-        onPress={() => handlePost()}
-        style={[
-          styles.postBtn,
-          styles.shadowProp,
-          { backgroundColor: colors.mainButton },
-        ]}>
-        <Text style={[styles.btnText, { color: colors.text }]}>Slå op</Text>
-      </TouchableOpacity>
+      <View style={{
+        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '80%',
+        marginTop: '5%'
+      }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text>Anonym</Text>
+          <Switch
+            trackColor={{ false: colors.dark, true: colors.middle }}
+            thumbColor={anonymousEnabled ? colors.border : colors.light}
+            ios_backgroundColor={colors.dark}
+            onValueChange={() => setAnonymousEnabled(previousState => !previousState)}
+            value={anonymousEnabled}
+            style={{ marginHorizontal: '3%' }}
+          />
+        </View>
+        <TouchableOpacity
+          onPress={() => handlePost()}
+          style={[
+            styles.postBtn,
+            styles.shadowProp,
+            { backgroundColor: colors.dark },
+          ]}>
+          <Text style={[styles.btnText, { color: 'white' }]}>Slå op</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -92,12 +110,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   postBtn: {
-    width: '50%',
+    width: '25%',
     height: 30,
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
   },
   shadowProp: {
     shadowColor: '#000',

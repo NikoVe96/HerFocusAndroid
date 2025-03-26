@@ -1,7 +1,6 @@
-import React, { useState, useCallback } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState, useCallback, useEffect } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert } from "react-native";
 import { useNavigation, useTheme, useFocusEffect } from '@react-navigation/native';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import NextTaskW from './Widgets/NextTaskW';
@@ -9,6 +8,7 @@ import { useUser } from '../../Components/UserContext';
 import TaskProgress from '../Structure components/TaskProgress';
 import Parse from 'parse/react-native';
 import Streak from './Widgets/Streak';
+import DailyOverviewW from './Widgets/DailyOverviewW';
 
 
 function Home() {
@@ -18,25 +18,30 @@ function Home() {
     const { width, height, colors } = useTheme();
     const scaleFactor = Math.min(width / 375, height / 667);
     const navigation = useNavigation();
-    const [sorting, setSorting] = useState('boxes');
-    const [open, setOpen] = useState(false);
-    const [sortingOptions, setSortingOptions] = useState([
-        { label: 'Liste', value: 'list' },
-        { label: 'Ruder', value: 'boxes' }
-    ]);
     const [taskProgress, setTaskProgress] = useState(0);
-    const { ID, username } = useUser();
+    const { ID, updateUserProfile, name } = useUser();
     const [remainingTasksArray, setRemainingTasks] = useState([]);
     const [completedTasksArray, setCompletedTasks] = useState([]);
     const [checked, setChecked] = useState(false);
+    const [userComponentOrder, setUserComponentOrder] = useState([
+        "TaskProgress",
+        "NextTaskW",
+        "Streak",
+        "DailyOverviewW",
+    ]);
 
     useFocusEffect(
         useCallback(() => {
             remainingTasks();
             updateTaskProgress();
+            getOrder();
             return () => { };
         }, [])
     );
+
+    useEffect(() => {
+        updateUserProfile();
+    }, []);
 
     const taskPercentage = async function (completedTasks, remainingTasks) {
         const totalTasks = remainingTasks.length + completedTasks.length;
@@ -73,51 +78,72 @@ function Home() {
         return Results;
     }
 
-    const taskCompleted = async function (task) {
-        task.set('completed', true);
-        await task.save();
-        updateTaskProgress();
-        setChecked(false);
+    async function getOrder() {
+        try {
+            let query = new Parse.Query("Settings");
+            query.contains('user', ID);
+            let results = await query.find();
+            if (results.length > 0) {
+                const order = results[0].get('homeOrder');
+                if (Array.isArray(order)) {
+                    setUserComponentOrder(order);
+                } else {
+                    console.warn("homeOrder field is not an array:", order);
+                }
+            } else {
+                console.warn("No settings found for this user.");
+            }
+        } catch (error) {
+            console.error("Error saving new order:", error);
+            Alert.alert("Beklager, der skete en fejl.");
+        }
+    }
+
+    const componentMap = {
+        TaskProgress: <TaskProgress taskProgress={taskProgress} key="TaskProgress" />,
+        NextTaskW: (
+            <NextTaskW
+                remainingTasksArray={remainingTasksArray}
+                checked={checked}
+                taskCompleted={(task) => {
+                    task.set('completed', true);
+                    task.save().then(updateTaskProgress);
+                    setChecked(false);
+                }}
+                key="NextTaskW"
+            />
+        ),
+        Streak: <Streak key="Streak" />,
+        DailyOverviewW: <DailyOverviewW key="DailyOverviewW" />,
     };
 
     return (
         <SafeAreaView>
             <ScrollView>
-                <Text style={styles.header}>
-                    Hej Niko!
-                </Text>
-                <Text style={styles.text}>
-                    Hvordan har du det i dag?
-                    Er du klar til at tackle dagen?
-                </Text>
-                <TouchableOpacity style={{ alignSelf: 'flex-end', marginRight: '5%', marginBottom: '5%' }}>
-                    <FontAwesomeIcon
-                        icon={faGear} size={25} />
+                <Text style={[styles.header, { color: colors.lightText }]}>Hej {name}!</Text>
+                <Text style={[styles.text, { color: colors.lightText }]}>Er du klar til at tackle dagen?</Text>
+                <TouchableOpacity style={styles.gearBtn}
+                    onPress={() => navigation.navigate('Home order')}>
+                    <FontAwesomeIcon icon={faGear} size={25} color={colors.dark} />
                 </TouchableOpacity>
-                <View style={{ marginBottom: '5%' }}>
-                    <View style={styles.widget}>
-                        <TaskProgress
-                            taskProgress={taskProgress} />
-                    </View>
-                    <View style={styles.widget}>
-                        <NextTaskW
-                            remainingTasksArray={remainingTasksArray}
-                            checked={checked}
-                            taskCompleted={taskCompleted} />
-                    </View>
-                    <View style={styles.widget}>
-                        <Streak />
-                    </View>
+                <View style={styles.widgetsContainer}>
+                    {userComponentOrder.map((key) => (
+                        <View style={styles.widgetWrapper} key={key}>
+                            {componentMap[key]}
+                        </View>
+                    ))}
                 </View>
             </ScrollView>
         </SafeAreaView>
     );
-
 }
 
 export default Home;
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     header: {
         fontSize: 35,
         fontWeight: 'bold',
@@ -128,23 +154,42 @@ const styles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'center',
         marginTop: '5%',
-        textAlign: 'center'
+        textAlign: 'center',
     },
-    divider: {
+    gearBtn: {
+        alignSelf: 'flex-end',
+        marginRight: '5%',
+        marginTop: '10%'
+    },
+    widgetsContainer: {
+        marginVertical: '5%',
+        marginHorizontal: '5%'
+    },
+    widgetWrapper: {
+        marginVertical: 10,
+    },
+    button: {
+        alignContent: 'center',
         borderWidth: 1,
         borderRadius: 10,
-        width: '70%',
-        alignSelf: 'center',
-        marginVertical: '8%',
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        padding: '5%',
+        marginVertical: '3%',
+        borderWidth: 0.4,
+        borderBottomWidth: 4,
+        borderColor: "#F8B52D",
+        borderRadius: 15,
+        justifyContent: 'center'
     },
-    row: {
-        flexDirection: 'row',
-        marginHorizontal: '2%',
-
-    },
-    widget: {
-        flex: 1,
-        marginHorizontal: '1%',
-        padding: '2%'
+    buttonText: {
+        fontSize: 22,
+        textAlign: 'center',
     }
 })

@@ -84,7 +84,7 @@ const SignUp = () => {
               isSignUp={true}></PickAvatar>
           </View>
           <TouchableOpacity
-            style={[styles.signUpBtn, { backgroundColor: colors.mainButton }]}
+            style={[styles.signUpBtn, { backgroundColor: colors.dark }]}
             onPress={() =>
               handleSignup(
                 name,
@@ -105,7 +105,7 @@ const SignUp = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate('Login')}
-            style={[styles.signUpBtn, { backgroundColor: colors.mainButton }]}>
+            style={[styles.signUpBtn, { backgroundColor: colors.dark }]}>
             <Text style={[styles.btnText, { fontSize: 15 * scaleFactor }]}>
               Tilbage til login
             </Text>

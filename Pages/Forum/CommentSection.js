@@ -67,7 +67,7 @@ const CommentSection = ({ comments, setComments, postId }) => {
     <ScrollView>
       <View style={styles.container}>
         <View
-          style={[styles.seperator, { backgroundColor: colors.border }]}></View>
+          style={[styles.seperator, { backgroundColor: colors.dark }]}></View>
         <View style={styles.sectionContent}>
           {comments.length == 0 ? (
             <Text></Text>
@@ -78,7 +78,7 @@ const CommentSection = ({ comments, setComments, postId }) => {
                 style={[
                   styles.commentContainer,
                   styles.shadowProp,
-                  { backgroundColor: colors.mainButton },
+                  { backgroundColor: colors.dark },
                 ]}>
                 <View style={styles.upperDisplay}>
                   <View style={styles.userInfo}>
@@ -87,10 +87,10 @@ const CommentSection = ({ comments, setComments, postId }) => {
                       style={styles.avatarImage}
                     />
                     <View>
-                      <Text style={[styles.user, { color: colors.text }]}>
+                      <Text style={[styles.user, { color: colors.darkText }]}>
                         {comment.get('username')}
                       </Text>
-                      <Text style={[styles.when, { color: colors.text }]}>
+                      <Text style={[styles.when, { color: colors.darkText }]}>
                         Tilføjet{' '}
                         {Math.round(
                           (new Date().getTime() -
@@ -106,7 +106,7 @@ const CommentSection = ({ comments, setComments, postId }) => {
                       <FontAwesomeIcon
                         icon={faTrash}
                         size={15}
-                        style={[styles.trashIcon, { color: colors.iconLight }]}
+                        style={[styles.trashIcon, { color: 'white' }]}
                       />
                     </TouchableOpacity>
                   ) : (
@@ -117,12 +117,12 @@ const CommentSection = ({ comments, setComments, postId }) => {
                     onBackdropPress={() => setModalVisible(false)}>
                     <View
                       style={{
-                        backgroundColor: colors.background,
+                        backgroundColor: colors.light,
                         padding: 10,
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderWidth: 1,
-                        borderColor: colors.background,
+                        borderColor: colors.light,
                         borderRadius: 10,
                       }}>
                       <Text style={styles.modalTitle}>
@@ -151,9 +151,9 @@ const CommentSection = ({ comments, setComments, postId }) => {
                   style={[
                     styles.comment,
                     styles.shadowProp,
-                    { backgroundColor: colors.subButton },
+                    { backgroundColor: colors.middle },
                   ]}>
-                  <Text style={[styles.commentText, { color: colors.text }]}>
+                  <Text style={[styles.commentText, { color: colors.darkText }]}>
                     {comment.get('commentContent')}
                   </Text>
                 </View>

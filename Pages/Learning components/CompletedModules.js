@@ -47,14 +47,14 @@ export const CompletedModules = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.text, fontSize: 22 * scaleFactor },
+            { color: colors.darkText, fontSize: 22 * scaleFactor },
           ]}>
           Udførte øvelser
         </Text>
         <Text
           style={[
             styles.subTitle,
-            { color: colors.text, fontSize: 16 * scaleFactor },
+            { color: colors.darkText, fontSize: 16 * scaleFactor },
           ]}>
           Her kan du finde de øvelser du har fuldført i læringsmodulet
         </Text>
@@ -67,19 +67,19 @@ export const CompletedModules = () => {
               <View
                 style={[
                   styles.answerBox,
-                  { backgroundColor: colors.subButton },
+                  { backgroundColor: colors.middle },
                 ]}>
                 <Text
                   style={[
                     styles.module,
-                    { color: colors.text, fontSize: 18 * scaleFactor },
+                    { color: colors.darkText, fontSize: 18 * scaleFactor },
                   ]}>
                   {moduleAnswer.get('module')}
                 </Text>
                 <View
                   style={[
                     styles.seperator,
-                    { backgroundColor: colors.text },
+                    { backgroundColor: colors.darkText },
                   ]}></View>
                 {moduleAnswer.get('answers').map((answer, idx) => (
                   <View key={idx}>

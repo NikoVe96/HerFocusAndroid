@@ -1,11 +1,9 @@
 import { format, addDays, addWeeks, addMonths, isBefore, isEqual } from 'date-fns';
 
-const generateRecurringDates = (startDate) => {
+const generateRecurringDates = (startDate, endDate, interval, recurrence) => {
     const dates = [];
     let currentDate = startDate;
     const maxIterations = 1000;
-    console.log('interval: ' + interval);
-    console.log('recurrence: ' + recurrence);
 
     const formatDate = (date) => format(date, 'yyyy-MM-dd');
 

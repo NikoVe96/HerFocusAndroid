@@ -32,10 +32,10 @@ export const Forum = ({ route }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.container}>
-          <Text style={[styles.title, { color: colors.text }]}>{forumTitle}</Text>
+          <Text style={[styles.title, { color: colors.darkText }]}>{forumTitle}</Text>
           <View
-            style={[styles.descContainer, { backgroundColor: colors.subButton }]}>
-            <Text style={[styles.description, { color: colors.text }]}>
+            style={[styles.descContainer, { backgroundColor: colors.middle }]}>
+            <Text style={[styles.description, { color: colors.darkText }]}>
               {forumDescription}
             </Text>
           </View>

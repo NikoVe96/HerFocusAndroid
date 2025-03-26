@@ -22,7 +22,7 @@ const NextTaskW = ({
     };
 
     return (
-        <View style={[styles.widget, { borderColor: colors.subButton }]}>
+        <View style={[styles.widget, { borderColor: colors.middle }]}>
             {remainingTasksArray.length < 1 ? (
                 <View
                     style={{
@@ -47,10 +47,10 @@ const NextTaskW = ({
                         Næste to-do
                     </Text>
                     <View style={styles.rowView}>
-                        <Text style={{ fontSize: 36, color: colors.text }}>
+                        <Text style={{ fontSize: 36, color: colors.darkText }}>
                             {remainingTasksArray[0].get('emoji')}
                         </Text>
-                        <Text style={{ fontSize: 26, marginHorizontal: 10, color: colors.text }}>
+                        <Text style={{ fontSize: 26, marginHorizontal: 10, color: colors.darkText }}>
                             {remainingTasksArray[0].get('name')}
                         </Text>
                     </View>
@@ -59,25 +59,25 @@ const NextTaskW = ({
                             icon={faStopwatch}
                             size={25}
                             style={{ marginHorizontal: 5 }}
-                            color={colors.border}
+                            color={colors.dark}
                         />
-                        <Text style={{ fontSize: 18, color: colors.text }}>
+                        <Text style={{ fontSize: 18, color: colors.darkText }}>
                             Fra {remainingTasksArray[0].get('startTime')}
                             {' '}til {remainingTasksArray[0].get('endTime')}
 
                         </Text>
                     </View>
-                    {remainingTasksArray[0].get('description') == null ?
-                        <Text style={{ marginBottom: '10%', color: colors.text }}></Text>
+                    {remainingTasksArray[0].get('description') == '' ?
+                        <Text style={{ marginBottom: '10%', color: colors.darkText }}></Text>
                         : <ScrollView
                             contentContainerStyle={{
                                 borderWidth: 1,
-                                borderColor: colors.border,
+                                borderColor: colors.dark,
                                 borderRadius: 10,
                                 padding: 10,
                                 marginHorizontal: 10,
                             }}>
-                            <Text style={{ fontSize: 16, marginBottom: 20, color: colors.text }}>{remainingTasksArray[0].get('description')}</Text>
+                            <Text style={{ fontSize: 16, marginBottom: 20, color: colors.darkText }}>{remainingTasksArray[0].get('description')}</Text>
                         </ScrollView>
                     }
                     <View style={[styles.rowView, { paddingBottom: '5%' }]}>
@@ -86,9 +86,9 @@ const NextTaskW = ({
                             <BouncyCheckbox
                                 key={remainingTasksArray[0].id}
                                 size={25}
-                                fillColor={colors.mainButton}
-                                unfillColor={colors.background}
-                                iconStyle={{ borderColor: colors.subButton }}
+                                fillColor={colors.dark}
+                                unfillColor={colors.light}
+                                iconStyle={{ borderColor: colors.middle }}
                                 innerIconStyle={{ borderWidth: 2 }}
                                 onPress={() => taskCompleted(remainingTasksArray[0])}
                                 isChecked={checked}
@@ -101,7 +101,7 @@ const NextTaskW = ({
                             <FontAwesomeIcon
                                 icon={faFaceTired}
                                 size={25}
-                                color={colors.border}
+                                color={colors.dark}
                             />
                             <Text style={{ fontSize: 18, marginLeft: 12 }}>
                                 Ramt væggen?
@@ -113,7 +113,7 @@ const NextTaskW = ({
             <Modal
                 isVisible={isWallModalVisible}
                 onBackdropPress={() => setWallModalVisible(false)}
-                backdropColor={colors.background}
+                backdropColor={colors.light}
                 animationType="slide"
                 style={{ backgroundColor: 'white', borderColor: 'white', borderRadius: 10, marginVertical: 100 }}
             >

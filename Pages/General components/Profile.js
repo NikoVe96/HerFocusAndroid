@@ -7,30 +7,20 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  Modal,
   FlatList
 } from 'react-native';
-import Parse from 'parse/react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {
-  faUser,
-  faEnvelope,
-  faImage,
-} from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from '@react-navigation/native';
 import { useUser } from '../../Components/UserContext';
 import { useFocusEffect } from '@react-navigation/native';
-import SelectAvatar from './SelectAvatar';
+import Parse from 'parse/react-native';
+import Modal from "react-native-modal";
 
-
-export const Profile = () => {
+export const Profile = ({ navigation }) => {
   const { colors } = useTheme();
-  const { username, name, email, updateUserProfile, ID } = useUser();
+  const { username, name, email, updateUserProfile, ID, handleLogout, age, profilePicture } = useUser();
   const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
-  const [profilePicture, setProfilePicture] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [newAvatar, setNewAvatar] = useState();
+  const [isModalVisible, setModalVisible] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -39,114 +29,152 @@ export const Profile = () => {
     }, []),
   );
 
-  useEffect(() => {
-    async function getCurrentUser() {
-      const currentUser = await Parse.User.currentAsync();
-      if (currentUser !== null) {
-        setProfilePicture(currentUser.get('profilePicture'));
-        console.log('Profile picture: ' + profilePicture.url());
-      }
+  async function deleteAccount() {
+    try {
+      await currentUser.destroy();
+      Alert.alert('Your account has successfully been deleted')
+      //Logout and return to login page
+      navigation.navigate('Login');
+      return true;
+    } catch (error) {
+      Alert.alert('Error deleting your account')
+      return false;
     }
-    getCurrentUser();
-  }, [username]);
-
-  const handleAvatarSelect = (avatar) => {
-    setNewAvatar(avatar);
-    setModalVisible(false);
-    console.log(newAvatar);
-  };
-
-  async function save() {
-    const currentUser = await Parse.User.currentAsync();
-    currentUser.set('profilePicture', newAvatar)
-    console.log('New profile picture has been set');
   }
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.userNameContainer}>
-          {profilePicture && <Image source={{ uri: profilePicture.url() }} style={styles.avatarImage} />}
+          {profilePicture ?
+            <Image source={{ uri: profilePicture.url() }} style={styles.avatarImage} />
+            : <View style={styles.avatarImage} />}
           <Text
             style={[
               styles.user,
-              { color: colors.text, fontSize: 25 * scaleFactor },
+              { color: colors.darkText, fontSize: 30 * scaleFactor, fontWeight: 'bold' },
             ]}>
+            {name}
+          </Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignContent: 'center', marginBottom: '10%', marginHorizontal: '2%', justifyContent: 'space-evenly' }}>
+          <Text style={[styles.userData, { color: colors.dark }]}>
             {username}
           </Text>
-        </View>
-        <View style={styles.seperator}></View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <FontAwesomeIcon
-            icon={faUser}
-            style={[styles.icons, { color: colors.text }]}
-            size={20}
-          />
-          <Text
-            style={[
-              styles.userInfo,
-              { color: colors.text, fontSize: 18 * scaleFactor },
-            ]}>
-            {' '}
-            {name}{' '}
+          <Text style={{ color: colors.dark }} >|</Text>
+          <Text style={[styles.userData, { color: colors.dark }]}>
+            {email}
+          </Text>
+          <Text style={{ color: colors.dark }} >|</Text>
+          <Text style={[styles.userData, { color: colors.dark }]}>
+            {age}
           </Text>
         </View>
-        <View
-          style={[
-            styles.seperator,
-            { backgroundColor: colors.mainButton },
-          ]}></View>
-        <View style={styles.userContainer}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <FontAwesomeIcon
-              icon={faEnvelope}
-              style={[styles.icons, { color: colors.text }]}
-              size={20}
-            />
-            <Text
-              style={[
-                styles.userInfo,
-                { color: colors.text, fontSize: 18 * scaleFactor },
-              ]}>
-              {email}
-            </Text>
+        <View style={{ marginHorizontal: '5%' }}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle }]}
+            onPress={() => navigation.navigate('Edit profile')}>
+            <Text style={[styles.buttonText, { color: colors.dark }]}>Rediger profil</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle }]}
+            onPress={() => navigation.navigate('Settings')}>
+            <Text style={[styles.buttonText, { color: colors.middle }]}>Indstillinger</Text>
+          </TouchableOpacity>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: '#a1271f', width: '48%', borderColor: '#751a14' }]}
+              onPress={() => setModalVisible(true)}>
+              <Text style={[styles.buttonText, { color: 'white' }]}>Slet profil</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, width: '48%' }]}
+              onPress={handleLogout}>
+              <Text style={[styles.buttonText, { color: colors.dark }]}>Log ud</Text>
+            </TouchableOpacity>
           </View>
         </View>
-        <View
-          style={[
-            styles.seperator,
-            { backgroundColor: colors.mainButton },
-          ]}></View>
-        <TouchableOpacity style={{ padding: '5%', backgroundColor: 'white', marginHorizontal: '5%', marginBottom: '10%' }}
-          onPress={() => setModalVisible(true)}>
-          <Text>
-            Change profile picture
-          </Text>
-        </TouchableOpacity>
         <Modal
-          visible={modalVisible}
-          transparent={true}
-          animationType='slide'
-          backdropColor='black'
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <SelectAvatar
-                onSelect={handleAvatarSelect} />
+          isVisible={isModalVisible}
+          onBackdropPress={() => setModalVisible(false)}
+          animationIn={'bounceIn'}
+          animationOut={'bounceOut'}>
+          <View
+            style={{
+              backgroundColor: colors.light,
+              padding: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderWidth: 1,
+              borderColor: colors.light,
+              borderRadius: 10,
+            }}>
+            <Text
+              style={{
+                color: colors.darkText,
+                fontSize: 24 * scaleFactor,
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
+              Er du sikker på at du vil slette din konto?
+            </Text>
+            <Text
+              style={{
+                color: colors.darkText,
+                fontSize: 20 * scaleFactor,
+                textAlign: 'center',
+                marginVertical: 10,
+              }}>
+              Handlingen kan ikke fortrydes og din data vil blive slettet
+              permanent
+            </Text>
+            <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+              <TouchableOpacity
+                onPress={() => setModalVisible(false)}
+                style={{
+                  padding: 5,
+                  borderWidth: 1,
+                  backgroundColor: 'darkred',
+                  flex: 1,
+                  marginHorizontal: 10,
+                  borderWidth: 1,
+                  borderColor: 'darkred',
+                  borderRadius: 10,
+                }}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}>
+                  Hov, det her var vidst en fejl
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={deleteAccount}
+                style={{
+                  padding: 5,
+                  borderWidth: 1,
+                  backgroundColor: 'green',
+                  flex: 1,
+                  marginHorizontal: 10,
+                  borderWidth: 1,
+                  borderColor: 'green',
+                  borderRadius: 10,
+                }}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}>
+                  Ja tak, slet min konto
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
-        <TouchableOpacity style={{ backgroundColor: 'white', padding: '5%', marginHorizontal: '5%' }}
-          onPress={() => save()}>
-          <Text>Gem</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </ScrollView >
+    </View >
   );
 };
 
@@ -162,50 +190,8 @@ const styles = StyleSheet.create({
   avatarImage: {
     width: 130,
     height: 130,
-  },
-  user: {
-    marginTop: 20,
-  },
-  seperator: {
-    width: '100%',
-    height: 1,
-    marginBottom: 20,
-  },
-  userInfo: {
-    fontSize: 20,
-    marginBottom: 20,
-    marginLeft: 20,
-  },
-  userContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  icons: {
-    marginLeft: 30,
-    marginBottom: 20,
-  },
-  iconEdit: {
-    marginRight: 20,
-    marginBottom: 20,
-  },
-  changeAvatar: {
-    marginLeft: 10,
-    marginBottom: '5%'
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgb(0, 0, 0, 0.9)',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: '2%',
-    alignItems: 'center',
-    shadowColor: '#000',
+    borderRadius: 30,
+    shadowColor: 'black',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -213,8 +199,40 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    height: '80%'
   },
+  user: {
+    marginTop: 20,
+  },
+  userData: {
+    fontSize: 16,
+    marginHorizontal: '2%',
+    //width: '30%',
+    textAlign: 'center'
+  },
+  button: {
+    alignContent: 'center',
+    borderWidth: 1,
+    borderRadius: 10,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    padding: '5%',
+    marginVertical: '3%',
+    borderWidth: 0.4,
+    borderBottomWidth: 4,
+    borderColor: "#F8B52D",
+    borderRadius: 15,
+
+  },
+  buttonText: {
+    fontSize: 22,
+    textAlign: 'center',
+  }
 });
 
 export default Profile;

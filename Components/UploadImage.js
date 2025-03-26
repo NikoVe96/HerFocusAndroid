@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { View, Button, Image, StyleSheet, Alert } from 'react-native';
+import { View, Button, Image, StyleSheet, Alert, TouchableOpacity, Text } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Parse from 'parse/react-native.js';
+import { useNavigation, useTheme } from '@react-navigation/native';
 
-const UploadImage = () => {
+const UploadImage = ({ onSelect }) => {
     const [image, setImage] = useState(null);
+    const { colors } = useTheme();
+    const { navigation } = useNavigation();
 
     async function upload() {
         if (!image || !image.base64) {
@@ -14,12 +17,10 @@ const UploadImage = () => {
         const { base64 } = image;
         const fileName = image.fileName || 'photo.jpg';
 
-        // Ensure the base64 string includes the MIME prefix
         const base64String = base64.startsWith('data:')
             ? base64
             : 'data:image/jpeg;base64,' + base64;
 
-        // Create Parse.File with content type explicitly provided as the third argument.
         const parseFile = new Parse.File(fileName, { base64: base64String }, 'image/jpeg');
         console.log(parseFile);
 
@@ -27,18 +28,14 @@ const UploadImage = () => {
             const currentUser = await Parse.User.currentAsync();
             const responseFile = await parseFile.save();
             console.log('File saved:', responseFile);
-            //const Gallery = Parse.Object.extend('Gallery');
-            //const gallery = new Gallery();
             currentUser.set('profilePicture', responseFile);
 
             await currentUser.save();
-
-            // Optionally update the user profile
-            // currentUser.set('profilePicture', gallery);
-            Alert.alert('The file has been saved to Back4app.');
+            Alert.alert('Dit profilbillede er blevet gemt.');
+            onSelect(responseFile);
         } catch (error) {
             console.log('Error saving file:', error);
-            Alert.alert('The file either could not be read, or could not be saved to Back4app.');
+            Alert.alert('Der skete en fejl. Vi kunne ikke gemme dit billede.');
         }
     }
 
@@ -65,9 +62,13 @@ const UploadImage = () => {
 
     return (
         <View style={styles.container}>
-            <Button onPress={pickImage} title="Pick an image from gallery" color="#841584" />
-            {image && <Image source={{ uri: image.uri }} style={styles.currentImage} />}
-            {image && <Button title="Upload" color="green" onPress={upload} />}
+            <TouchableOpacity onPress={pickImage} style={[styles.button, { backgroundColor: colors.light }]} >
+                <Text style={styles.buttonText}>Vælg et billede fra dit galleri</Text>
+            </TouchableOpacity>
+            {image && <Image source={{ uri: image.uri }} style={styles.avatarImage} />}
+            {image && <TouchableOpacity style={[styles.button, { backgroundColor: colors.light }]} onPress={upload}>
+                <Text style={styles.buttonText}>Gem billede</Text>
+            </TouchableOpacity>}
         </View>
     );
 };
@@ -83,6 +84,43 @@ const styles = StyleSheet.create({
         height: 150,
         alignSelf: 'center',
         marginVertical: 10,
+    },
+    button: {
+        alignContent: 'center',
+        borderWidth: 1,
+        borderRadius: 10,
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        padding: '5%',
+        marginVertical: '3%',
+        borderWidth: 0.4,
+        borderBottomWidth: 4,
+        borderColor: "#F8B52D",
+        borderRadius: 15,
+
+    },
+    buttonText: {
+        fontSize: 18,
+        textAlign: 'center',
+    },
+    avatarImage: {
+        width: 130,
+        height: 130,
+        borderRadius: 30,
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
 });
 

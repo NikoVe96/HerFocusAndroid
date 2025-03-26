@@ -19,7 +19,6 @@ export const UserSettings = ({ navigation }) => {
   const routinesToggleSwitch = () => setIsRoutinesEnabled(previousState => !previousState);
   const [isPostEnabled, setIsPostEnabled] = useState(false);
   const postToggleSwitch = () => setIsPostEnabled(previousState => !previousState);
-  const [isModalVisible, setModalVisible] = useState(false);
   const [currentUser, setCurrentUser] = useState();
   const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
@@ -40,27 +39,6 @@ export const UserSettings = ({ navigation }) => {
     getCurrentUser();
   }, []);
 
-  async function deleteAccount() {
-    try {
-      await currentUser.destroy();
-      Alert.alert('Your account has successfully been deleted')
-      //Logout and return to login page
-      navigation.navigate('Login');
-      return true;
-    } catch (error) {
-      Alert.alert('Error deleting your account')
-      return false;
-    }
-  }
-
-  const showModal = () => {
-    setModalVisible(true);
-  };
-
-  const hideModal = () => {
-    setModalVisible(false);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -68,20 +46,18 @@ export const UserSettings = ({ navigation }) => {
           <Text
             style={[
               styles.textStyle,
-              { color: colors.text, fontSize: 30 * scaleFactor },
+              { color: colors.darkText, fontSize: 30 * scaleFactor },
             ]}>
             Indstillinger
           </Text>
         </View>
-        <View
-          style={[styles.seperator, { backgroundColor: colors.border }]}></View>
-        <View style={[styles.colorView, { backgroundColor: colors.subButton }]}>
+        <View style={[styles.colorView, { backgroundColor: colors.middle }]}>
           <Text
             style={{
               fontSize: 20 * scaleFactor,
               flex: 1,
               alignSelf: 'center',
-              color: colors.text,
+              color: colors.darkText,
             }}>
             Skift farvetema
           </Text>
@@ -122,14 +98,14 @@ export const UserSettings = ({ navigation }) => {
         <View
           style={[
             styles.notificationView,
-            { backgroundColor: colors.subButton },
+            { backgroundColor: colors.middle },
           ]}>
           <Text
             style={{
               fontSize: 20 * scaleFactor,
               flex: 1,
               alignSelf: 'center',
-              color: colors.text,
+              color: colors.darkText,
             }}>
             Notifikationer
           </Text>
@@ -139,13 +115,13 @@ export const UserSettings = ({ navigation }) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{ flex: 6, fontSize: 18, color: colors.text }}>
+            <Text style={{ flex: 6, fontSize: 18, color: colors.darkText }}>
               To-do opgaver
             </Text>
             <Switch
-              trackColor={{ false: colors.mainButton, true: colors.background }}
-              thumbColor={isTasksEnabled ? colors.border : colors.background}
-              ios_backgroundColor={colors.mainButton}
+              trackColor={{ false: colors.dark, true: colors.light }}
+              thumbColor={isTasksEnabled ? colors.dark : colors.light}
+              ios_backgroundColor={colors.dark}
               onValueChange={tasksToggleSwitch}
               value={isTasksEnabled}
               style={{ flex: 1 }}
@@ -157,13 +133,13 @@ export const UserSettings = ({ navigation }) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{ flex: 6, fontSize: 18, color: colors.text }}>
+            <Text style={{ flex: 6, fontSize: 18, color: colors.darkText }}>
               Kalender events
             </Text>
             <Switch
-              trackColor={{ false: colors.mainButton, true: colors.background }}
-              thumbColor={isEventsEnabled ? colors.border : colors.background}
-              ios_backgroundColor={colors.mainButton}
+              trackColor={{ false: colors.dark, true: colors.light }}
+              thumbColor={isEventsEnabled ? colors.dark : colors.light}
+              ios_backgroundColor={colors.dark}
               onValueChange={eventsToggleSwitch}
               value={isEventsEnabled}
               style={{ flex: 1 }}
@@ -175,15 +151,15 @@ export const UserSettings = ({ navigation }) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{ flex: 6, fontSize: 18, color: colors.text }}>
+            <Text style={{ flex: 6, fontSize: 18, color: colors.darkText }}>
               Rutiner
             </Text>
             <Switch
-              trackColor={{ false: colors.mainButton, true: colors.background }}
+              trackColor={{ false: colors.dark, true: colors.light }}
               thumbColor={
-                isRoutinesEnabled ? colors.border : colors.background
+                isRoutinesEnabled ? colors.dark : colors.light
               }
-              ios_backgroundColor={colors.mainButton}
+              ios_backgroundColor={colors.dark}
               onValueChange={routinesToggleSwitch}
               value={isRoutinesEnabled}
               style={{ flex: 1 }}
@@ -199,109 +175,14 @@ export const UserSettings = ({ navigation }) => {
               Forum post kommentarer
             </Text>
             <Switch
-              trackColor={{ false: colors.mainButton, true: colors.background }}
-              thumbColor={isPostEnabled ? colors.border : colors.background}
-              ios_backgroundColor={colors.mainButton}
+              trackColor={{ false: colors.dark, true: colors.light }}
+              thumbColor={isPostEnabled ? colors.dark : colors.light}
+              ios_backgroundColor={colors.dark}
               onValueChange={postToggleSwitch}
               value={isPostEnabled}
               style={{ flex: 1 }}
             />
           </View>
-        </View>
-        <View
-          style={[styles.deleteView, { backgroundColor: colors.subButton }]}>
-          <TouchableOpacity
-            onPress={showModal}
-            style={[styles.deleteBtn, { backgroundColor: colors.mainButton, borderColor: colors.mainButton }]}>
-            <Text
-              style={{
-                fontSize: 20 * scaleFactor,
-                fontWeight: 'bold',
-                color: colors.text,
-              }}>
-              Slet din konto
-            </Text>
-          </TouchableOpacity>
-          <Modal
-            isVisible={isModalVisible}
-            onBackdropPress={() => setModalVisible(false)}>
-            <View
-              style={{
-                backgroundColor: colors.background,
-                padding: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderWidth: 1,
-                borderColor: colors.background,
-                borderRadius: 10,
-              }}>
-              <Text
-                style={{
-                  color: colors.text,
-                  fontSize: 24 * scaleFactor,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                Er du sikker på at du vil slette din konto?
-              </Text>
-              <Text
-                style={{
-                  color: colors.text,
-                  fontSize: 20 * scaleFactor,
-                  textAlign: 'center',
-                  marginVertical: 10,
-                }}>
-                Handlingen kan ikke fortrydes og din data vil blive slettet
-                permanent
-              </Text>
-              <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-                <TouchableOpacity
-                  onPress={hideModal}
-                  style={{
-                    padding: 5,
-                    borderWidth: 1,
-                    backgroundColor: 'darkred',
-                    flex: 1,
-                    marginHorizontal: 10,
-                    borderWidth: 1,
-                    borderColor: 'darkred',
-                    borderRadius: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 18,
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                    }}>
-                    Hov, det her var vidst en fejl
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={deleteAccount}
-                  style={{
-                    padding: 5,
-                    borderWidth: 1,
-                    backgroundColor: 'green',
-                    flex: 1,
-                    marginHorizontal: 10,
-                    borderWidth: 1,
-                    borderColor: 'green',
-                    borderRadius: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 18,
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                    }}>
-                    Ja tak, slet min konto
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -319,7 +200,7 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   title: {
-    marginTop: 40,
+    marginVertical: '5%',
     alignSelf: 'center',
   },
   textStyle: {

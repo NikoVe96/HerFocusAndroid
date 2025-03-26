@@ -22,7 +22,7 @@ export const StructureFrontPage = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.text, fontSize: 22 * scaleFactor },
+            { color: colors.darkText, fontSize: 22 * scaleFactor },
           ]}>
           Hvad skal der planlægges i dag?
         </Text>
@@ -30,12 +30,12 @@ export const StructureFrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Add task')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}
+            style={[styles.buttonGrad, { backgroundColor: colors.middle }]}
             onPress={() => navigation.navigate('Add task')}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Ny to-do
             </Text>
@@ -54,11 +54,11 @@ export const StructureFrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Add event')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Ny begivenhed
             </Text>
@@ -77,7 +77,7 @@ export const StructureFrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Add routine')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
             <Text
               style={[
                 styles.text,
@@ -100,11 +100,11 @@ export const StructureFrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Future todo')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Fremtidige to-dos
             </Text>

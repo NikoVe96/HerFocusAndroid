@@ -18,11 +18,11 @@ function AccordionItem({ children, title, icon, emoji, titleStyle, emojiStyle, t
 
     return (
         <View style={styles.accordContainer}>
-            <TouchableOpacity style={styles.accordHeader} onPress={toggleItem}>
+            <TouchableOpacity style={[styles.accordHeader, { color: colors.dark }]} onPress={toggleItem}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {icon !== null ?
-                        <FontAwesomeIcon icon={icon} size={20} color={colors.text} style={{ marginRight: 10 }} />
-                        : <Text style={[emojiStyle, { fontSize: 22, marginRight: 10, color: colors.text }]}>{emoji}</Text>
+                        <FontAwesomeIcon icon={icon} size={20} color={colors.dark} style={{ marginRight: 10 }} />
+                        : <Text style={[emojiStyle, { fontSize: 22, marginRight: 10, color: colors.dark }]}>{emoji}</Text>
                     }
                     {time == null ?
                         <Text style={[styles.accordTitle, titleStyle,]}>{title}</Text>
@@ -31,7 +31,7 @@ function AccordionItem({ children, title, icon, emoji, titleStyle, emojiStyle, t
                             <Text style={{ fontSize: 14 }}>{time}</Text>
                         </View>}
                 </View>
-                <FontAwesomeIcon icon={faCaretDown} color={colors.text} />
+                <FontAwesomeIcon icon={faCaretDown} color={colors.dark} />
             </TouchableOpacity>
             {expanded && body}
         </View>
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     },
     accordHeader: {
         padding: 12,
-        color: '#eee',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',

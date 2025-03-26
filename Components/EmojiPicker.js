@@ -7,12 +7,10 @@ import {
 import EmojiSelector, { Categories }
     from "react-native-emoji-selector";
 
-// Function component to select emoji 
 const EmojiPicker = () => {
     const [showPicker, setShowPicker] = useState(false);
     const [selectedEmoji, setSelectedEmoji] = useState("");
 
-    // Function to handle the selected emoji 
     const handleEmojiSelect = (emoji) => {
         setSelectedEmoji(emoji);
         setShowPicker(false);

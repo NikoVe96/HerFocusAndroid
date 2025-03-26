@@ -1,6 +1,7 @@
+import React, { useState, useEffect, useFocusEffect, useCallback } from 'react';
+
 export const handleTimeConfirm = (date) => {
     const [time, setTime] = useState('');
-    const [date, setDate] = useState(null);
 
     let minutes = date.getMinutes();
     let hours = date.getHours();
@@ -17,7 +18,7 @@ export const handleTimeConfirm = (date) => {
         + ':' + minutes);
     setDate(date);
 
-    return (time, date)
+    return (time)
 };
 
 export default handleTimeConfirm;

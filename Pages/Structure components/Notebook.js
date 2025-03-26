@@ -124,13 +124,13 @@ export const Notebook = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.text, fontSize: 30 * scaleFactor },
+            { color: colors.darkText, fontSize: 30 * scaleFactor },
           ]}>
           Noter
         </Text>
 
         <View
-          style={[styles.seperator, { backgroundColor: colors.border }]}></View>
+          style={[styles.seperator, { backgroundColor: colors.dark }]}></View>
         {notes && notes.length > 0 ? (
           notes.map((item, index) => (
             <AccordionItem
@@ -159,8 +159,8 @@ export const Notebook = () => {
               <TouchableOpacity
                 style={{
                   borderWidth: 1,
-                  backgroundColor: colors.subButton,
-                  borderColor: colors.subButton,
+                  backgroundColor: colors.middle,
+                  borderColor: colors.middle,
                   borderRadius: 10,
                   padding: 10,
                   elevation: 10,
@@ -182,10 +182,10 @@ export const Notebook = () => {
           onBackdropPress={() => setNotesModalVisible(false)}>
           <View
             style={{
-              backgroundColor: colors.background,
+              backgroundColor: colors.light,
               padding: 10,
               borderWidth: 1,
-              borderColor: colors.background,
+              borderColor: colors.light,
               borderRadius: 10,
             }}>
             <View
@@ -236,8 +236,8 @@ export const Notebook = () => {
             <TouchableOpacity
               style={{
                 borderWidth: 1,
-                backgroundColor: colors.subButton,
-                borderColor: colors.subButton,
+                backgroundColor: colors.middle,
+                borderColor: colors.middle,
                 borderRadius: 10,
                 padding: 10,
                 elevation: 10,
@@ -258,7 +258,7 @@ export const Notebook = () => {
         <FontAwesomeIcon
           icon={faPlusCircle}
           size={50 * scaleFactor}
-          color={colors.border}
+          color={colors.dark}
           style={styles.icon}
         />
       </TouchableOpacity>

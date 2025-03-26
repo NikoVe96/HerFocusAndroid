@@ -52,38 +52,38 @@ export const ArticlesDiagnosed = ({ route }) => {
             style={styles.press}
             onPress={() => readArticle(item)}>
             <View
-              style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+              style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
               <Text
                 style={{
                   fontWeight: 'bold',
                   fontSize: 18,
                   textAlign: 'center',
                   marginTop: 10,
-                  color: colors.text,
+                  color: colors.darkText,
                 }}>
                 {item.get('title')}
               </Text>
             </View>
             <View
-              style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+              style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
               <Text
                 style={{
                   fontWeight: 'bold',
                   fontSize: 18,
                   textAlign: 'center',
                   marginTop: 10,
-                  color: colors.text,
+                  color: colors.lightText,
                 }}>
                 {item.get('title')}
               </Text>
               <View
                 style={[
                   styles.seperator,
-                  { backgroundColor: colors.text },
+                  { backgroundColor: colors.lightText },
                 ]}></View>
               <Text
                 numberOfLines={4}
-                style={[styles.articleText, { color: colors.text }]}>
+                style={[styles.articleText, { color: colors.darkText }]}>
                 {item.get('text').replaceAll(/#|-|>|/gi, '')}
               </Text>
             </View>

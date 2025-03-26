@@ -42,21 +42,21 @@ const ForgotPassword = () => {
         <Text
           style={[
             styles.text,
-            { color: colors.text, fontSize: 16 * scaleFactor },
+            { color: colors.darkText, fontSize: 16 * scaleFactor },
           ]}>
           Har du glemt dit kodeord?
         </Text>
         <Text
           style={[
             styles.text,
-            { color: colors.text, fontSize: 16 * scaleFactor },
+            { color: colors.darkText, fontSize: 16 * scaleFactor },
           ]}>
           Pyt, det sker!
         </Text>
         <Text
           style={[
             styles.text1,
-            { color: colors.text, fontSize: 16 * scaleFactor },
+            { color: colors.darkText, fontSize: 16 * scaleFactor },
           ]}>
           Skriv din email i feltet, og så får du tilsendt en mail hvori, du kan
           ændre dit kodeord.
@@ -67,7 +67,7 @@ const ForgotPassword = () => {
           onChangeText={text => setEmail(text)}
           style={[styles.form, { fontSize: 14 * scaleFactor }]}></TextInput>
         <TouchableOpacity
-          style={[styles.loginBtn, { backgroundColor: colors.mainButton }]}
+          style={[styles.loginBtn, { backgroundColor: colors.dark }]}
           onPress={() => handleResendPassword()}
           titleColor="#000000">
           <Text style={[styles.btnText, { fontSize: 15 * scaleFactor }]}>
@@ -75,7 +75,7 @@ const ForgotPassword = () => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.createBtn, { backgroundColor: colors.subButton }]}
+          style={[styles.createBtn, { backgroundColor: colors.middle }]}
           onPress={() => navigation.navigate('Login')}>
           <Text style={[styles.btnText, { fontSize: 15 * scaleFactor }]}>
             Tilbage til Login

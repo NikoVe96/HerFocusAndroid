@@ -23,20 +23,20 @@ export const ViewArticle = ({ route }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <View style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+        <View style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
           <Text
             style={[
               styles.title,
-              { color: colors.text, fontSize: 25 * scaleFactor },
+              { color: colors.darkText, fontSize: 25 * scaleFactor },
             ]}>
             {article.get('title')}
           </Text>
           <View
-            style={[styles.seperator, { backgroundColor: colors.border }]}></View>
+            style={[styles.seperator, { backgroundColor: colors.dark }]}></View>
           <Text
             style={[
               styles.subTitle,
-              { color: colors.text, fontSize: 17 * scaleFactor },
+              { color: colors.darkText, fontSize: 17 * scaleFactor },
             ]}>
             {article.get('subHeader')}
           </Text>
@@ -44,15 +44,15 @@ export const ViewArticle = ({ route }) => {
         <View style={styles.articleText}>
           <Markdown
             style={{
-              paragraph: { fontSize: 18 * scaleFactor, color: colors.text },
-              bullet_list: { fontSize: 18, color: colors.text },
+              paragraph: { fontSize: 18 * scaleFactor, color: colors.darkText },
+              bullet_list: { fontSize: 18, color: colors.darkText },
               heading3: {
-                color: colors.text,
+                color: colors.darkText,
                 fontSize: 20 * scaleFactor,
                 marginTop: 30,
                 fontWeight: 'bold',
                 alignSelf: 'center',
-                backgroundColor: colors.mainButton,
+                backgroundColor: colors.dark,
                 borderRadius: 8,
                 paddingLeft: 15,
                 paddingRight: 15,
@@ -72,14 +72,14 @@ export const ViewArticle = ({ route }) => {
                 width: 200,
                 alignSelf: 'center',
               }}></View>
-            <Text style={{ color: colors.text }}>
+            <Text style={{ color: colors.darkText }}>
               Denne artikel er skrevet af
-              <Text style={{ fontWeight: 'bold', color: colors.text }}>
+              <Text style={{ fontWeight: 'bold', color: colors.darkText }}>
                 {' '}
                 {article.get('author')}.
               </Text>
             </Text>
-            <Text style={{ marginVertical: 10, color: colors.text }}>
+            <Text style={{ marginVertical: 10, color: colors.darkText }}>
               Hele artiklen samt mere info kan findes på
               <Text style={{ fontStyle: 'italic' }} onPress={goToLink}>
                 {' '}

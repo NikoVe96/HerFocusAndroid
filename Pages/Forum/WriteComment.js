@@ -63,7 +63,7 @@ function WriteComment({ postId, onNewComment }) {
         style={styles.createComment}>
         <FontAwesomeIcon
           icon={faPaperPlane}
-          style={[styles.icon, { color: colors.iconDark }]}
+          style={[styles.icon, { color: colors.darkText }]}
           size={25}
         />
       </TouchableOpacity>

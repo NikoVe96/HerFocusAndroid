@@ -49,28 +49,28 @@ export const PickTopics = () => {
   };
 
   const renderSwiper = articlesList => (
-    <Swiper showsPagination={true} loop={false} activeDotColor={colors.border} dotColor={colors.subButton}>
+    <Swiper showsPagination={true} loop={false} activeDotColor={colors.dark} dotColor={colors.middle}>
       {articlesList.map((item, index) => (
         <TouchableOpacity
           key={index}
           style={styles.press}
           onPress={() => readArticle(item)}>
-          <View style={[styles.articlesView, { backgroundColor: colors.subButton, borderColor: colors.subButton }]}>
+          <View style={[styles.articlesView, { backgroundColor: colors.middle, borderColor: colors.middle }]}>
             <Text
               style={{
                 fontWeight: 'bold',
                 fontSize: 16,
                 textAlign: 'center',
                 marginTop: 10,
-                color: colors.text,
+                color: colors.darkText,
               }}>
               {item.get('title')}
             </Text>
             <View
-              style={[styles.seperator, { backgroundColor: colors.text }]}></View>
+              style={[styles.seperator, { backgroundColor: colors.darkText }]}></View>
             <Text
               numberOfLines={3}
-              style={[styles.articleText, { color: colors.text }]}>
+              style={[styles.articleText, { color: colors.darkText }]}>
               {item.get('text').replaceAll(/#|-|>|/gi, '')}
             </Text>
           </View>
@@ -85,7 +85,7 @@ export const PickTopics = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.text, fontSize: 20 * scaleFactor },
+            { color: colors.darkText, fontSize: 20 * scaleFactor },
           ]}>
           Her kan du swipe igennem artiklerne og klikke på den, der fanger din
           interesse.
@@ -93,17 +93,17 @@ export const PickTopics = () => {
         <Text
           style={[
             styles.title2,
-            { color: colors.text, fontSize: 20 * scaleFactor },
+            { color: colors.darkText, fontSize: 20 * scaleFactor },
           ]}>
           God læsning!
         </Text>
         <View style={styles.press}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Hvad er ADHD?
             </Text>
@@ -112,11 +112,11 @@ export const PickTopics = () => {
         </View>
         <View style={styles.press}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Udfordringer med ADHD
             </Text>
@@ -125,11 +125,11 @@ export const PickTopics = () => {
         </View>
         <View style={styles.press}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Kvinder med ADHD/ADD
             </Text>
@@ -138,11 +138,11 @@ export const PickTopics = () => {
         </View>
         <View style={styles.press}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.mainButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               ADHD og Relationer
             </Text>

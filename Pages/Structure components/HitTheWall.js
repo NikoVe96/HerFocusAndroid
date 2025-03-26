@@ -71,7 +71,7 @@ const HitTheWall = ({
                         fontSize: 24,
                         marginLeft: '12%',
                         marginBottom: '10%',
-                        color: colors.text
+                        color: colors.darkText
                     }}>
                     {' '}
                     Har du ramt væggen?
@@ -97,7 +97,7 @@ const HitTheWall = ({
                             fontSize: 20,
                             fontWeight: 'bold',
                             marginVertical: '10%',
-                            color: colors.text
+                            color: colors.darkText
                         }}>
                         Udskyd
                     </Text>
@@ -119,8 +119,8 @@ const HitTheWall = ({
                     <TouchableOpacity
                         style={{
                             borderWidth: 1,
-                            borderColor: colors.mainButton,
-                            backgroundColor: colors.mainButton,
+                            borderColor: colors.dark,
+                            backgroundColor: colors.dark,
                             padding: '5%',
                             borderRadius: 10,
                             marginTop: '40%',
@@ -129,7 +129,7 @@ const HitTheWall = ({
                             elevation: 10,
                         }}
                         onPress={() => postpone()}>
-                        <Text style={{ textAlign: 'center', fontSize: 16, color: colors.text }}>
+                        <Text style={{ textAlign: 'center', fontSize: 16, color: colors.darkText }}>
                             Udskyd din to-do
                         </Text>
                     </TouchableOpacity>
@@ -137,12 +137,12 @@ const HitTheWall = ({
                 <View
                     style={{
                         borderWidth: 1,
-                        borderColor: colors.border,
+                        borderColor: colors.dark,
                         width: '5%',
                         height: '100%',
                         marginHorizontal: '5%',
                         flex: 0.1,
-                        backgroundColor: colors.border,
+                        backgroundColor: colors.dark,
                         borderRadius: 10,
                         alignSelf: 'flex-start',
                         elevation: 5,
@@ -160,7 +160,7 @@ const HitTheWall = ({
                             fontWeight: 'bold',
                             marginVertical: '10%',
                             textAlign: 'center',
-                            color: colors.text
+                            color: colors.darkText
                         }}>
                         Fremtidig to-do
                     </Text>
@@ -171,8 +171,8 @@ const HitTheWall = ({
                     <TouchableOpacity
                         style={{
                             borderWidth: 1,
-                            borderColor: colors.mainButton,
-                            backgroundColor: colors.mainButton,
+                            borderColor: colors.dark,
+                            backgroundColor: colors.dark,
                             padding: '5%',
                             borderRadius: 10,
                             marginTop: '63%',
@@ -181,7 +181,7 @@ const HitTheWall = ({
                             elevation: 10,
                         }}
                         onPress={() => futureTodo()}>
-                        <Text style={{ textAlign: 'center', fontSize: 16, color: colors.text }}>
+                        <Text style={{ textAlign: 'center', fontSize: 16, color: colors.darkText }}>
                             Flyt til fremtidige to-do's
                         </Text>
                     </TouchableOpacity>

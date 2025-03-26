@@ -48,11 +48,11 @@ const Quiz = ({ navigation, subject, module }) => {
       {Questions.map((question, questionIndex) => (
         <View
           key={questionIndex}
-          style={[styles.subContainer, { backgroundColor: colors.background }]}>
+          style={[styles.subContainer, { backgroundColor: colors.light }]}>
           <QuizQuestions
             index={questionIndex}
             question={question.question}
-            style={{ color: colors.text }}
+            style={{ color: colors.darkText }}
           />
           <View style={{ marginVertical: '10%' }}>
             {question.options.map((option, optionIndex) => (
@@ -67,11 +67,11 @@ const Quiz = ({ navigation, subject, module }) => {
                         ? isCorrect[questionIndex]
                           ? '#7be25b'
                           : '#f0222b'
-                        : colors.subButton,
+                        : colors.middle,
                     elevation: 5,
                   },
                 ]}>
-                <Text style={[styles.optionText, { color: colors.text }]}>
+                <Text style={[styles.optionText, { color: colors.darkText }]}>
                   {option}
                 </Text>
               </TouchableOpacity>
@@ -80,19 +80,19 @@ const Quiz = ({ navigation, subject, module }) => {
         </View>
       ))}
       <View style={{ alignItems: 'center' }}>
-        <Text style={[styles.scoreText, { color: colors.text }]}>
+        <Text style={[styles.scoreText, { color: colors.darkText }]}>
           Du fik {score} ud af {Questions.length} spørgsmål korrekt
         </Text>
         <TouchableOpacity
           style={[
             styles.button,
             {
-              backgroundColor: colors.mainButton,
-              borderColor: colors.mainButton,
+              backgroundColor: colors.dark,
+              borderColor: colors.dark,
             },
           ]}
           onPress={() => resetQuiz()}>
-          <Text style={{ fontSize: 20, color: colors.text, alignSelf: 'center' }}>
+          <Text style={{ fontSize: 20, color: colors.darkText, alignSelf: 'center' }}>
             Tag quizzen igen
           </Text>
         </TouchableOpacity>

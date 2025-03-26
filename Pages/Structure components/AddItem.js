@@ -8,6 +8,8 @@ import DatePicker from "react-native-date-picker";
 import { Picker } from '@react-native-picker/picker';
 import generateRecurringDates from "../../Components/RecurringDates";
 import ColorPicker from "../../Components/ColorPicker";
+import { colorChange } from "./ColorChange";
+import handleTimeConfirm from "../../Components/TimeConfirm";
 
 export const AddItem = ({ item }) => {
 
@@ -38,29 +40,7 @@ export const AddItem = ({ item }) => {
     const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
     const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
     const [dayEvent, setDayEvent] = useState(false);
-
-    useEffect(() => {
-        // Lav til seperat funktion/component
-        async function getCurrentUser() {
-            if (username === '') {
-                const currentUser = await Parse.User.currentAsync();
-                if (currentUser !== null) {
-                    setUsername(currentUser.getUsername());
-                    setID(currentUser.id);
-                }
-            }
-        }
-        getCurrentUser();
-        console.log(item)
-    }, [username]);
-
-    /* useFocusEffect(
-         useCallback(() => {
-             console.log(item);
-             return () => { };
-         }, []),
-     );
-     */
+    const [isDetailsEnabled, setDetailsEnabled] = useState(false);
 
     async function newItem(date) {
         console.log('BEFORE IF STATEMENT')
@@ -71,26 +51,16 @@ export const AddItem = ({ item }) => {
                 const currentUser = await Parse.User.currentAsync();
 
                 newTask.set('name', itemName);
-                console.log(itemName);
                 newTask.set('date', date);
-                console.log(date);
                 newTask.set('startTime', itemStartTime);
-                console.log(itemStartTime);
                 newTask.set('endTime', itemEndTime);
-                console.log(itemEndTime);
                 newTask.set('emoji', emoji);
-                console.log(emoji);
                 newTask.set('user', currentUser);
-                console.log(currentUser);
                 newTask.set('color', itemColor);
-                console.log(itemColor);
                 newTask.set('type', 'task');
                 newTask.set('description', description);
-                console.log(description);
                 newTask.set('tStart', tStart);
-                console.log(tStart);
                 await newTask.save();
-                console.log('Success: task saved')
             } catch (error) {
                 console.log('Error saving new task: ', error);
                 Alert.alert('Hovsa!',
@@ -146,13 +116,10 @@ export const AddItem = ({ item }) => {
     }
 
     async function saveItem() {
-        console.log('funktionen er startet');
-        console.log(isRecurringEnabled);
-        console.log('recurring is enabled: ' + isRecurringEnabled);
 
         try {
             if (isRecurringEnabled) {
-                const recurringDates = generateRecurringDates;
+                const recurringDates = generateRecurringDates(startDate, endDate, interval, recurrence);
                 for (const date of recurringDates) {
                     await newItem(date);
                 }
@@ -166,7 +133,7 @@ export const AddItem = ({ item }) => {
             clearInput();
         } catch (error) {
             console.log(`Error saving ${item}:`, error);
-            Alert.alert('Error', `An error occurred while saving the item.`);
+            Alert.alert('Der er sket en fejl.');
         }
     }
 
@@ -186,6 +153,14 @@ export const AddItem = ({ item }) => {
         const dates = generateRecurringDates(date);
         return dates
         // test if it works properly or if it should be saved in state
+    }
+
+    const formatTime = (date) => {
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    };
+
+    function setColor(color) {
+        setItemColor(color);
     }
 
     function clearInput() {
@@ -212,7 +187,7 @@ export const AddItem = ({ item }) => {
                         paddingHorizontal: 16,
                     }}>
                     <View>
-                        <Text style={[styles.text, { color: colors.text }]}>
+                        <Text style={[styles.text, { color: colors.darkText }]}>
                             Hvad skal din {item} hedde?
                         </Text>
                         <TextInput
@@ -222,32 +197,52 @@ export const AddItem = ({ item }) => {
                         />
                     </View>
                     <View>
-                        <ColorPicker />
+                        <ColorPicker
+                            onSelect={setColor} />
                     </View>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginVertical: '2%'
-                        }}>
-                        <Text
-                            style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.text }}>
-                            Tilbagevendene begivenhed
-                        </Text>
-                        <Switch
-                            trackColor={{ false: colors.mainButton, true: colors.subButton }}
-                            thumbColor={isRecurringEnabled ? colors.border : colors.background}
-                            ios_backgroundColor={colors.mainButton}
-                            onValueChange={() => setRecurringDayEnabled(previousState => !previousState)}
-                            value={isRecurringEnabled}
-                        />
+                    <View style={[styles.buttonSmall, {
+                        borderColor: colors.light, backgroundColor: colors.light,
+                        marginVertical: '5%'
+                    }]}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginVertical: '2%'
+                            }}>
+                            <Text
+                                style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.darkText }}>
+                                Tilbagevendene
+                            </Text>
+                            <Switch
+                                trackColor={{ false: colors.dark, true: colors.middle }}
+                                thumbColor={isRecurringEnabled ? colors.dark : colors.light}
+                                ios_backgroundColor={colors.dark}
+                                onValueChange={() => setRecurringDayEnabled(previousState => !previousState)}
+                                value={isRecurringEnabled}
+                            />
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginVertical: '2%'
+                            }}>
+                            <Text
+                                style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.darkText }}>
+                                Udvid detaljer
+                            </Text>
+                            <Switch
+                                trackColor={{ false: colors.dark, true: colors.light }}
+                                thumbColor={isDetailsEnabled ? colors.dark : colors.light}
+                                ios_backgroundColor={colors.dark}
+                                onValueChange={() => setDetailsEnabled(previousState => !previousState)}
+                                value={isDetailsEnabled}
+                            />
+                        </View>
                     </View>
-                    <View
-                        style={[
-                            styles.border,
-                            { backgroundColor: colors.border, borderColor: colors.border, marginTop: '5%' },
-                        ]}></View>
                     <View style={{ marginTop: '10%', flexDirection: 'row' }}>
                         <View style={styles.rowView}>
                             <TouchableOpacity
@@ -255,15 +250,15 @@ export const AddItem = ({ item }) => {
                                 style={[
                                     styles.buttonSmall,
                                     {
-                                        backgroundColor: colors.subButton,
-                                        borderColor: colors.subButton,
+                                        backgroundColor: colors.light,
+                                        borderColor: colors.middle,
                                     },
                                 ]}>
                                 <Text
                                     style={[
                                         styles.buttonText,
                                         { fontSize: 20 * scaleFactor },
-                                        { color: colors.text },
+                                        { color: colors.darkText },
                                     ]}>
                                     Emoji
                                 </Text>
@@ -277,7 +272,7 @@ export const AddItem = ({ item }) => {
                                     <View
                                         style={[
                                             styles.emojiPickerContainer,
-                                            { backgroundColor: colors.background },
+                                            { backgroundColor: colors.light },
                                         ]}>
                                         <EmojiPicker
                                             emojis={emojis}
@@ -290,15 +285,15 @@ export const AddItem = ({ item }) => {
                                                 setEmojiModalVisible(false)
                                             }}
                                             onChangeRecent={setRecent}
-                                            backgroundColor={colors.background}
+                                            backgroundColor={colors.light}
                                         />
                                     </View>
                                     <TouchableOpacity
                                         style={[
                                             styles.modalButton,
                                             {
-                                                backgroundColor: colors.mainButton,
-                                                borderColor: colors.mainButton,
+                                                backgroundColor: colors.dark,
+                                                borderColor: colors.dark,
                                             },
                                         ]}
                                         onPress={() => setEmojiModalVisible(false)}>
@@ -308,7 +303,7 @@ export const AddItem = ({ item }) => {
                             </Modal>
                         </View>
                         <View style={[styles.rowView, { alignItems: 'center', }]}>
-                            <Text style={{ fontSize: 26, color: colors.text }}> {emoji}</Text>
+                            <Text style={{ fontSize: 26, color: colors.darkText }}> {emoji}</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', marginVertical: 2 }}>
@@ -317,12 +312,12 @@ export const AddItem = ({ item }) => {
                                 style={[
                                     styles.buttonSmall,
                                     {
-                                        backgroundColor: colors.subButton,
-                                        borderColor: colors.subButton,
+                                        backgroundColor: colors.middle,
+                                        borderColor: colors.dark,
                                     },
                                 ]}
                                 onPress={() => setStartTimePickerVisibility(true)}>
-                                <Text style={[styles.buttonText, { color: colors.text }]}>
+                                <Text style={[styles.buttonText, { color: colors.darkText }]}>
                                     Start tidspunkt
                                 </Text>
                             </TouchableOpacity>
@@ -334,12 +329,13 @@ export const AddItem = ({ item }) => {
                                 title={'Start tid'}
                                 confirmText="Bekræft"
                                 cancelText="Annuler"
-                                buttonColor={colors.border}
-                                dividerColor={colors.border}
+                                buttonColor={colors.dark}
+                                dividerColor={colors.dark}
                                 onConfirm={(date) => {
                                     setStartTimePickerVisibility(false)
-                                    //recurringDates(date)
-                                    setEndTimePickerVisibility(true)
+                                    const time = formatTime(date);
+                                    setStartTime(time);
+                                    setEndTimePickerVisibility(true);
                                 }}
                                 onCancel={() => {
                                     setStartTimePickerVisibility(false)
@@ -347,7 +343,7 @@ export const AddItem = ({ item }) => {
                             />
                         </View>
                         <View style={[styles.rowView, { alignItems: 'center' }]}>
-                            <Text style={[styles.text, { fontWeight: 'bold', color: colors.text }]}>
+                            <Text style={[styles.text, { fontWeight: 'bold', color: colors.darkText }]}>
                                 {itemStartTime == '' ? '' : `${itemStartTime}`}
                             </Text>
                         </View>
@@ -358,12 +354,12 @@ export const AddItem = ({ item }) => {
                                 style={[
                                     styles.buttonSmall,
                                     {
-                                        backgroundColor: colors.subButton,
-                                        borderColor: colors.subButton,
+                                        backgroundColor: colors.middle,
+                                        borderColor: colors.dark,
                                     },
                                 ]}
-                                onPress={() => isEndTimePickerVisible(true)}>
-                                <Text style={[styles.buttonText, { color: colors.text }]}>
+                                onPress={() => setEndDatePickerVisibility(true)}>
+                                <Text style={[styles.buttonText, { color: colors.darkText }]}>
                                     Slut tidspunkt
                                 </Text>
                             </TouchableOpacity>
@@ -375,12 +371,12 @@ export const AddItem = ({ item }) => {
                                 title={'Slut tid'}
                                 confirmText="Bekræft"
                                 cancelText="Annuler"
-                                buttonColor={colors.border}
-                                dividerColor={colors.border}
+                                buttonColor={colors.dark}
+                                dividerColor={colors.dark}
                                 onConfirm={(date) => {
                                     setEndTimePickerVisibility(false)
-                                    //handleEndTimeConfirm(date)
-                                    //setDatePickerVisibility(true)
+                                    const time = formatTime(date);
+                                    setEndTime(time);
                                 }}
                                 onCancel={() => {
                                     setEndTimePickerVisibility(false)
@@ -388,7 +384,7 @@ export const AddItem = ({ item }) => {
                             />
                         </View>
                         <View style={[styles.rowView, { alignItems: 'center' }]}>
-                            <Text style={[styles.text, { fontWeight: 'bold', color: colors.text }]}>
+                            <Text style={[styles.text, { fontWeight: 'bold', color: colors.darkText }]}>
                                 {itemEndTime == '' ? '' : `${itemEndTime}`}
                             </Text>
                         </View>
@@ -407,8 +403,8 @@ export const AddItem = ({ item }) => {
                                     <Picker selectedValue={recurrence} onValueChange={(recurrence) => setRecurrence(recurrence)} style={[
                                         styles.buttonSmall,
                                         {
-                                            backgroundColor: colors.subButton,
-                                            borderColor: colors.subButton,
+                                            backgroundColor: colors.middle,
+                                            borderColor: colors.dark,
                                         },
                                     ]}>
                                         <Picker.Item label="Dag" value="daily" />
@@ -423,8 +419,8 @@ export const AddItem = ({ item }) => {
                                         style={[
                                             styles.buttonSmall,
                                             {
-                                                backgroundColor: colors.subButton,
-                                                borderColor: colors.subButton,
+                                                backgroundColor: colors.middle,
+                                                borderColor: colors.dark,
                                             },
                                         ]}
                                         onPress={() => setStartDatePickerVisibility(true)}>
@@ -432,7 +428,7 @@ export const AddItem = ({ item }) => {
                                             style={[
                                                 styles.buttonText,
                                                 { fontSize: 20 * scaleFactor },
-                                                { color: colors.text },
+                                                { color: colors.darkText },
                                             ]}>
                                             Start dato
                                         </Text>
@@ -440,6 +436,7 @@ export const AddItem = ({ item }) => {
                                     <DatePicker
                                         mode="date"
                                         modal
+                                        title={'Start dato'}
                                         open={isStartDatePickerVisible}
                                         date={today}
                                         onConfirm={(date) => {
@@ -457,7 +454,7 @@ export const AddItem = ({ item }) => {
                                         style={[
                                             styles.text,
                                             { fontWeight: 'bold', fontSize: 18 * scaleFactor },
-                                            { color: colors.text },
+                                            { color: colors.darkText },
                                         ]}>
                                         {startDate == null ? null : dateDisplay(startDate)}
                                     </Text>
@@ -469,8 +466,8 @@ export const AddItem = ({ item }) => {
                                         style={[
                                             styles.buttonSmall,
                                             {
-                                                backgroundColor: colors.subButton,
-                                                borderColor: colors.subButton,
+                                                backgroundColor: colors.middle,
+                                                borderColor: colors.dark,
                                             },
                                         ]}
                                         onPress={() => setEndDatePickerVisibility(true)}>
@@ -478,7 +475,7 @@ export const AddItem = ({ item }) => {
                                             style={[
                                                 styles.buttonText,
                                                 { fontSize: 20 * scaleFactor },
-                                                { color: colors.text },
+                                                { color: colors.darkText },
                                             ]}>
                                             Slut dato
                                         </Text>
@@ -488,6 +485,7 @@ export const AddItem = ({ item }) => {
                                         modal
                                         open={isEndDatePickerVisible}
                                         date={today}
+                                        title={'Slut dato'}
                                         onConfirm={(date) => {
                                             setEndDate(date)
                                             setEndDatePickerVisibility(false)
@@ -502,7 +500,7 @@ export const AddItem = ({ item }) => {
                                         style={[
                                             styles.text,
                                             { fontWeight: 'bold', fontSize: 18 * scaleFactor },
-                                            { color: colors.text },
+                                            { color: colors.darkText },
                                         ]}>
                                         {endDate == null ? null : dateDisplay(endDate)}
                                     </Text>
@@ -515,8 +513,8 @@ export const AddItem = ({ item }) => {
                                     style={[
                                         styles.buttonSmall,
                                         {
-                                            backgroundColor: colors.subButton,
-                                            borderColor: colors.subButton,
+                                            backgroundColor: colors.middle,
+                                            borderColor: colors.dark,
                                         },
                                     ]}
                                     onPress={() => setDatePickerVisibility(true)}>
@@ -524,7 +522,7 @@ export const AddItem = ({ item }) => {
                                         style={[
                                             styles.buttonText,
                                             { fontSize: 20 * scaleFactor },
-                                            { color: colors.text },
+                                            { color: colors.darkText },
                                         ]}>
                                         Dato
                                     </Text>
@@ -548,7 +546,7 @@ export const AddItem = ({ item }) => {
                                     style={[
                                         styles.text,
                                         { fontWeight: 'bold', fontSize: 18 * scaleFactor },
-                                        { color: colors.text },
+                                        { color: colors.darkText },
                                     ]}>
                                     {`${itemDate}`}
                                 </Text>
@@ -562,7 +560,7 @@ export const AddItem = ({ item }) => {
                         alignContent: 'center',
                         paddingHorizontal: 16,
                     }}>
-                    <Text style={[styles.text, { color: colors.text }]}>
+                    <Text style={[styles.text, { color: colors.darkText }]}>
                         Tilføj en beskrivelse
                     </Text>
                     <TextInput
@@ -577,12 +575,12 @@ export const AddItem = ({ item }) => {
                     style={[
                         styles.Button,
                         {
-                            backgroundColor: colors.mainButton,
-                            borderColor: colors.mainButton,
+                            backgroundColor: colors.dark,
+                            borderColor: colorChange(colors.dark, -20),
                         },
                     ]}
                     onPress={() => saveItem()}>
-                    <Text style={{ color: colors.text, fontSize: 18 * scaleFactor }}>
+                    <Text style={{ color: 'white', fontSize: 18 * scaleFactor }}>
                         Tilføj til kalender
                     </Text>
                 </TouchableOpacity>
@@ -608,7 +606,8 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 2,
         marginBottom: '20%',
-        marginTop: '10%'
+        marginTop: '10%',
+        borderBottomWidth: 4
     },
     buttonSmall: {
         justifyContent: 'center',
@@ -622,6 +621,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 2,
         marginBottom: 8,
+        borderBottomWidth: 4
     },
     modalButton: {
         backgroundColor: 'lightgrey',

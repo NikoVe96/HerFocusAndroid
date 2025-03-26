@@ -31,7 +31,7 @@ const LearningProgressHeader = ({ progress, moduleLength, subject, description, 
     };
 
     return (
-        <View style={[styles.mainContainer, { backgroundColor: colors.background }]}>
+        <View style={[styles.mainContainer, { backgroundColor: colors.light }]}>
             <View style={styles.closeButtonContainer}>
                 <TouchableOpacity
                     onPress={showExitLearningAlert}
@@ -40,14 +40,14 @@ const LearningProgressHeader = ({ progress, moduleLength, subject, description, 
                     <FontAwesomeIcon icon={faCircleXmark} size={25} />
                 </TouchableOpacity>
             </View>
-            <View style={[styles.progressBar, { backgroundColor: colors.subButton, borderColor: colors.subButton }]}>
+            <View style={[styles.progressBar, { backgroundColor: colors.middle, borderColor: colors.middle }]}>
                 <Animated.View
                     style={[
                         {
                             height: 15,
                             borderRadius: 5,
-                            borderColor: colors.border,
-                            backgroundColor: colors.border + "90",
+                            borderColor: colors.dark,
+                            backgroundColor: colors.dark + "90",
                         },
                         {
                             width: progressAnim,

@@ -47,7 +47,7 @@ const LogIn = ({ navigation }) => {
           <Text style={{ fontSize: 15 * scaleFactor }}>Glemt dit kodeord?</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.loginBtn, { backgroundColor: colors.mainButton }]}
+          style={[styles.loginBtn, { backgroundColor: colors.dark }]}
           onPress={() => handleLogin(email, password, navigation)}
           title=" Login"
           titleColor="#000000">
@@ -56,7 +56,7 @@ const LogIn = ({ navigation }) => {
         <Text>Har du ikke en konto?</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('Sign up')}
-          style={[styles.createBtn, { backgroundColor: colors.subButton }]}
+          style={[styles.createBtn, { backgroundColor: colors.middle }]}
           title="Create one">
           <Text style={{ fontSize: 15 * scaleFactor }}>Lav en her</Text>
         </TouchableOpacity>

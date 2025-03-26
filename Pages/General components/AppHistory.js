@@ -19,16 +19,16 @@ export const AppHistory = () => {
           <Text
             style={[
               styles.textStyle,
-              { color: colors.text, fontSize: 30 * scaleFactor }
+              { color: colors.darkText, fontSize: 30 * scaleFactor }
             ]}>
             Om herfocus
           </Text>
         </View>
-        <View style={[styles.seperator, { backgroundColor: colors.border }]}></View>
+        <View style={[styles.seperator, { backgroundColor: colors.dark }]}></View>
         <Text
           style={[
             styles.aboutText,
-            { color: colors.text, fontSize: 16 * scaleFactor }
+            { color: colors.darkText, fontSize: 16 * scaleFactor }
           ]}>
           herfocus er en app af kvinder, for kvinder med ADHD. Vi er to
           kvindelige IT-studerende fra IT-Universitetet i København, drevet af
@@ -37,7 +37,7 @@ export const AppHistory = () => {
         <Text
           style={[
             styles.aboutText,
-            { color: colors.text, fontSize: 16 * scaleFactor }
+            { color: colors.darkText, fontSize: 16 * scaleFactor }
           ]}>
           Vores rejse startede, da en af os så, hvordan hendes lillesøster
           kæmpede med de daglige udfordringer ADHD medførte. Dette inspirerede
@@ -47,7 +47,7 @@ export const AppHistory = () => {
         <Text
           style={[
             styles.aboutText,
-            { color: colors.text, fontSize: 16 * scaleFactor }
+            { color: colors.darkText, fontSize: 16 * scaleFactor }
           ]}>
           I samarbejde med kvinder, der lever med ADHD, har vi designet herfocus
           til at være et støttende værktøj, hvor kvinder med ADHD kan finde
@@ -56,7 +56,7 @@ export const AppHistory = () => {
         <Text
           style={[
             styles.aboutText,
-            { color: colors.text, fontSize: 16 * scaleFactor }
+            { color: colors.darkText, fontSize: 16 * scaleFactor }
           ]}>
           Tak fordi du vælger at være en del af vores fællesskab. Sammen gør vi
           en forskel!

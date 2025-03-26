@@ -34,9 +34,9 @@ const MonthlyCalendar = ({ }) => {
         <Calendar
             firstDay={1}
             headerStyle={{
-                backgroundColor: colors.mainButton,
+                backgroundColor: colors.dark,
                 borderWidth: 1,
-                borderColor: colors.mainButton,
+                borderColor: colors.dark,
                 borderRadius: 10,
             }}
             enableSwipeMonths={true}
@@ -51,17 +51,17 @@ const MonthlyCalendar = ({ }) => {
             }}
             markingType="multi-dot"
             theme={{
-                selectedDayBackgroundColor: colors.mainButton,
-                arrowColor: colors.bars,
-                selectedDayTextColor: colors.background,
-                dayTextColor: colors.border,
+                selectedDayBackgroundColor: colors.dark,
+                arrowColor: colors.dark,
+                selectedDayTextColor: colors.light,
+                dayTextColor: colors.dark,
                 dotColor: 'black',
-                indicatorColor: colors.border,
-                todayTextColor: colors.background,
+                indicatorColor: colors.dark,
+                todayTextColor: colors.light,
                 textMonthFontSize: 24 * scaleFactor,
                 textDayFontSize: 18 * scaleFactor,
                 textDayHeaderFontSize: 18 * scaleFactor,
-                todayBackgroundColor: colors.mainButton,
+                todayBackgroundColor: colors.dark,
             }}
             markedDates={markedDates}
         />

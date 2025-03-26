@@ -36,7 +36,6 @@ function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <LinearGradient colors={gradientColors} style={{ flex: 1 }}>
-
         <NavigationContainer theme={{
           ...theme,
           colors: {

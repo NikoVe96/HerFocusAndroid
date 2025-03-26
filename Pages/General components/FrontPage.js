@@ -53,14 +53,14 @@ export const FrontPage = () => {
         <Text
           style={[
             styles.helloUser,
-            { color: colors.text, fontSize: 22 * scaleFactor }
+            { color: colors.darkText, fontSize: 22 * scaleFactor }
           ]}>
           Hej, {username}!
         </Text>
         <Text
           style={[
             styles.title,
-            { color: colors.text, fontSize: 22 * scaleFactor },
+            { color: colors.darkText, fontSize: 22 * scaleFactor },
           ]}>
           Hvad vil du gerne lave i dag?
         </Text>
@@ -68,11 +68,11 @@ export const FrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Structure')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Planlægning
             </Text>
@@ -91,11 +91,11 @@ export const FrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Pick module')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Læringsmoduler
             </Text>
@@ -115,11 +115,11 @@ export const FrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Pick subject')}>
           <View
-            style={[styles.buttonContainer, { backgroundColor: colors.subButton }]}>
+            style={[styles.buttonContainer, { backgroundColor: colors.middle }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Forum
             </Text>
@@ -138,11 +138,11 @@ export const FrontPage = () => {
           style={styles.press}
           onPress={() => navigation.navigate('Pick topic')}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.subButton }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Vidensbank
             </Text>
@@ -163,12 +163,12 @@ export const FrontPage = () => {
           <View
             style={[
               styles.buttonGrad,
-              { backgroundColor: colors.mainButton },
+              { backgroundColor: colors.dark },
             ]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.text, fontSize: 18 * scaleFactor },
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
               Notesbog
             </Text>

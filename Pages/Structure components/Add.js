@@ -21,39 +21,34 @@ export const Add = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView>
                 <View style={{ alignItems: 'center', padding: 10 }}>
-                    <Text style={{ fontSize: 24, color: colors.text, marginTop: 15 }}>
+                    <Text style={{ fontSize: 24, color: 'white', marginTop: 15 }}>
                         Tilføj en ny {enabled}
                     </Text>
                     <View style={{ flexDirection: 'row', top: '2%' }}>
 
                         <TouchableOpacity style={{
-                            backgroundColor: enabled == 'to-do' ? colors.mainButton : colors.subButton,
-                            padding: '2%', borderWidth: 1, borderColor: colors.border, borderTopLeftRadius: 10, borderBottomLeftRadius: 10
+                            backgroundColor: enabled == 'to-do' ? colors.dark : colors.middle,
+                            padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopLeftRadius: 10, borderBottomLeftRadius: 10
                         }}
                             onPress={() => setEnabled('to-do')}>
                             <Text style={{ fontSize: 18 }}>To-do</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
-                            backgroundColor: enabled == 'begivenhed' ? colors.mainButton : colors.subButton,
-                            padding: '2%', borderWidth: 1, borderColor: colors.border,
+                            backgroundColor: enabled == 'begivenhed' ? colors.dark : colors.middle,
+                            padding: '2%', borderWidth: 1, borderColor: colors.dark,
                         }}
                             onPress={() => setEnabled('begivenhed')}>
                             <Text style={{ fontSize: 18 }}>Begivenhed</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
-                            backgroundColor: enabled == 'rutine' ? colors.mainButton : colors.subButton,
-                            padding: '2%', borderWidth: 1, borderColor: colors.border, borderTopRightRadius: 10, borderBottomRightRadius: 10
+                            backgroundColor: enabled == 'rutine' ? colors.dark : colors.middle,
+                            padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopRightRadius: 10, borderBottomRightRadius: 10
                         }}
                             onPress={() => setEnabled('rutine')}>
                             <Text style={{ fontSize: 18 }}>Rutine</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View
-                    style={[
-                        styles.border,
-                        { backgroundColor: colors.border, borderColor: colors.border },
-                    ]}></View>
                 <AddItem item={enabled} />
             </ScrollView>
         </SafeAreaView>
