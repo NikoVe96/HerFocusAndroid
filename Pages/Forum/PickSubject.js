@@ -21,7 +21,7 @@ export const PickSubject = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.darkText, fontSize: 22 * scaleFactor },
+            { color: colors.lightText, fontSize: 26 * scaleFactor },
           ]}>
           Hvilket emne vil du dykke ned i?
         </Text>
@@ -35,11 +35,11 @@ export const PickSubject = () => {
             })
           }>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.darkText, fontSize: 18 * scaleFactor },
+                { color: colors.lightText, fontSize: 22 * scaleFactor },
               ]}>
               Familie
             </Text>
@@ -64,11 +64,11 @@ export const PickSubject = () => {
             })
           }>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.darkText, fontSize: 18 * scaleFactor },
+                { color: colors.lightText, fontSize: 22 * scaleFactor },
               ]}>
               Relationer
             </Text>
@@ -94,11 +94,11 @@ export const PickSubject = () => {
             })
           }>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.darkText, fontSize: 18 * scaleFactor },
+                { color: colors.lightText, fontSize: 22 * scaleFactor },
               ]}>
               Medicin
             </Text>
@@ -124,11 +124,11 @@ export const PickSubject = () => {
             })
           }>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.darkText, fontSize: 18 * scaleFactor },
+                { color: colors.lightText, fontSize: 22 * scaleFactor },
               ]}>
               Gode tips
             </Text>
@@ -147,17 +147,46 @@ export const PickSubject = () => {
           style={styles.press}
           onPress={() =>
             navigation.navigate('Forum', {
+              forumTitle: 'Den kvindelige cyklus',
+              forumDescription:
+                'Kvinders cyklus kan have stor påvirkning på vores humør og energiniveau. Her kan du dele tips, spørgsmål og erfaringer til hvordan den kvindelige cyklus kan håndteres',
+            })
+          }>
+          <View
+            style={[styles.buttonGrad, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
+            <Text
+              style={[
+                styles.text,
+                { color: colors.lightText, fontSize: 22 * scaleFactor },
+              ]}>
+              Den kvindelige cyklus
+            </Text>
+            <Image
+              source={require('../../Assets/images/Tips.png')}
+              style={[
+                styles.images,
+                {
+                  width: 70 * scaleFactor,
+                  height: 70 * scaleFactor,
+                },
+              ]}></Image>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.press, { marginBottom: '15%' }]}
+          onPress={() =>
+            navigation.navigate('Forum', {
               forumTitle: 'Andet',
               forumDescription:
                 'Her kan man skrive om alt det andet, som ikke falder ind under de andre emner.',
             })
           }>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
             <Text
               style={[
                 styles.text,
-                { color: colors.darkText, fontSize: 18 * scaleFactor },
+                { color: colors.lightText, fontSize: 22 * scaleFactor },
               ]}>
               Andet
             </Text>
@@ -185,6 +214,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 35,
     marginTop: 35,
+    marginHorizontal: '5%'
   },
   text: {
     textAlign: 'center',
@@ -193,8 +223,8 @@ const styles = StyleSheet.create({
   buttonGrad: {
     width: '90%',
     borderRadius: 10,
+    borderWidth: 1,
     bottom: 5,
-    backgroundColor: '#FFEABF',
     alignItems: 'center',
     alignSelf: 'center',
     elevation: 5,
@@ -203,6 +233,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
     flexDirection: 'row',
+    borderWidth: 0.4,
+    borderBottomWidth: 4,
     justifyContent: 'space-between',
   },
   press: {

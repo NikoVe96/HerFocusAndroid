@@ -37,7 +37,6 @@ export const Todos = ({ navigation }) => {
         todoQuery.equalTo('user', currentUser);
         todoQuery.equalTo('futureTask', true);
         const todoResult = await todoQuery.find();
-        console.log('todos: ' + todoResult);
 
         setToDoList(todoResult);
     }

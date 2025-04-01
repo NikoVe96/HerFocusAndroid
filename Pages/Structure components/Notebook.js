@@ -57,7 +57,6 @@ export const Notebook = () => {
     const notesResult = await notesQuery.find();
 
     if (notesResult.length > 0 && notesResult[0].get('notes')) {
-      console.log('notes: ' + notesResult[0].get('notes'));
       setNotes(notesResult[0].get('notes'));
     } else {
       setNotes([]);
@@ -70,26 +69,20 @@ export const Notebook = () => {
       newNote.set('name', noteName);
       newNote.set('content', noteContent);
       await newNote.save();
-      console.log('New note saved:', newNote);
 
       const currentUser = await Parse.User.currentAsync();
-      console.log('Current user:', currentUser);
 
       let notebookQuery = new Parse.Query('Notebook');
       notebookQuery.equalTo('user', currentUser);
       const notebookResults = await notebookQuery.find();
-      console.log('Notebook results:', notebookResults);
 
       if (notebookResults.length > 0) {
         let notebookResult = notebookResults[0];
         let newNotesList = notebookResult.get('notes');
-        console.log('Current notes list:', newNotesList);
 
         newNotesList.push(newNote);
-        console.log('Updated notes list:', newNotesList);
         notebookResult.set('notes', newNotesList);
         await notebookResult.save();
-        console.log('Notebook updated:', notebookResult);
 
         await notesQuery();
 

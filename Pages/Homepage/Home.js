@@ -162,7 +162,8 @@ const styles = StyleSheet.create({
         marginTop: '10%'
     },
     widgetsContainer: {
-        marginVertical: '5%',
+        marginTop: '5%',
+        marginBottom: '20%',
         marginHorizontal: '5%'
     },
     widgetWrapper: {

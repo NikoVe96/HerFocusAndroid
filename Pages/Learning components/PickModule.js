@@ -87,7 +87,7 @@ export const PickModule = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.darkText, fontSize: 22 * scaleFactor },
+            { color: colors.lightText, fontSize: 22 * scaleFactor },
           ]}>
           Hvad vil du gerne lære om i dag?
         </Text>
@@ -96,8 +96,8 @@ export const PickModule = () => {
             style={[
               styles.progessionBar,
               {
-                backgroundColor: colors.middle,
-                borderColor: colors.middle,
+                backgroundColor: colors.light,
+                borderColor: colors.lightShadow,
               },
             ]}>
             <Text
@@ -117,7 +117,7 @@ export const PickModule = () => {
               })
             }>
             <View
-              style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+              style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
               <Animated.Image
                 source={require('../../Assets/images/learning_notebook.png')}
                 style={{ width: 120, height: 100, marginTop: 5 }}
@@ -125,7 +125,7 @@ export const PickModule = () => {
               <Text
                 style={[
                   styles.text,
-                  { color: colors.darkText, fontSize: 18 * scaleFactor },
+                  { color: colors.lightText, fontSize: 18 * scaleFactor },
                 ]}>
                 Planlægning og strukturering af hverdagen
               </Text>
@@ -134,13 +134,13 @@ export const PickModule = () => {
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate('Completed modules')}>
-          <View style={[styles.done, { backgroundColor: colors.dark }]}>
+          <View style={[styles.done, { backgroundColor: colors.middle }]}>
             <FontAwesomeIcon
               icon={faCheck}
               size={35 * scaleFactor}
-              color={colors.dark}
+              color={colors.light}
             />
-            <Text style={[styles.doneText, { color: colors.darkText }]}>
+            <Text style={[styles.doneText, { color: colors.lightText, fontSize: 16 * scaleFactor }]}>
               Opgavesvar for fuldførte læringsmoduler
             </Text>
           </View>
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 22,
     color: 'black',
-    marginBottom: 15,
+    marginBottom: '10%',
     marginTop: 35,
   },
   progessionBar: {
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 70,
     borderRadius: 10,
-    bottom: 5,
+    paddingVertical: '2%',
     alignItems: 'center',
     alignSelf: 'center',
     elevation: 5,
@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
+    marginBottom: '10%'
   },
   doneText: {
     alignSelf: 'center',

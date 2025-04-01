@@ -14,28 +14,24 @@ import { emojis } from "rn-emoji-picker/dist/data"
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import DatePicker from "react-native-date-picker";
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { useUser } from '../../Components/UserContext';
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize('JgIXR8AGoB3f1NzklRf0k9IlIWLORS7EzWRsFIUb', 'NBIxAIeWCONMHjJRL96JpIFh9pRKzJgb6t4lQUJD');
 Parse.serverURL = 'https://parseapi.back4app.com/'
 
-export const AddRoutine = ({ navigation }) => {
+export const MyRoutines = ({ navigation }) => {
 
   const [routineName, setRoutineName] = useState('');
   const [routineColor, setRoutineColor] = useState('');
-  const [routineEmoji, setRoutineEmoji] = useState('');
   const [username, setUsername] = useState('');
   const [isAddStepModalVisible, setStepModalVisible] = useState(false);
-  const [isRoutineModalVisible, setRoutineModalVisible] = useState(false);
   const [stepName, setStepName] = useState('');
   const [stepTime, setStepTime] = useState(null);
   const [routineSteps, setRoutineSteps] = useState([]);
   const [routineObject, setRoutineObject] = useState();
   const { colors } = useTheme();
-  const [ID, setID] = useState('');
   const [allRoutines, setAllRoutines] = useState([]);
-  const [emojiModalVisible, setEmojiModalVisible] = useState(false);
-  const [recent, setRecent] = useState([]);
   const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -48,6 +44,7 @@ export const AddRoutine = ({ navigation }) => {
   const [checked, setChecked] = useState(true);
   const today = new Date;
   const [tStart, setTstart] = useState(null);
+  const { ID } = useUser();
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -55,7 +52,6 @@ export const AddRoutine = ({ navigation }) => {
         const currentUser = await Parse.User.currentAsync();
         if (currentUser !== null) {
           setUsername(currentUser.getUsername());
-          setID(currentUser.id);
         }
       }
     }
@@ -72,22 +68,6 @@ export const AddRoutine = ({ navigation }) => {
   const hideAddStepModal = () => {
     setStepModalVisible(false);
   };
-
-  const showRoutineModal = () => {
-    setRoutineModalVisible(true);
-  }
-
-  const hideRoutineModal = () => {
-    setRoutineModalVisible(false);
-  }
-
-  function showEmojiModal() {
-    setEmojiModalVisible(true);
-  }
-
-  function hideEmojiModal() {
-    setEmojiModalVisible(false);
-  }
 
   async function handleNewStepConfirm() {
     const newStep = { stepName, stepTime, checked: false };
@@ -122,31 +102,6 @@ export const AddRoutine = ({ navigation }) => {
     return steps[index].checked;
   }
 
-  async function saveRoutine() {
-    try {
-      const currentUser = await Parse.User.currentAsync();
-      const newRoutine = new Parse.Object('Routine');
-
-      newRoutine.set('name', routineName);
-      newRoutine.set('user', currentUser);
-      newRoutine.set('emoji', routineEmoji);
-      newRoutine.set('color', routineColor);
-      newRoutine.set('routineSteps', []);
-      newRoutine.set('type', 'routine');
-      await newRoutine.save();
-
-      routines();
-      hideRoutineModal();
-
-      Alert.alert('En ny rutine er blevet tilføjet!')
-      clearInput();
-    } catch (error) {
-      console.log('Error saving new routine: ', error);
-      Alert.alert('Hovsa!',
-        'Det ser ud til at du har glemt at udfylde enten navn eller farve 😉')
-    }
-  }
-
   const handleDeleteStep = async (index, routine) => {
 
     const routinesArray = routine.get('routineSteps');
@@ -163,13 +118,12 @@ export const AddRoutine = ({ navigation }) => {
     const name = routine.get('name');
     try {
       routine.destroy();
-      await routines();
       Alert.alert(name + ' er blevet slettet.');
     } catch (error) {
       Alert.alert('Hovsa!',
         'Der opstod desværre en fejl.');
     }
-
+    await routines();
   }
 
   function clearInput() {
@@ -180,7 +134,6 @@ export const AddRoutine = ({ navigation }) => {
   }
 
   async function routines() {
-    console.log('User: ' + ID)
     const currentUser = await Parse.User.currentAsync();
     let query = new Parse.Query('Routine');
     query.equalTo('user', currentUser);
@@ -268,36 +221,6 @@ export const AddRoutine = ({ navigation }) => {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={{ alignItems: 'center', padding: 10 }}>
-          <Text
-            style={{
-              fontSize: 24 * scaleFactor,
-              color: colors.text,
-              marginTop: 15,
-            }}>
-            Rutiner
-          </Text>
-          <View
-            style={[
-              styles.border,
-              { backgroundColor: colors.border, borderColor: colors.border },
-            ]}></View>
-        </View>
-        <TouchableOpacity
-          onPress={() => showRoutineModal()}
-          style={[
-            styles.plusBtn,
-            {
-              backgroundColor: colors.mainButton,
-              borderColor: colors.mainButton,
-            },
-          ]}>
-          <FontAwesomeIcon
-            icon={faPlus}
-            size={25 * scaleFactor}
-            color={colors.text}
-          />
-        </TouchableOpacity>
         <View>
           {allRoutines.map((routine, index) => (
             <AccordionItem
@@ -306,11 +229,11 @@ export const AddRoutine = ({ navigation }) => {
               emoji={routine.get('emoji')}
               icon={null}
               emojiStyle={{ fontSize: 35 * scaleFactor }}
-              titleStyle={{ fontSize: 24 * scaleFactor, color: colors.border }}>
+              titleStyle={{ fontSize: 24 * scaleFactor, color: colors.darkText }}>
               <View
                 style={[styles.outerView, {
-                  backgroundColor: colors.mainButton,
-                  borderColor: colors.mainButton,
+                  backgroundColor: colors.middle,
+                  borderColor: colors.middleShadow,
 
                 }]}>
                 <View
@@ -325,7 +248,7 @@ export const AddRoutine = ({ navigation }) => {
                     <FontAwesomeIcon
                       icon={faCalendar}
                       size={28 * scaleFactor}
-                      color="#2F5233"
+                      color={colors.lightText}
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -338,7 +261,7 @@ export const AddRoutine = ({ navigation }) => {
                     <FontAwesomeIcon
                       icon={faRotateRight}
                       size={24 * scaleFactor}
-                      color={colors.background}
+                      color={colors.light}
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -371,10 +294,10 @@ export const AddRoutine = ({ navigation }) => {
                         }}>
                         <BouncyCheckbox
                           size={30 * scaleFactor}
-                          fillColor={colors.subButton}
-                          unfillColor="#FFFFFF"
+                          fillColor={colors.middle}
+                          unfillColor={colors.dark}
                           iconStyle={{ borderColor: 'black' }}
-                          innerIconStyle={{ borderWidth: 15, borderColor: colors.subButton, elevation: 5 }}
+                          innerIconStyle={{ backgroundColor: colors.light, elevation: 5, marginLeft: '40%' }}
                           textStyle={{ fontFamily: 'JosefinSans-Regular' }}
                           style={{ marginLeft: '2%' }}
                           isChecked={isStepChecked(index, routine)}
@@ -383,14 +306,14 @@ export const AddRoutine = ({ navigation }) => {
                       </View>
                       <View
                         style={[styles.taskView, {
-                          backgroundColor: colors.subButton,
-                          borderColor: colors.subButton,
+                          backgroundColor: colors.light,
+                          borderColor: colors.lightShadow,
                         }]}>
                         <View style={{ justifyContent: 'center' }}>
                           <Text
                             style={{
                               fontSize: 18 * scaleFactor,
-                              color: colors.text,
+                              color: colors.darkText,
                             }}>
                             {step.stepName}
                           </Text>
@@ -407,12 +330,12 @@ export const AddRoutine = ({ navigation }) => {
                               icon={faStopwatch}
                               style={{ marginHorizontal: 5 }}
                               size={20 * scaleFactor}
-                              color={colors.border}
+                              color={colors.dark}
                             />
                             <Text
                               style={{
                                 fontSize: 18 * scaleFactor,
-                                color: colors.text,
+                                color: colors.darkText,
                               }}>
                               {step.stepTime}
                             </Text>
@@ -444,10 +367,11 @@ export const AddRoutine = ({ navigation }) => {
                       marginHorizontal: '2%',
                       padding: 8,
                       borderRadius: 10,
-                      backgroundColor: colors.border,
-                      borderColor: colors.border,
+                      backgroundColor: colors.dark,
+                      borderColor: colors.darkShadow,
                       flex: 1,
                       alignItems: 'center',
+                      borderBottomWidth: 4
                     }}
                     onPress={() =>
                       showAddStepeModal(routine, routine.get('routineSteps'))
@@ -456,7 +380,7 @@ export const AddRoutine = ({ navigation }) => {
                       style={{
                         fontSize: 18 * scaleFactor,
                         fontWeight: 'bold',
-                        color: colors.text,
+                        color: colors.lightText,
                       }}>
                       Tilføj et nyt step
                     </Text>
@@ -471,15 +395,15 @@ export const AddRoutine = ({ navigation }) => {
           onBackdropPress={() => setStepModalVisible(false)}>
           <View
             style={{
-              backgroundColor: colors.background,
+              backgroundColor: colors.light,
               padding: 10,
               borderWidth: 1,
-              borderColor: colors.background,
+              borderColor: colors.light,
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
             }}>
             <View>
-              <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
+              <Text style={{ fontSize: 20 * scaleFactor, color: colors.darkText }}>
                 Tilføj et navn til dit step
               </Text>
               <TextInput
@@ -499,7 +423,7 @@ export const AddRoutine = ({ navigation }) => {
                 style={{
                   marginVertical: 10,
                   fontSize: 20 * scaleFactor,
-                  color: colors.text,
+                  color: colors.darkText,
                 }}>
                 Vil du tilføje hvor lang tid det tager at fuldføre steppet?
               </Text>
@@ -518,307 +442,19 @@ export const AddRoutine = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={{
-              backgroundColor: colors.mainButton,
+              backgroundColor: colors.middle,
               padding: 5,
               alignItems: 'center',
               flexDirection: 'row',
               justifyContent: 'center',
               borderWidth: 1,
-              borderColor: colors.mainButton,
+              borderColor: colors.dark,
               borderBottomRightRadius: 10,
               borderBottomLeftRadius: 10,
             }}
             onPress={handleNewStepConfirm}>
-            <Text style={{ fontSize: 26 * scaleFactor, color: colors.text }}>
+            <Text style={{ fontSize: 26 * scaleFactor, color: colors.lightText }}>
               Tilføj et nyt step
-            </Text>
-          </TouchableOpacity>
-        </Modal>
-        <Modal
-          isVisible={isRoutineModalVisible}
-          onBackdropPress={() => setRoutineModalVisible(false)}>
-          <View
-            style={{
-              backgroundColor: colors.background,
-              padding: 10,
-              borderWidth: 1,
-              borderColor: colors.background,
-              borderTopRightRadius: 10,
-              borderTopLeftRadius: 10,
-            }}>
-            <View>
-              <Text style={{ fontSize: 20 * scaleFactor, color: colors.text }}>
-                Giv din rutine et navn
-              </Text>
-              <TextInput
-                style={{
-                  backgroundColor: 'white',
-                  fontSize: 16 * scaleFactor,
-                  marginVertical: '2%',
-                  borderWidth: 1,
-                  borderColor: 'white',
-                  borderRadius: 10,
-                  padding: 5,
-                }}
-                onChangeText={text => setRoutineName(text)}></TextInput>
-              <View style={{ marginVertical: '3%' }}>
-                <Text
-                  style={{
-                    fontSize: 20 * scaleFactor,
-                    marginVertical: '1%',
-                    color: colors.text,
-                  }}>
-                  Vælg en farve
-                </Text>
-                <View style={styles.colorOptions}>
-                  <TouchableOpacity
-                    style={{
-                      borderWidth: routineColor === '#FAEDCB' ? 1.5 : 1,
-                      borderRadius:
-                        routineColor === '#FAEDCB'
-                          ? 30 * scaleFactor
-                          : 20 * scaleFactor,
-                      width:
-                        routineColor === '#FAEDCB'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      height:
-                        routineColor === '#FAEDCB'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      backgroundColor: '#FAEDCB',
-                      borderColor: routineColor === '#FAEDCB'
-                        ? 'grey'
-                        : '#FAEDCB',
-                      elevation: 5,
-                      shadowColor: 'black',
-                      shadowOpacity: 0.5,
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowRadius: 2,
-                    }}
-                    onPress={() => handleColorPick('#FAEDCB')}></TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      borderWidth: routineColor === '#C9E4DE' ? 1.5 : 1,
-                      borderRadius:
-                        routineColor === '#C9E4DE'
-                          ? 30 * scaleFactor
-                          : 20 * scaleFactor,
-                      width:
-                        routineColor === '#C9E4DE'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      height:
-                        routineColor === '#C9E4DE'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      backgroundColor: '#C9E4DE',
-                      borderColor: routineColor === '#C9E4DE'
-                        ? 'grey'
-                        : '#C9E4DE',
-                      elevation: 5,
-                      shadowColor: 'grey',
-                      shadowOffset: { width: 1, height: 2 },
-                      shadowOpacity: 0.8,
-                      shadowRadius: 1,
-                    }}
-                    onPress={() => handleColorPick('#C9E4DE')}></TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      borderWidth: routineColor === '#C6DEF1' ? 1.5 : 1,
-                      borderRadius:
-                        routineColor === '#C6DEF1'
-                          ? 30 * scaleFactor
-                          : 20 * scaleFactor,
-                      width:
-                        routineColor === '#C6DEF1'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      height:
-                        routineColor === '#C6DEF1'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      backgroundColor: '#C6DEF1',
-                      borderColor: routineColor === '#C6DEF1'
-                        ? 'grey'
-                        : '#C6DEF1',
-                      elevation: 5,
-                      shadowColor: 'black',
-                      shadowOpacity: 0.5,
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowRadius: 2,
-                    }}
-                    onPress={() => handleColorPick('#C6DEF1')}></TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      borderWidth: routineColor === '#DBCDF0' ? 1.5 : 1,
-                      borderRadius:
-                        routineColor === '#DBCDF0'
-                          ? 30 * scaleFactor
-                          : 20 * scaleFactor,
-                      width:
-                        routineColor === '#DBCDF0'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      height:
-                        routineColor === '#DBCDF0'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      backgroundColor: '#DBCDF0',
-                      borderColor: routineColor === '#DBCDF0'
-                        ? 'grey'
-                        : '#DBCDF0',
-                      elevation: 5,
-                      shadowColor: 'black',
-                      shadowOpacity: 0.5,
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowRadius: 2,
-                    }}
-                    onPress={() => handleColorPick('#DBCDF0')}></TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      borderWidth: routineColor === '#FFADAD' ? 1.5 : 1,
-                      borderRadius:
-                        routineColor === '#FFADAD'
-                          ? 30 * scaleFactor
-                          : 20 * scaleFactor,
-                      width:
-                        routineColor === '#FFADAD'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      height:
-                        routineColor === '#FFADAD'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      backgroundColor: '#FFADAD',
-                      borderColor: routineColor === '#FFADAD'
-                        ? 'grey'
-                        : '#FFADAD',
-                      elevation: 5,
-                      shadowColor: 'black',
-                      shadowOpacity: 0.5,
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowRadius: 2,
-                    }}
-                    onPress={() => handleColorPick('#FFADAD')}></TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      borderWidth: routineColor === '#FFD6A5' ? 1.5 : 1,
-                      borderRadius:
-                        routineColor === '#FFD6A5'
-                          ? 30 * scaleFactor
-                          : 20 * scaleFactor,
-                      width:
-                        routineColor === '#FFD6A5'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      height:
-                        routineColor === '#FFD6A5'
-                          ? 45 * scaleFactor
-                          : 40 * scaleFactor,
-                      backgroundColor: '#FFD6A5',
-                      borderColor: routineColor === '#FFD6A5'
-                        ? 'grey'
-                        : '#FFD6A5',
-                      elevation: 5,
-                      shadowColor: 'black',
-                      shadowOpacity: 0.5,
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowRadius: 2,
-                    }}
-                    onPress={() => handleColorPick('#FFD6A5')}></TouchableOpacity>
-                </View>
-              </View>
-              <View style={{ marginVertical: '1%', flexDirection: 'row' }}>
-                <View style={styles.rowView}>
-                  <TouchableOpacity
-                    onPress={showEmojiModal}
-                    style={[
-                      styles.buttonSmall,
-                      {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
-                      },
-                    ]}>
-                    <Text
-                      style={{
-                        fontSize: 18 * scaleFactor,
-                        color: colors.text,
-                      }}>
-                      Emoji
-                    </Text>
-                  </TouchableOpacity>
-                  <Modal
-                    visible={emojiModalVisible}
-                    animationType="slide"
-                    transparent={true}
-                    onRequestClose={hideEmojiModal}>
-                    <View style={styles.modalContainer}>
-                      <View
-                        style={[
-                          styles.emojiPickerContainer,
-                          { backgroundColor: colors.background },
-                        ]}>
-                        <EmojiPicker
-                          emojis={emojis}
-                          recent={recent}
-                          loading={false}
-                          darkMode={false}
-                          perLine={6 * scaleFactor}
-                          onSelect={chosenEmoji => {
-                            setRoutineEmoji(chosenEmoji.emoji);
-                            hideEmojiModal();
-                          }}
-                          onChangeRecent={setRecent}
-                          backgroundColor={colors.background}
-                        />
-                      </View>
-                      <TouchableOpacity
-                        style={[
-                          styles.modalButton,
-                          {
-                            backgroundColor: colors.mainButton,
-                            borderColor: colors.mainButton,
-                          },
-                        ]}
-                        onPress={hideEmojiModal}>
-                        <Text
-                          style={{
-                            fontWeight: 'bold',
-                            fontSize: 24 * scaleFactor,
-                            color: colors.text,
-                          }}>
-                          LUK
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </Modal>
-                </View>
-                <View style={[styles.rowView, { alignItems: 'center' }]}>
-                  <Text
-                    style={{ fontSize: 30 * scaleFactor, color: colors.text }}>
-                    {' '}
-                    {routineEmoji}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <TouchableOpacity
-            style={{
-              backgroundColor: colors.mainButton,
-              padding: 5,
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              borderWidth: 1,
-              borderColor: colors.mainButton,
-              borderBottomRightRadius: 10,
-              borderBottomLeftRadius: 10,
-            }}
-            onPress={() => saveRoutine()}>
-            <Text style={{ fontSize: 26 * scaleFactor, color: colors.text }}>
-              Tilføj en ny rutine
             </Text>
           </TouchableOpacity>
         </Modal>
@@ -827,10 +463,10 @@ export const AddRoutine = ({ navigation }) => {
           onBackdropPress={() => setToCalendarModalVisible(false)}>
           <View
             style={{
-              backgroundColor: colors.background,
+              backgroundColor: colors.light,
               padding: 10,
               borderWidth: 1,
-              borderColor: colors.background,
+              borderColor: colors.light,
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
             }}>
@@ -845,12 +481,12 @@ export const AddRoutine = ({ navigation }) => {
                     style={[
                       styles.buttonSmall,
                       {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
+                        backgroundColor: colors.middle,
+                        borderColor: colors.middle,
                       },
                     ]}
                     onPress={() => setStartTimePickerVisibility(true)}>
-                    <Text style={[styles.buttonText, { color: colors.text }]}>
+                    <Text style={[styles.buttonText, { color: colors.darkText }]}>
                       Start tidspunkt
                     </Text>
                   </TouchableOpacity>
@@ -874,7 +510,7 @@ export const AddRoutine = ({ navigation }) => {
                     style={[
                       styles.text,
                       { fontWeight: 'bold' },
-                      { color: colors.text },
+                      { color: colors.darkText },
                     ]}>
                     {routineStartTime}
                   </Text>
@@ -886,8 +522,8 @@ export const AddRoutine = ({ navigation }) => {
                     style={[
                       styles.buttonSmall,
                       {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
+                        backgroundColor: colors.middle,
+                        borderColor: colors.middle,
                       },
                     ]}
                     onPress={() => setEndTimePickerVisibility(true)}>
@@ -913,7 +549,7 @@ export const AddRoutine = ({ navigation }) => {
                     style={[
                       styles.text,
                       { fontWeight: 'bold' },
-                      { color: colors.text },
+                      { color: colors.darkText },
                     ]}>
                     {routineEndTime}
                   </Text>
@@ -925,8 +561,8 @@ export const AddRoutine = ({ navigation }) => {
                     style={[
                       styles.buttonSmall,
                       {
-                        backgroundColor: colors.subButton,
-                        borderColor: colors.subButton,
+                        backgroundColor: colors.middle,
+                        borderColor: colors.middle,
                       },
                     ]}
                     onPress={() => setDatePickerVisibility(true)}>
@@ -951,7 +587,7 @@ export const AddRoutine = ({ navigation }) => {
                     style={[
                       styles.text,
                       { fontWeight: 'bold' },
-                      { color: colors.text },
+                      { color: colors.darkText },
                     ]}>
                     {routineDate}
                   </Text>
@@ -961,7 +597,7 @@ export const AddRoutine = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={{
-              backgroundColor: colors.border,
+              backgroundColor: colors.dark,
               alignItems: 'center',
               height: '7%',
               justifyContent: 'center',
@@ -970,7 +606,7 @@ export const AddRoutine = ({ navigation }) => {
             }}
             onPress={() => moveToCalendar()}>
             <Text
-              style={{ fontSize: 20, fontWeight: 'bold', color: colors.text }}>
+              style={{ fontSize: 20, fontWeight: 'bold', color: colors.darkText }}>
               Tilføj til kalender
             </Text>
           </TouchableOpacity>
@@ -1089,4 +725,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddRoutine;
+export default MyRoutines;

@@ -46,7 +46,6 @@ const TaskSorter = ({
     useFocusEffect(
         useCallback(() => {
             async function fetchEvents() {
-                console.log(date);
                 const formattedDate = formatDate(date);
                 if (!formattedDate) {
                     console.error('Invalid date format:', date);
@@ -60,8 +59,6 @@ const TaskSorter = ({
                     setTasksArray(dayEvents.tasks);
                     setEventsArray(dayEvents.events);
                     setRoutinesArray(dayEvents.routines);
-                    console.log('Day tasks:', dayEvents);
-                    console.log('All day events:', allDayEvents.length);
                 } catch (error) {
                     console.error('Error fetching events:', error);
                 }
@@ -92,7 +89,7 @@ const TaskSorter = ({
                     {
                         dayTasksArray.length == 0 && allDayArray.length == 0 ?
                             <View style={{ marginHorizontal: 15, alignItems: 'center', marginVertical: '25%' }}>
-                                <Text style={{ textAlign: 'center', fontSize: 18, }}>Der er ingen opgaver eller begivenheder i din kalender i dag!</Text>
+                                <Text style={{ textAlign: 'center', fontSize: 18, color: colors.darkText }}>Der er ingen opgaver eller begivenheder i din kalender i dag!</Text>
                             </View>
                             :
                             <View>
@@ -106,7 +103,7 @@ const TaskSorter = ({
                                     {allDayArray.length == 0 ?
                                         <View />
                                         :
-                                        <View style={{ borderWidth: 1, marginHorizontal: 15, marginVertical: 20, backgroundColor: colors.dark, width: 250, alignSelf: 'center', borderColor: colors.dark, borderRadius: 10 }}></View>
+                                        <View style={{ borderWidth: 1, marginHorizontal: 15, marginVertical: 20, backgroundColor: colors.darkText, width: 250, alignSelf: 'center', borderColor: colors.dark, borderRadius: 10 }}></View>
 
                                     }
                                 </View>
@@ -116,7 +113,7 @@ const TaskSorter = ({
                                             {item.get('type') == 'task' ?
                                                 <BouncyCheckbox
                                                     size={30}
-                                                    fillColor={colors.dark}
+                                                    fillColor={colors.darkText}
                                                     unfillColor={colors.dark}
                                                     iconStyle={{ elevation: 5, }}
                                                     innerIconStyle={{ borderWidth: 15, borderColor: item.get('color') }}
@@ -142,7 +139,7 @@ const TaskSorter = ({
                                                                 <View style={{ justifyContent: 'center' }}>
                                                                     <BouncyCheckbox
                                                                         size={30}
-                                                                        fillColor={colors.dark}
+                                                                        fillColor={colors.darkText}
                                                                         unfillColor={colors.dark}
                                                                         iconStyle={{ elevation: 5, }}
                                                                         innerIconStyle={{ borderWidth: 15, borderColor: LightenDarkenColor(item.get('color'), -30) }}
@@ -187,7 +184,7 @@ const TaskSorter = ({
                     {
                         dayTasksArray.length == 0 && allDayArray.length == 0 ?
                             <View style={{ marginHorizontal: 15, alignItems: 'center', marginVertical: '25%' }}>
-                                <Text style={{ textAlign: 'center', fontSize: 18 }}>Der er ingen opgaver eller begivenheder i din kalender i dag!</Text>
+                                <Text style={{ textAlign: 'center', fontSize: 18, color: colors.darkText }}>Der er ingen opgaver eller begivenheder i din kalender i dag!</Text>
                             </View>
                             :
                             <View>
@@ -299,7 +296,7 @@ const TaskSorter = ({
     return (
         <SafeAreaView style={{ marginHorizontal: '5%', marginBottom: '2%' }}>
             <View style={{ alignItems: 'center', marginVertical: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontSize: 24, color: colors.dark }}>Dagens planer</Text>
+                <Text style={{ fontSize: 24, color: colors.darkText }}>Dagens planer</Text>
                 <DropDownPicker
                     open={open}
                     value={sorting}

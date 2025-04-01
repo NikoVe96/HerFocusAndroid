@@ -18,7 +18,7 @@ function IndividualPost({ route, navigation }) {
     try {
       let query = new Parse.Query('Comment');
       query.equalTo('postIdentifier', postObject);
-      query.descending('createdAt');
+      query.ascending('createdAt');
       const results = await query.find();
       console.log(results);
       setAllComments(results);

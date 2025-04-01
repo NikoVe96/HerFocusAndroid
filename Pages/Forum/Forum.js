@@ -32,13 +32,10 @@ export const Forum = ({ route }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.container}>
-          <Text style={[styles.title, { color: colors.darkText }]}>{forumTitle}</Text>
-          <View
-            style={[styles.descContainer, { backgroundColor: colors.middle }]}>
-            <Text style={[styles.description, { color: colors.darkText }]}>
-              {forumDescription}
-            </Text>
-          </View>
+          <Text style={[styles.title, { color: colors.lightText }]}>{forumTitle}</Text>
+          <Text style={[styles.description, { color: colors.darkText }]}>
+            {forumDescription}
+          </Text>
         </View>
         <WritePost
           onNewPost={handleNewPost}
@@ -54,7 +51,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 30,
+    fontSize: 35,
     marginTop: 25,
     alignSelf: 'center'
   },
@@ -68,9 +65,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   description: {
-    fontSize: 14,
-    color: 'black',
-    padding: 10,
+    fontSize: 20,
+    padding: 20,
+    textAlign: 'center',
+    marginBottom: '5%'
   },
 });
 

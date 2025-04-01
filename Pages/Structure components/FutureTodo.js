@@ -134,7 +134,6 @@ export const FutureTodo = ({ navigation }) => {
     todoQuery.equalTo('user', currentUser);
     todoQuery.equalTo('futureTask', true);
     const todoResult = await todoQuery.find();
-    console.log('todos: ' + todoResult);
 
     setToDoList(todoResult);
   }
@@ -142,12 +141,10 @@ export const FutureTodo = ({ navigation }) => {
   const handleDateConfirm = date => {
     const formattedDate = date.toISOString().slice(0, 10);
     setToDoDate(formattedDate);
-    console.log('Selected date:', formattedDate);
     setDatePickerVisibility(false);
   };
 
   const toCalendarModal = task => {
-    console.log(task);
     setTodo(task);
     setToCalendarModalVisible(true);
   };
@@ -230,7 +227,6 @@ export const FutureTodo = ({ navigation }) => {
 
   const completeTask = async (task) => {
     isCompleted = task.get('completed');
-    console.log(task.get('completed'))
     task.set('completed', !isCompleted);
     await task.save();
   }
@@ -536,7 +532,6 @@ export const FutureTodo = ({ navigation }) => {
                           darkMode={false}
                           perLine={6}
                           onSelect={chosenEmoji => {
-                            console.log(chosenEmoji);
                             setEmoji(chosenEmoji.emoji);
                             hideEmojiModal();
                           }}

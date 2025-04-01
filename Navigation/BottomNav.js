@@ -36,9 +36,9 @@ export const BottomNavigation = () => {
         <Text style={{ fontSize: 13, color: 'white' }}>Forum</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.Button}
-        onPress={() => navigation.navigate('Pick topic')}>
+        onPress={() => navigation.navigate('Learning platform')}>
         <FontAwesomeIcon icon={faBrain} size={30} color="white" />
-        <Text style={{ fontSize: 13, color: 'white' }}>Vidensbase</Text>
+        <Text style={{ fontSize: 13, color: 'white' }}>Læring</Text>
       </TouchableOpacity>
     </View>
   );

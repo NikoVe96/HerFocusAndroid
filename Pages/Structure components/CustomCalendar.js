@@ -20,7 +20,6 @@ const CustomCalendar = ({
 
     useEffect(() => {
         setMarkedDays();
-        console.log(marked)
     }, [currentDate]);
 
     for (let i = 0; i < firstDayOfWeek; i++) {
@@ -89,7 +88,6 @@ const CustomCalendar = ({
         processItems(routineResults);
 
         setMarked(newMarked);
-        console.log('Marked days: ' + marked);
     }
 
     const formatDate = (date) => {

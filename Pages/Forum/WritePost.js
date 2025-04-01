@@ -17,7 +17,7 @@ function WritePost({ forumTitle, onNewPost }) {
   const [post, setPost] = useState('');
   const { colors } = useTheme();
   const { username, avatar, updateUserProfile } = useUser();
-  const { anonymousEnabled, setAnonymousEnabled } = useState(false);
+  const [anonymousEnabled, setAnonymousEnabled] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -36,6 +36,7 @@ function WritePost({ forumTitle, onNewPost }) {
     Post.set('numberOfComments', 0);
     Post.set('avatar', avatar);
     console.log('avatar2: ' + avatar);
+    anonymousEnabled ? Post.set('anonymous', true) : Post.set('anonymous', false);
 
     try {
       const result = await Post.save();
@@ -51,7 +52,7 @@ function WritePost({ forumTitle, onNewPost }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.userContainer}>
         <TextInput
-          style={styles.writePost}
+          style={[styles.writePost, styles.shadowProp]}
           placeholder=" Skriv et opslag..."
           placeholderTextColor="#8C8C8C"
           multiline={true}
@@ -68,12 +69,12 @@ function WritePost({ forumTitle, onNewPost }) {
         marginTop: '5%'
       }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text>Anonym</Text>
+          <Text style={{ color: colors.darkText }}>Anonym</Text>
           <Switch
             trackColor={{ false: colors.dark, true: colors.middle }}
-            thumbColor={anonymousEnabled ? colors.border : colors.light}
+            thumbColor={anonymousEnabled ? colors.dark : colors.light}
             ios_backgroundColor={colors.dark}
-            onValueChange={() => setAnonymousEnabled(previousState => !previousState)}
+            onValueChange={() => setAnonymousEnabled(!anonymousEnabled)}
             value={anonymousEnabled}
             style={{ marginHorizontal: '3%' }}
           />
@@ -83,7 +84,7 @@ function WritePost({ forumTitle, onNewPost }) {
           style={[
             styles.postBtn,
             styles.shadowProp,
-            { backgroundColor: colors.dark },
+            { backgroundColor: colors.dark, borderColor: colors.darkShadow },
           ]}>
           <Text style={[styles.btnText, { color: 'white' }]}>Slå op</Text>
         </TouchableOpacity>
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
   },
   writePost: {
     width: '80%',
-    height: 70,
+    height: 90,
     borderRadius: 8,
     backgroundColor: 'white',
   },
@@ -114,13 +115,24 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 15,
     alignItems: 'center',
+    borderWidth: 1,
+    alignContent: 'center',
+    borderRadius: 10,
+    borderWidth: 0.4,
+    borderBottomWidth: 4,
+    borderRadius: 15,
     justifyContent: 'center',
+
   },
   shadowProp: {
-    shadowColor: '#000',
-    shadowOffset: { width: 1, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   btnText: {
     fontSize: 15,

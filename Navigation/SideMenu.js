@@ -3,8 +3,7 @@ import {
   createDrawerNavigator,
 } from '@react-navigation/drawer';
 import React from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
   faListCheck,
@@ -12,11 +11,7 @@ import {
   faBrain,
   faComments,
   faUsers,
-  faClock,
-  faCalendarDay,
-  faClipboardCheck,
   faCalendar,
-  faSpinner,
   faPeopleRoof,
   faHeart,
   faPills,
@@ -24,6 +19,8 @@ import {
   faRectangleList,
   faLandmark,
   faAddressCard,
+  faBook,
+  faClockRotateLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import AccordionItem from '../Components/AccordionItem';
 import TopNavigation from './TopNav';
@@ -55,6 +52,8 @@ import Home from '../Pages/Homepage/Home';
 import Add from '../Pages/Structure components/Add';
 import EditProfile from '../Pages/General components/EditProfile';
 import WidgetOrder from '../Pages/Homepage/Widgets/WidgetOrder';
+import Routines from '../Pages/Structure components/Routines';
+import LearningPlatform from '../Pages/General components/LearningPlatform';
 
 const Drawer = createDrawerNavigator();
 
@@ -70,13 +69,13 @@ const moduleSubjects = [
 
 function CustomDrawerContent({ navigation }) {
   const { colors } = useTheme();
-  const { handleLogout, profilePicture, username } = useUser();
+  const { profilePicture, username } = useUser();
 
   return (
     <DrawerContentScrollView style={{ backgroundColor: colors.light }}>
       <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
         {profilePicture && <Image source={{ uri: profilePicture.url() }} style={styles.avatarImage} />}
-        <Text style={{ alignSelf: 'center', fontSize: 26, fontWeight: 'bold', marginTop: '2%' }}>{username}</Text>
+        <Text style={{ alignSelf: 'center', fontSize: 26, fontWeight: 'bold', marginTop: '2%', color: colors.darkText }}>{username}</Text>
         <View
           style={{
             borderWidth: 1,
@@ -92,13 +91,8 @@ function CustomDrawerContent({ navigation }) {
         title="Planlægning"
         icon={faListCheck}
         titleStyle={[{ color: colors.darkText }]}>
-        <View
-          style={[
-            styles.divider,
-            { backgroundColor: colors.darkText, textColor: colors.darkText },
-          ]}></View>
         <TouchableOpacity
-          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginBottom: '3%' }}
           onPress={() => navigation.navigate('Calendar')}>
           <FontAwesomeIcon
             icon={faCalendar}
@@ -106,21 +100,40 @@ function CustomDrawerContent({ navigation }) {
             color={colors.darkText}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.darkText }}>
-            Kalender oversigt{' '}
+            Kalender oversigt
           </Text>
         </TouchableOpacity>
-        <View
-          style={[
-            styles.divider,
-            { backgroundColor: colors.darkText, textColor: colors.darkText },
-          ]}></View>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
+          onPress={() => navigation.navigate('Notebook')}>
+          <FontAwesomeIcon
+            icon={faBook}
+            size={15}
+            color={colors.darkText}
+            style={{ marginRight: 10 }}></FontAwesomeIcon>
+          <Text style={{ fontSize: 18, color: colors.darkText }}>
+            Notesbog
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
+          onPress={() => navigation.navigate('Routines')}>
+          <FontAwesomeIcon
+            icon={faClockRotateLeft}
+            size={15}
+            color={colors.darkText}
+            style={{ marginRight: 10 }}></FontAwesomeIcon>
+          <Text style={{ fontSize: 18, color: colors.darkText }}>
+            Rutiner
+          </Text>
+        </TouchableOpacity>
       </AccordionItem>
       <AccordionItem
         title="Forum"
         icon={faComments}
         titleStyle={[{ color: colors.darkText }]}>
         <TouchableOpacity
-          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginBottom: '3%' }}
           onPress={() =>
             navigation.navigate('Forum', {
               forumTitle: 'Familie',
@@ -135,13 +148,8 @@ function CustomDrawerContent({ navigation }) {
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.darkText }}>Familie </Text>
         </TouchableOpacity>
-        <View
-          style={[
-            styles.divider,
-            { backgroundColor: colors.darkText, textColor: colors.darkText },
-          ]}></View>
         <TouchableOpacity
-          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
           onPress={() =>
             navigation.navigate('Forum', {
               forumTitle: 'Relationer',
@@ -156,13 +164,8 @@ function CustomDrawerContent({ navigation }) {
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.darkText }}>Relationer </Text>
         </TouchableOpacity>
-        <View
-          style={[
-            styles.divider,
-            { backgroundColor: colors.darkText, textColor: colors.darkText },
-          ]}></View>
         <TouchableOpacity
-          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
           onPress={() =>
             navigation.navigate('Forum', {
               forumTitle: 'Medicin',
@@ -177,11 +180,6 @@ function CustomDrawerContent({ navigation }) {
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <Text style={{ fontSize: 18, color: colors.darkText }}>Medicin </Text>
         </TouchableOpacity>
-        <View
-          style={[
-            styles.divider,
-            { backgroundColor: colors.darkText, textColor: colors.darkText },
-          ]}></View>
         <TouchableOpacity
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
           onPress={() =>
@@ -250,7 +248,7 @@ function CustomDrawerContent({ navigation }) {
         icon={faUsers}
         titleStyle={[{ color: colors.darkText }]}>
         <TouchableOpacity
-          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
           onPress={() => navigation.navigate('App history')}>
           <FontAwesomeIcon
             icon={faLandmark}
@@ -261,13 +259,8 @@ function CustomDrawerContent({ navigation }) {
             Historien om herfocus
           </Text>
         </TouchableOpacity>
-        <View
-          style={[
-            styles.divider,
-            { backgroundColor: colors.darkText, textColor: colors.darkText },
-          ]}></View>
         <TouchableOpacity
-          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginBottom: '20%' }}
           onPress={() => navigation.navigate('Contact information')}>
           <FontAwesomeIcon
             icon={faAddressCard}
@@ -339,6 +332,8 @@ function SideMenu() {
       <Drawer.Screen name="Calendar" component={Calendar}></Drawer.Screen>
       <Drawer.Screen name="Edit profile" component={EditProfile}></Drawer.Screen>
       <Drawer.Screen name="Home order" component={WidgetOrder}></Drawer.Screen>
+      <Drawer.Screen name="Routines" component={Routines}></Drawer.Screen>
+      <Drawer.Screen name="Learning platform" component={LearningPlatform}></Drawer.Screen>
     </Drawer.Navigator>
   );
 }

@@ -9,10 +9,13 @@ import {
   ScrollView,
   View,
   Dimensions,
+  Modal
 } from 'react-native';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import PickAvatar from './PickAvatar';
 import { useUser } from '../../Components/UserContext';
+import SelectAvatar from './SelectAvatar';
+import { convertAvatar } from '../../Components/ConvertAvatar';
 
 const SignUp = () => {
   const [name, setName] = useState('');
@@ -20,18 +23,32 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  let [avatar, setAvatar] = useState('');
+  let [avatar, setAvatar] = useState();
   const [settings, setSettings] = useState('');
   const navigation = useNavigation();
   const { colors } = useTheme();
-  const { handleSignup, error } = useUser();
+  const { handleSignup, error, handleLogin } = useUser();
   const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [avatarFile, setAvatarFile] = useState();
+  const [age, setAge] = useState('');
 
-
-  const handleAvatarSelect = selectedAvatar => {
-    setAvatar(selectedAvatar);
+  const handleAvatarSelect = (avatar) => {
+    setAvatar(avatar);
+    setModalVisible(false);
   };
+
+  async function signUp() {
+    const user = await handleSignup(name, username, age, email, password, confirmPassword);
+
+    if (avatar) {
+      const parseFile = await convertAvatar(avatar);
+      user.set('profilePicture', parseFile);
+      await user.save();
+    }
+    handleLogin(email, password, navigation);
+  }
 
   return (
     <SafeAreaView>
@@ -45,68 +62,81 @@ const SignUp = () => {
             placeholderTextColor="#8C8C8C"
             value={name}
             onChangeText={text => setName(text)}
-            style={[styles.form, { fontSize: 14 * scaleFactor }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
           <TextInput
             placeholder="Brugernavn"
             placeholderTextColor="#8C8C8C"
             value={username}
             onChangeText={text => setUsername(text)}
-            style={[styles.form, { fontSize: 14 * scaleFactor }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
+          <TextInput
+            placeholder="Alder"
+            placeholderTextColor="#8C8C8C"
+            value={age}
+            onChangeText={text => setAge(text)}
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
           <TextInput
             placeholder="Email"
             placeholderTextColor="#8C8C8C"
             value={email}
             onChangeText={text => setEmail(text)}
-            style={[styles.form, { fontSize: 14 * scaleFactor }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
           <TextInput
             placeholder="Kodeord"
             placeholderTextColor="#8C8C8C"
             value={password}
             onChangeText={text => setPassword(text)}
             secureTextEntry={true}
-            style={[styles.form, { fontSize: 14 * scaleFactor }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
           <TextInput
             placeholder="Bekræft kodeord"
             placeholderTextColor="#8C8C8C"
             value={confirmPassword}
             onChangeText={text => setConfirmPassword(text)}
             secureTextEntry={true}
-            style={[styles.form, { fontSize: 14 * scaleFactor }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
           <Text style={styles.errorText}>{error}</Text>
-          <Text style={[styles.avatar, { fontSize: 17 * scaleFactor }]}>
-            {' '}
-            Vælg en avatar{' '}
-          </Text>
-          <View style={styles.avatarMargin}>
-            <PickAvatar
-              onAvatarSelect={handleAvatarSelect}
-              picked={avatar}
-              isSignUp={true}></PickAvatar>
-          </View>
-          <TouchableOpacity
-            style={[styles.signUpBtn, { backgroundColor: colors.dark }]}
-            onPress={() =>
-              handleSignup(
-                name,
-                username,
-                email,
-                password,
-                confirmPassword,
-                navigation,
-                avatar,
-                settings
-              )
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <TouchableOpacity style={[styles.signUpBtn, {
+              backgroundColor: colors.middle, borderColor: colors.middleShadow,
+              width: '35%', alignSelf: 'flex-start', height: '30%', marginRight: '8%', alignSelf: 'center'
+            }]}
+              onPress={() => setModalVisible(true)}>
+              <Text style={[styles.btnText, { color: colors.lightText, fontSize: 16 * scaleFactor }]}>Vælg en avatar</Text>
+            </TouchableOpacity>
+            {avatar ?
+              <Image source={avatar} style={styles.avatarImage} />
+              :
+              <View style={styles.noAvatarImage} />
             }
+          </View>
+          <Modal
+            visible={modalVisible}
+            transparent={true}
+            animationType='slide'
+            backdropColor='black'
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <SelectAvatar
+                  onSelect={handleAvatarSelect} />
+              </View>
+            </View>
+          </Modal>
+          <TouchableOpacity
+            style={[styles.signUpBtn, { backgroundColor: colors.dark, borderColor: colors.darkShadow }]}
+            onPress={() => signUp()}
             title=" Sign up"
             titleColor="#000000">
-            <Text style={[styles.btnText, { fontSize: 15 * scaleFactor }]}>
+            <Text style={[styles.btnText, { fontSize: 18 * scaleFactor, color: colors.lightText }]}>
               Lav en profil
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate('Login')}
-            style={[styles.signUpBtn, { backgroundColor: colors.dark }]}>
-            <Text style={[styles.btnText, { fontSize: 15 * scaleFactor }]}>
+            style={[styles.signUpBtn, { backgroundColor: colors.dark, borderColor: colors.darkShadow }]}>
+            <Text style={[styles.btnText, { fontSize: 18 * scaleFactor, color: colors.lightText }]}>
               Tilbage til login
             </Text>
           </TouchableOpacity>
@@ -120,7 +150,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginBottom: '40%',
+    marginBottom: '90%',
   },
   image: {
     width: '80%',
@@ -131,9 +161,8 @@ const styles = StyleSheet.create({
   },
   form: {
     width: '70%',
-    height: '5%',
-    marginTop: 20,
-    borderBottomColor: '#000000',
+    height: '10%',
+    marginTop: '2%',
     borderBottomWidth: 1,
   },
   avatar: {
@@ -147,7 +176,7 @@ const styles = StyleSheet.create({
   },
   signUpBtn: {
     width: '60%',
-    height: 30,
+    height: '8%',
     borderRadius: 8,
     marginBottom: 10,
     marginTop: 20,
@@ -158,9 +187,50 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
+    borderWidth: 1,
+    borderBottomWidth: 4
   },
   errorText: {
     color: 'red',
+  },
+  avatarImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 30,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  noAvatarImage: {
+    width: 100,
+    height: 100,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgb(0, 0, 0, 0.9)',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    //padding: '2%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    height: '80%'
   },
 });
 

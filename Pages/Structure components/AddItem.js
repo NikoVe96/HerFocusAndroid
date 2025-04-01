@@ -43,9 +43,7 @@ export const AddItem = ({ item }) => {
     const [isDetailsEnabled, setDetailsEnabled] = useState(false);
 
     async function newItem(date) {
-        console.log('BEFORE IF STATEMENT')
         if (item == "to-do") {
-            console.log('COMPLETED IF STATEMENT')
             try {
                 const newTask = new Parse.Object('Task');
                 const currentUser = await Parse.User.currentAsync();
@@ -145,7 +143,6 @@ export const AddItem = ({ item }) => {
     const handleDateConfirm = (date) => {
         const formattedDate = date.toISOString().slice(0, 10);
         setItemDate(formattedDate);
-        console.log('Selected date:', formattedDate);
         setDatePickerVisibility(false)
     };
 
@@ -235,7 +232,7 @@ export const AddItem = ({ item }) => {
                                 Udvid detaljer
                             </Text>
                             <Switch
-                                trackColor={{ false: colors.dark, true: colors.light }}
+                                trackColor={{ false: colors.dark, true: colors.middle }}
                                 thumbColor={isDetailsEnabled ? colors.dark : colors.light}
                                 ios_backgroundColor={colors.dark}
                                 onValueChange={() => setDetailsEnabled(previousState => !previousState)}
@@ -250,15 +247,15 @@ export const AddItem = ({ item }) => {
                                 style={[
                                     styles.buttonSmall,
                                     {
-                                        backgroundColor: colors.light,
-                                        borderColor: colors.middle,
+                                        backgroundColor: colors.middle,
+                                        borderColor: colors.middleShadow,
                                     },
                                 ]}>
                                 <Text
                                     style={[
                                         styles.buttonText,
                                         { fontSize: 20 * scaleFactor },
-                                        { color: colors.darkText },
+                                        { color: colors.lightText },
                                     ]}>
                                     Emoji
                                 </Text>
@@ -317,7 +314,7 @@ export const AddItem = ({ item }) => {
                                     },
                                 ]}
                                 onPress={() => setStartTimePickerVisibility(true)}>
-                                <Text style={[styles.buttonText, { color: colors.darkText }]}>
+                                <Text style={[styles.buttonText, { color: colors.lightText }]}>
                                     Start tidspunkt
                                 </Text>
                             </TouchableOpacity>
@@ -359,7 +356,7 @@ export const AddItem = ({ item }) => {
                                     },
                                 ]}
                                 onPress={() => setEndDatePickerVisibility(true)}>
-                                <Text style={[styles.buttonText, { color: colors.darkText }]}>
+                                <Text style={[styles.buttonText, { color: colors.lightText }]}>
                                     Slut tidspunkt
                                 </Text>
                             </TouchableOpacity>
@@ -394,7 +391,7 @@ export const AddItem = ({ item }) => {
                         <View>
                             <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
                                 <View style={[styles.rowView, { alignItems: 'center', flex: 1, justifyContent: 'center' }]}>
-                                    <Text style={styles.text}>Gentages hver: </Text>
+                                    <Text style={[styles.text, { color: colors.darkText }]}>Gentages hver: </Text>
                                 </View>
                                 <View style={[styles.rowView, { alignItems: 'center', alignSelf: 'center', flex: 0.5 }]}>
                                     <TextInput style={[styles.textInput, {}]} keyboardType="numeric" onChangeText={(interval) => setInterval(parseInt(interval))} />
@@ -405,6 +402,7 @@ export const AddItem = ({ item }) => {
                                         {
                                             backgroundColor: colors.middle,
                                             borderColor: colors.dark,
+                                            color: colors.lightText
                                         },
                                     ]}>
                                         <Picker.Item label="Dag" value="daily" />
@@ -428,7 +426,7 @@ export const AddItem = ({ item }) => {
                                             style={[
                                                 styles.buttonText,
                                                 { fontSize: 20 * scaleFactor },
-                                                { color: colors.darkText },
+                                                { color: colors.lightText },
                                             ]}>
                                             Start dato
                                         </Text>
@@ -475,7 +473,7 @@ export const AddItem = ({ item }) => {
                                             style={[
                                                 styles.buttonText,
                                                 { fontSize: 20 * scaleFactor },
-                                                { color: colors.darkText },
+                                                { color: colors.lightText },
                                             ]}>
                                             Slut dato
                                         </Text>
@@ -522,7 +520,7 @@ export const AddItem = ({ item }) => {
                                         style={[
                                             styles.buttonText,
                                             { fontSize: 20 * scaleFactor },
-                                            { color: colors.darkText },
+                                            { color: colors.lightText },
                                         ]}>
                                         Dato
                                     </Text>

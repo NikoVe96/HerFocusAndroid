@@ -47,7 +47,7 @@ function WriteComment({ postId, onNewComment }) {
   return (
     <View style={styles.commentContainer}>
       <TextInput
-        style={styles.writeComment}
+        style={[styles.writeComment, styles.shadowProp]}
         placeholder="Skriv en kommentar..."
         placeholderTextColor="#8C8C8C"
         value={comment}
@@ -85,10 +85,20 @@ const styles = StyleSheet.create({
     height: 50,
     width: '80%',
     backgroundColor: '#FFFFFF',
-    borderColor: '#000000',
+    borderColor: 'white',
     borderWidth: 1,
     borderRadius: 8,
     paddingLeft: 10,
+  },
+  shadowProp: {
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   createComment: {
     paddingLeft: 5,

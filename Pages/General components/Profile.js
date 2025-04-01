@@ -58,36 +58,36 @@ export const Profile = ({ navigation }) => {
           </Text>
         </View>
         <View style={{ flexDirection: 'row', alignContent: 'center', marginBottom: '10%', marginHorizontal: '2%', justifyContent: 'space-evenly' }}>
-          <Text style={[styles.userData, { color: colors.dark }]}>
+          <Text style={[styles.userData, { color: colors.darkText }]}>
             {username}
           </Text>
           <Text style={{ color: colors.dark }} >|</Text>
-          <Text style={[styles.userData, { color: colors.dark }]}>
+          <Text style={[styles.userData, { color: colors.darkText }]}>
             {email}
           </Text>
           <Text style={{ color: colors.dark }} >|</Text>
-          <Text style={[styles.userData, { color: colors.dark }]}>
+          <Text style={[styles.userData, { color: colors.darkText }]}>
             {age}
           </Text>
         </View>
         <View style={{ marginHorizontal: '5%' }}>
-          <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle }]}
+          <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}
             onPress={() => navigation.navigate('Edit profile')}>
-            <Text style={[styles.buttonText, { color: colors.dark }]}>Rediger profil</Text>
+            <Text style={[styles.buttonText, { color: colors.lightText }]}>Rediger profil</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle }]}
+          <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}
             onPress={() => navigation.navigate('Settings')}>
-            <Text style={[styles.buttonText, { color: colors.middle }]}>Indstillinger</Text>
+            <Text style={[styles.buttonText, { color: colors.lightText }]}>Indstillinger</Text>
           </TouchableOpacity>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: '#a1271f', width: '48%', borderColor: '#751a14' }]}
               onPress={() => setModalVisible(true)}>
-              <Text style={[styles.buttonText, { color: 'white' }]}>Slet profil</Text>
+              <Text style={[styles.buttonText, { color: colors.lightText }]}>Slet profil</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, width: '48%' }]}
+            <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, borderColor: colors.middleShadow, width: '48%' }]}
               onPress={handleLogout}>
-              <Text style={[styles.buttonText, { color: colors.dark }]}>Log ud</Text>
+              <Text style={[styles.buttonText, { color: colors.lightText }]}>Log ud</Text>
             </TouchableOpacity>
           </View>
         </View>

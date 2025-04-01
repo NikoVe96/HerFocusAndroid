@@ -31,7 +31,7 @@ export const UserProvider = ({ children }) => {
     checkUser();
   }, []);
 
-  const handleSignup = async (name, username, email, password, confirmPassword, navigation, profilePicture) => {
+  const handleSignup = async (name, username, age, email, password, confirmPassword, navigation) => {
     setError('');
     const lowerCaseEmail = email.toLowerCase();
     const userNameExist = new Parse.Query('User');
@@ -53,7 +53,7 @@ export const UserProvider = ({ children }) => {
     user.set('username', username);
     user.set('email', lowerCaseEmail);
     user.set('password', password);
-    user.set('profilePicture', profilePicture);
+    user.set('age', age)
 
     const userSettings = new Parse.Object('Settings');
     userSettings.set('theme', 'yellow');
@@ -73,7 +73,7 @@ export const UserProvider = ({ children }) => {
       user.set('settings', userSettings);
       user.set('notebook', userNotebook);
       await user.save();
-      navigation.navigate('Login');
+      return user;
     } catch (error) {
       console.error('Error during signup:', error);
     }
@@ -88,7 +88,7 @@ export const UserProvider = ({ children }) => {
       setIsLoggedIn(true);
       setID(user.id);
       console.log('Success! User ID:', user.id);
-      navigation.navigate('Front page');
+      navigation.navigate('Home');
       setUsername(user.getUsername());
     } catch (error) {
       console.error('Error while logging in user', error);

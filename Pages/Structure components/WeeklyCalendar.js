@@ -1,5 +1,6 @@
 import { faArrowRight, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
@@ -45,6 +46,7 @@ const WeeklyCalendar = ({ onWeekChange }) => {
     const startOfWeek = getStartOfWeek(currentDate);
     const weekDates = getWeekDates(startOfWeek);
     const weekNumber = getWeekNumber(startOfWeek);
+    const { colors } = useTheme();
 
     useEffect(() => {
         if (onWeekChange) {
@@ -72,21 +74,21 @@ const WeeklyCalendar = ({ onWeekChange }) => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity onPress={goToPreviousWeek} style={styles.arrow}>
-                    <FontAwesomeIcon icon={faChevronLeft} />
+                    <FontAwesomeIcon icon={faChevronLeft} color={colors.darkText} />
                 </TouchableOpacity>
                 <View style={{ alignItems: 'center' }}>
-                    <Text style={styles.weekText}>Uge</Text>
-                    <Text style={styles.weekNumber}>{weekNumber}</Text>
+                    <Text style={[styles.weekText, { color: colors.darkText }]}>Uge</Text>
+                    <Text style={[styles.weekNumber, { color: colors.darkText }]}>{weekNumber}</Text>
                 </View>
                 <TouchableOpacity onPress={goToNextWeek} style={styles.arrow}>
-                    <FontAwesomeIcon icon={faChevronRight} />
+                    <FontAwesomeIcon icon={faChevronRight} color={colors.darkText} />
                 </TouchableOpacity>
             </View>
             <View style={styles.datesRow}>
                 {weekDates.map((date, index) => (
                     <View key={index} style={styles.dateContainer}>
-                        <Text style={styles.dayName}>{dayNames[index]}</Text>
-                        <Text style={styles.dateNumber}>{date.getDate()}</Text>
+                        <Text style={[styles.dayName, { color: colors.darkText }]}>{dayNames[index]}</Text>
+                        <Text style={[styles.dateNumber, { color: colors.darkText }]}>{date.getDate()}</Text>
                     </View>
                 ))}
             </View>

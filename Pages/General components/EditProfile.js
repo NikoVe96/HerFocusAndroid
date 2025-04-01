@@ -19,6 +19,7 @@ import SelectAvatar from './SelectAvatar';
 import Parse from 'parse/react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { convertAvatar } from '../../Components/ConvertAvatar';
 
 export const EditProfile = ({ navigation }) => {
 
@@ -35,7 +36,7 @@ export const EditProfile = ({ navigation }) => {
     const [newUsername, setNewUsername] = useState(username);
 
     const handleAvatarSelect = (avatar) => {
-        setNewAvatar(avatar);
+        setNewAvatar(convertAvatar(avatar));
         setModalVisible(false);
         console.log(newAvatar);
     };
@@ -44,7 +45,6 @@ export const EditProfile = ({ navigation }) => {
         const currentUser = await Parse.User.currentAsync();
 
         try {
-            //currentUser.set('profilePicture', newAvatar);
             currentUser.set('name', newName);
             currentUser.set('username', newUsername);
             currentUser.set('email', newEmail);
@@ -126,7 +126,7 @@ export const EditProfile = ({ navigation }) => {
                 </Modal>
                 <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, marginBottom: 100, marginTop: '15%' }]}
                     onPress={() => save()}>
-                    <Text styles={[styles.buttonText, { color: colors.dark }]}>Gem</Text>
+                    <Text style={[styles.buttonText, { color: colors.lightText }]}>Gem</Text>
                 </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>

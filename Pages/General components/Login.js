@@ -32,13 +32,13 @@ const LogIn = ({ navigation }) => {
           placeholderTextColor="#8C8C8C"
           value={email}
           onChangeText={text => setEmail(text)}
-          style={[styles.form, { fontSize: 14 * scaleFactor }]}></TextInput>
+          style={[styles.form, { fontSize: 18 * scaleFactor }]}></TextInput>
         <TextInput
           placeholder="Kodeord"
           placeholderTextColor="#8C8C8C"
           value={password}
           onChangeText={text => setPassword(text)}
-          style={[styles.form, { fontSize: 14 * scaleFactor }]}
+          style={[styles.form, { fontSize: 18 * scaleFactor }]}
           secureTextEntry={true}></TextInput>
         <Text style={styles.errorText}>{error}</Text>
         <TouchableOpacity
@@ -47,18 +47,16 @@ const LogIn = ({ navigation }) => {
           <Text style={{ fontSize: 15 * scaleFactor }}>Glemt dit kodeord?</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.loginBtn, { backgroundColor: colors.dark }]}
-          onPress={() => handleLogin(email, password, navigation)}
-          title=" Login"
-          titleColor="#000000">
-          <Text style={{ fontSize: 15 * scaleFactor }}>Login</Text>
+          style={[styles.loginBtn, { backgroundColor: colors.dark, borderColor: colors.darkShadow }]}
+          onPress={() => handleLogin(email, password, navigation)}>
+          <Text style={{ fontSize: 20 * scaleFactor, color: colors.lightText, }}>Login</Text>
         </TouchableOpacity>
-        <Text>Har du ikke en konto?</Text>
+        <Text style={{ color: colors.darkText, fontSize: 16 * scaleFactor }}>Har du ikke en konto?</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('Sign up')}
-          style={[styles.createBtn, { backgroundColor: colors.middle }]}
+          style={[styles.createBtn, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}
           title="Create one">
-          <Text style={{ fontSize: 15 * scaleFactor }}>Lav en her</Text>
+          <Text style={{ fontSize: 18 * scaleFactor, color: colors.lightText }}>Lav en her</Text>
         </TouchableOpacity>
       </SafeAreaView>
     </ScrollView>
@@ -92,7 +90,7 @@ const styles = StyleSheet.create({
   },
   loginBtn: {
     width: '50%',
-    height: 30,
+    height: '10%',
     borderRadius: 8,
     marginBottom: 40,
     alignItems: 'center',
@@ -102,11 +100,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
+    borderBottomWidth: 4,
+    borderWidth: 1
   },
   createBtn: {
-    width: '30%',
-    height: 30,
-    borderRadius: 15,
+    width: '35%',
+    height: '8%',
+    borderRadius: 10,
     marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -115,6 +115,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
+    borderWidth: 1,
+    borderBottomWidth: 4
   },
   errorText: {
     color: 'red',

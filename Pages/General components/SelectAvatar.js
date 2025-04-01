@@ -17,13 +17,9 @@ export const SelectAvatar = ({ onSelect }) => {
         setCategory(category);
     }
 
-    const handleAvatarSelect = async (avatarAsset) => {
-        try {
-            const parseFile = await convertAvatar(avatarAsset);
-            onSelect(parseFile);
-        } catch (error) {
-            console.error("Error processing avatar:", error);
-        }
+    const handleAvatarSelect = (avatarAsset) => {
+        const assetSource = Image.resolveAssetSource(avatarAsset);
+        onSelect(assetSource);
     };
 
     return (

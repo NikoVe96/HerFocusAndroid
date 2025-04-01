@@ -23,20 +23,20 @@ export const ViewArticle = ({ route }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <View style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+        <View style={[styles.buttonGrad, { backgroundColor: colors.dark, marginTop: '15%' }]}>
           <Text
             style={[
               styles.title,
-              { color: colors.darkText, fontSize: 25 * scaleFactor },
+              { color: colors.lightText, fontSize: 25 * scaleFactor },
             ]}>
             {article.get('title')}
           </Text>
           <View
-            style={[styles.seperator, { backgroundColor: colors.dark }]}></View>
+            style={[styles.seperator, { backgroundColor: colors.middle, borderColor: colors.middle }]}></View>
           <Text
             style={[
               styles.subTitle,
-              { color: colors.darkText, fontSize: 17 * scaleFactor },
+              { color: colors.lightText, fontSize: 17 * scaleFactor },
             ]}>
             {article.get('subHeader')}
           </Text>
@@ -47,16 +47,19 @@ export const ViewArticle = ({ route }) => {
               paragraph: { fontSize: 18 * scaleFactor, color: colors.darkText },
               bullet_list: { fontSize: 18, color: colors.darkText },
               heading3: {
-                color: colors.darkText,
+                color: colors.lightText,
                 fontSize: 20 * scaleFactor,
                 marginTop: 30,
                 fontWeight: 'bold',
                 alignSelf: 'center',
                 backgroundColor: colors.dark,
                 borderRadius: 8,
-                paddingLeft: 15,
-                paddingRight: 15,
-                padding: 2,
+                padding: 15,
+                elevation: 5,
+                shadowColor: 'black',
+                shadowOpacity: 0.5,
+                shadowOffset: { width: 0, height: 2 },
+                shadowRadius: 2,
               },
               list_item: { marginVertical: 5 },
             }}>
@@ -71,6 +74,7 @@ export const ViewArticle = ({ route }) => {
                 marginBottom: 30,
                 width: 200,
                 alignSelf: 'center',
+
               }}></View>
             <Text style={{ color: colors.darkText }}>
               Denne artikel er skrevet af
@@ -116,6 +120,11 @@ const styles = StyleSheet.create({
     bottom: 5,
     alignItems: 'center',
     alignSelf: 'center',
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
   },
   seperator: {
     borderWidth: 1,

@@ -53,22 +53,20 @@ const WeeklyTaskView = ({ weekDates, userID }) => {
             setWeekTasks(results);
         }
         fetchWeekTasks();
-
-        console.log('WeeklyTaskView received weekDates:', weekDates, 'and userID:', userID);
     }, [weekDates, userID]);
 
     return (
         <View style={styles.container}>
             {weekTasks.length == 0 ?
                 <View style={styles.noTasksContainer}>
-                    <Text style={styles.noTasksText}>
+                    <Text style={[styles.noTasksText, { color: colors.darkText }]}>
                         Der er ingen opgaver eller begivenheder i denne uge.
                     </Text>
                 </View>
                 :
                 weekTasks.map((item, index) => (
                     <View key={index} style={styles.dayContainer}>
-                        <Text style={styles.dateHeader}>{formatDate(item.date)}</Text>
+                        <Text style={[styles.dateHeader, { color: colors.darkText }]}>{formatDate(item.date)}</Text>
                         {item.events.allDay.map((event, index) => (
                             <View key={index} style={{ alignItems: 'center', borderWidth: 1, padding: 5, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), }}>
                                 <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.lightText }}>{item.get('emoji')}</Text>

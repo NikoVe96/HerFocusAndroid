@@ -59,7 +59,7 @@ const Post = ({ postObject, onDelete, navigation }) => {
         style={[
           styles.postContainer,
           styles.shadowProp,
-          { backgroundColor: colors.dark },
+          { backgroundColor: colors.middle },
         ]}>
         <View style={styles.upperDisplay}>
           <View style={styles.userInfo}>
@@ -72,7 +72,7 @@ const Post = ({ postObject, onDelete, navigation }) => {
                   {postObject.get('username')}
                 </Text>
               }
-              <Text style={[styles.when, { color: colors.darkText }]}>
+              <Text style={[styles.when, { color: colors.lightText }]}>
                 Tilføjet {daysAgo} dage siden
               </Text>
             </View>
@@ -109,14 +109,14 @@ const Post = ({ postObject, onDelete, navigation }) => {
                   <TouchableOpacity
                     onPress={hideModal}
                     style={styles.modalTextContainer1}>
-                    <Text style={[styles.modalText, { color: colors.darkText }]}>
+                    <Text style={[styles.modalText, { color: colors.lightText }]}>
                       Nej, det var en fejl
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={deletePost}
                     style={styles.modalTextContainer2}>
-                    <Text style={[styles.modalText, { color: colors.darkText }]}>
+                    <Text style={[styles.modalText, { color: colors.lightText }]}>
                       Ja, slet mit opslag
                     </Text>
                   </TouchableOpacity>
@@ -129,7 +129,7 @@ const Post = ({ postObject, onDelete, navigation }) => {
           style={[
             styles.post,
             styles.shadowProp,
-            { backgroundColor: colors.middle },
+            { backgroundColor: colors.light },
           ]}>
           <Text style={[styles.postText, { color: colors.darkText }]}>
             {postObject.get('postContent')}
@@ -145,12 +145,12 @@ const Post = ({ postObject, onDelete, navigation }) => {
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handlePostClick()}>
-              <Text style={[styles.text, { color: colors.darkText }]}>kommenter</Text>
+              <Text style={[styles.text, { color: colors.lightText }]}>kommenter</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => handlePostClick()}>
             <View style={styles.numberComments}>
-              <Text style={{ color: colors.darkText }}>
+              <Text style={{ color: colors.lightText }}>
                 {postObject.get('numberOfComments')} kommentarer
               </Text>
             </View>
@@ -176,10 +176,11 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   user: {
-    fontSize: 15,
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   when: {
-    fontSize: 10,
+    fontSize: 12,
   },
   postContainer: {
     borderRadius: 8,
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   postText: {
-    fontSize: 15,
+    fontSize: 16,
     padding: 10,
   },
   comments: {
@@ -258,8 +259,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   avatarImage: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
   },
 });
 

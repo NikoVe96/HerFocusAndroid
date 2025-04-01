@@ -49,13 +49,13 @@ export const PickTopics = () => {
   };
 
   const renderSwiper = articlesList => (
-    <Swiper showsPagination={true} loop={false} activeDotColor={colors.dark} dotColor={colors.middle}>
+    <Swiper showsPagination={true} loop={false} activeDotColor={colors.dark} dotColor={colors.light}>
       {articlesList.map((item, index) => (
         <TouchableOpacity
           key={index}
           style={styles.press}
           onPress={() => readArticle(item)}>
-          <View style={[styles.articlesView, { backgroundColor: colors.middle, borderColor: colors.middle }]}>
+          <View style={[styles.articlesView, { backgroundColor: colors.light, borderColor: colors.light }]}>
             <Text
               style={{
                 fontWeight: 'bold',
@@ -85,7 +85,7 @@ export const PickTopics = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.darkText, fontSize: 20 * scaleFactor },
+            { color: colors.lightText, fontSize: 20 * scaleFactor },
           ]}>
           Her kan du swipe igennem artiklerne og klikke på den, der fanger din
           interesse.
@@ -93,13 +93,13 @@ export const PickTopics = () => {
         <Text
           style={[
             styles.title2,
-            { color: colors.darkText, fontSize: 20 * scaleFactor },
+            { color: colors.lightText, fontSize: 20 * scaleFactor },
           ]}>
           God læsning!
         </Text>
         <View style={styles.press}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
             <Text
               style={[
                 styles.text,
@@ -112,7 +112,7 @@ export const PickTopics = () => {
         </View>
         <View style={styles.press}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
             <Text
               style={[
                 styles.text,
@@ -125,7 +125,7 @@ export const PickTopics = () => {
         </View>
         <View style={styles.press}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
             <Text
               style={[
                 styles.text,
@@ -136,9 +136,9 @@ export const PickTopics = () => {
             <View style={styles.st}>{renderSwiper(womenArticles)}</View>
           </View>
         </View>
-        <View style={styles.press}>
+        <View style={[styles.press, { marginBottom: '20%' }]}>
           <View
-            style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+            style={[styles.buttonGrad, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
             <Text
               style={[
                 styles.text,
@@ -182,6 +182,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
+    borderWidth: 0.4,
+    borderBottomWidth: 4,
   },
   press: {
     marginBottom: 25,

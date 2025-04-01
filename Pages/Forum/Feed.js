@@ -14,7 +14,7 @@ const Feed = ({ posts, setPosts }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.view}>
+      <View style={{ marginBottom: '10%' }}>
         <View
           style={[styles.seperator, { backgroundColor: colors.dark }]}></View>
         <View style={styles.feedContent}>

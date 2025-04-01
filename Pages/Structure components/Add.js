@@ -27,31 +27,31 @@ export const Add = () => {
                     <View style={{ flexDirection: 'row', top: '2%' }}>
 
                         <TouchableOpacity style={{
-                            backgroundColor: enabled == 'to-do' ? colors.dark : colors.middle,
+                            backgroundColor: enabled == 'to-do' ? colors.dark : colors.light,
                             padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopLeftRadius: 10, borderBottomLeftRadius: 10
                         }}
                             onPress={() => setEnabled('to-do')}>
-                            <Text style={{ fontSize: 18 }}>To-do</Text>
+                            <Text style={{ fontSize: 18, color: enabled == 'to-do' ? colors.lightText : colors.darkText }}>To-do</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
-                            backgroundColor: enabled == 'begivenhed' ? colors.dark : colors.middle,
+                            backgroundColor: enabled == 'begivenhed' ? colors.dark : colors.light,
                             padding: '2%', borderWidth: 1, borderColor: colors.dark,
                         }}
                             onPress={() => setEnabled('begivenhed')}>
-                            <Text style={{ fontSize: 18 }}>Begivenhed</Text>
+                            <Text style={{ fontSize: 18, color: enabled == 'begivenhed' ? colors.lightText : colors.darkText }}>Begivenhed</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
-                            backgroundColor: enabled == 'rutine' ? colors.dark : colors.middle,
+                            backgroundColor: enabled == 'rutine' ? colors.dark : colors.light,
                             padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopRightRadius: 10, borderBottomRightRadius: 10
                         }}
                             onPress={() => setEnabled('rutine')}>
-                            <Text style={{ fontSize: 18 }}>Rutine</Text>
+                            <Text style={{ fontSize: 18, color: enabled == 'rutine' ? colors.lightText : colors.darkText }}>Rutine</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <AddItem item={enabled} />
             </ScrollView>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 }
 

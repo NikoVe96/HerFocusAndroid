@@ -22,7 +22,7 @@ const NextTaskW = ({
     };
 
     return (
-        <View style={[styles.widget, { borderColor: colors.middle }]}>
+        <View style={[styles.widget, { borderColor: colors.middle, backgroundColor: colors.light }]}>
             {remainingTasksArray.length < 1 ? (
                 <View
                     style={{
@@ -30,7 +30,7 @@ const NextTaskW = ({
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    <Text style={{ fontSize: 20 }}>
+                    <Text style={{ fontSize: 20, color: colors.darkText }}>
                         Du har ingen to-do's på din liste
                     </Text>
                 </View>
@@ -43,6 +43,7 @@ const NextTaskW = ({
                             alignSelf: 'center',
                             marginVertical: 10,
                             marginBottom: 10,
+                            color: colors.darkText
                         }}>
                         Næste to-do
                     </Text>
@@ -59,7 +60,7 @@ const NextTaskW = ({
                             icon={faStopwatch}
                             size={25}
                             style={{ marginHorizontal: 5 }}
-                            color={colors.dark}
+                            color={colors.darkText}
                         />
                         <Text style={{ fontSize: 18, color: colors.darkText }}>
                             Fra {remainingTasksArray[0].get('startTime')}
@@ -86,14 +87,14 @@ const NextTaskW = ({
                             <BouncyCheckbox
                                 key={remainingTasksArray[0].id}
                                 size={25}
-                                fillColor={colors.dark}
+                                fillColor={colors.darkText}
                                 unfillColor={colors.light}
                                 iconStyle={{ borderColor: colors.middle }}
                                 innerIconStyle={{ borderWidth: 2 }}
                                 onPress={() => taskCompleted(remainingTasksArray[0])}
                                 isChecked={checked}
                             />
-                            <Text style={{ fontSize: 18 }}>Fuldført?</Text>
+                            <Text style={{ fontSize: 18, color: colors.darkText }}>Fuldført?</Text>
                         </View>
                         <TouchableOpacity
                             style={[styles.rowView, { marginLeft: 20, }]}
@@ -101,9 +102,9 @@ const NextTaskW = ({
                             <FontAwesomeIcon
                                 icon={faFaceTired}
                                 size={25}
-                                color={colors.dark}
+                                color={colors.darkText}
                             />
-                            <Text style={{ fontSize: 18, marginLeft: 12 }}>
+                            <Text style={{ fontSize: 18, marginLeft: 12, color: colors.darkText }}>
                                 Ramt væggen?
                             </Text>
                         </TouchableOpacity>

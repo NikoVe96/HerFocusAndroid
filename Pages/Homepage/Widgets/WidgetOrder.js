@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { useTheme } from '@react-navigation/native';
 import Parse from 'parse/react-native';
 import { useUser } from '../../../Components/UserContext';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const WidgetOrder = ({ navigation }) => {
     const { colors } = useTheme();
@@ -51,27 +53,36 @@ const WidgetOrder = ({ navigation }) => {
     );
 
     return (
-        <View style={styles.container}>
-            <DraggableFlatList
-                data={data}
-                keyExtractor={(item) => item}
-                renderItem={renderItem}
-                onDragEnd={({ data }) => setData(data)}
-            />
-            <TouchableOpacity style={[styles.button, { backgroundColor: colors.light }]}
-                onPress={() =>
-                    saveNewOrder()
-                }>
-                <Text style={styles.buttonText}>Gem</Text>
-            </TouchableOpacity>
-        </View>
+        <ScrollView>
+            <View style={styles.container}>
+                <TouchableOpacity style={[styles.addButton, { backgroundColor: colors.light, borderColor: colors.lightShadow }]}
+                    onPress={() =>
+                        saveNewOrder()
+                    }>
+                    <FontAwesomeIcon icon={faPlus} size={'60%'} color={colors.darkText} />
+                    <Text style={[styles.smallButtonText, { color: colors.darkText }]}>Tilføj ny widget</Text>
+                </TouchableOpacity>
+                <DraggableFlatList
+                    data={data}
+                    keyExtractor={(item) => item}
+                    renderItem={renderItem}
+                    onDragEnd={({ data }) => setData(data)}
+                />
+                <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}
+                    onPress={() =>
+                        saveNewOrder()
+                    }>
+                    <Text style={[styles.buttonText, { color: colors.darkText }]}>Gem</Text>
+                </TouchableOpacity>
+            </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: '3%',
-        marginVertical: '20%',
+        marginVertical: '10%',
     },
     item: {
         padding: 10,
@@ -83,6 +94,30 @@ const styles = StyleSheet.create({
         marginHorizontal: '3%'
     },
     button: {
+        borderWidth: 1,
+        alignContent: 'center',
+        borderRadius: 10,
+        borderWidth: 0.4,
+        borderBottomWidth: 4,
+        borderRadius: 15,
+        justifyContent: 'center',
+
+        padding: '5%',
+        marginVertical: '3%',
+        width: '50%',
+        alignSelf: 'center',
+        marginTop: '20%',
+
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    addButton: {
         alignContent: 'center',
         borderWidth: 1,
         borderRadius: 10,
@@ -94,21 +129,29 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        padding: '5%',
-        marginVertical: '3%',
+        padding: '1%',
         borderWidth: 0.4,
         borderBottomWidth: 4,
         borderColor: "#F8B52D",
         borderRadius: 15,
         justifyContent: 'center',
-        width: '50%',
-        alignSelf: 'center',
-        marginTop: '20%'
+        width: '25%',
+        alignSelf: 'flex-end',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginHorizontal: '3%'
     },
     buttonText: {
         fontSize: 22,
         textAlign: 'center',
+    },
+    smallButtonText: {
+        fontSize: 14,
+        textAlign: 'center',
+        marginLeft: -10,
+        marginRight: 10
     }
+
 });
 
 export default WidgetOrder;

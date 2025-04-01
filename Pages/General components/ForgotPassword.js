@@ -65,19 +65,19 @@ const ForgotPassword = () => {
           placeholder="Email"
           placeholderTextColor="#8C8C8C"
           onChangeText={text => setEmail(text)}
-          style={[styles.form, { fontSize: 14 * scaleFactor }]}></TextInput>
+          style={[styles.form, { fontSize: 18 * scaleFactor }]}></TextInput>
         <TouchableOpacity
-          style={[styles.loginBtn, { backgroundColor: colors.dark }]}
+          style={[styles.loginBtn, { backgroundColor: colors.dark, borderColor: colors.darkShadow }]}
           onPress={() => handleResendPassword()}
           titleColor="#000000">
-          <Text style={[styles.btnText, { fontSize: 15 * scaleFactor }]}>
+          <Text style={[styles.btnText, { fontSize: 20 * scaleFactor, color: colors.lightText }]}>
             Ændre kodeord
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.createBtn, { backgroundColor: colors.middle }]}
+          style={[styles.createBtn, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}
           onPress={() => navigation.navigate('Login')}>
-          <Text style={[styles.btnText, { fontSize: 15 * scaleFactor }]}>
+          <Text style={{ fontSize: 16 * scaleFactor, color: colors.lightText }}>
             Tilbage til Login
           </Text>
         </TouchableOpacity>
@@ -90,11 +90,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flex: 1,
-    marginBottom: '30%',
+    marginBottom: '60%',
   },
   image: {
-    width: '80%',
-    height: '44%',
+    width: '90%',
+    height: '24%',
     marginTop: 50,
     marginBottom: 30,
   },
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     paddingLeft: 50,
     paddingRight: 50,
     textAlign: 'center',
-    marginTop: 10,
+    marginVertical: '10%',
   },
   form: {
     width: '80%',
@@ -115,11 +115,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   loginBtn: {
-    width: '60%',
-    height: 30,
+    width: '50%',
+    height: '10%',
     borderRadius: 8,
-    marginTop: 40,
-    marginBottom: 30,
+    marginVertical: '10%',
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
@@ -127,14 +126,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
-  },
-  btnText: {
-    fontSize: 15,
+    borderBottomWidth: 4,
+    borderWidth: 1,
   },
   createBtn: {
     width: '40%',
-    height: 30,
-    borderRadius: 15,
+
+    borderRadius: 10,
     marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -143,6 +141,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
+    borderWidth: 1,
+    borderBottomWidth: 4,
+    padding: '2%'
   },
 });
 

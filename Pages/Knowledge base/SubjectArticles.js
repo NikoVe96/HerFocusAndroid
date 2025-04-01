@@ -59,13 +59,13 @@ export const ArticlesDiagnosed = ({ route }) => {
                   fontSize: 18,
                   textAlign: 'center',
                   marginTop: 10,
-                  color: colors.darkText,
+                  color: colors.lightText,
                 }}>
                 {item.get('title')}
               </Text>
             </View>
             <View
-              style={[styles.buttonGrad, { backgroundColor: colors.dark }]}>
+              style={[styles.buttonGrad, { backgroundColor: colors.light }]}>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -83,7 +83,7 @@ export const ArticlesDiagnosed = ({ route }) => {
                 ]}></View>
               <Text
                 numberOfLines={4}
-                style={[styles.articleText, { color: colors.darkText }]}>
+                style={[styles.articleText, { color: colors.lightText }]}>
                 {item.get('text').replaceAll(/#|-|>|/gi, '')}
               </Text>
             </View>

@@ -10,20 +10,20 @@ export const TaskProgress = ({ taskProgress }) => {
     const { colors } = useTheme();
 
     return (
-        <View style={[styles.widget, { borderColor: colors.middle }]}>
+        <View style={[styles.widget, { borderColor: colors.middle, backgroundColor: colors.light }]}>
             <CircularProgress
                 value={taskProgress}
                 inActiveStrokeColor={colors.middle}
                 inActiveStrokeOpacity={0.3}
-                progressValueColor={colors.dark}
+                progressValueColor={colors.darkText}
                 valueSuffix={'%'}
-                activeStrokeColor={colors.dark}
+                activeStrokeColor={colors.darkText}
                 activeStrokeSecondaryColor={colors.middle}
                 radius={70 * scaleFactor}
             />
             <View>
                 {taskProgress == 0 ?
-                    <Text style={styles.text}>
+                    <Text style={[styles.text, { color: colors.darkText }]}>
                         Velkommen til en ny dag. Check din første to-do af for at få en
                         god start på dagen!
                     </Text>
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     },
     widget: {
         padding: 10,
-        backgroundColor: '#FFF6ED',
         elevation: 10,
         borderWidth: 1,
         borderRadius: 10,

@@ -86,7 +86,7 @@ export const ModulesOverview = ({ route }) => {
             styles.title,
             {
               fontSize: 30 * scaleFactor,
-              color: colors.darkText,
+              color: colors.lightText,
             },
           ]}>
           {subject}
@@ -105,12 +105,7 @@ export const ModulesOverview = ({ route }) => {
           ]}>
           {description}
         </Text>
-        <View
-          style={[
-            styles.border,
-            { backgroundColor: colors.dark, borderColor: colors.dark },
-          ]}></View>
-        <View style={{ marginTop: '4%' }}>
+        <View style={{ marginTop: '4%', marginBottom: '10%' }}>
           {modules.length == 0 ? (
             <Text>Loading...</Text>
           ) : (
@@ -146,6 +141,7 @@ export const ModulesOverview = ({ route }) => {
                           styles.buttonGrad,
                           {
                             backgroundColor: colors.middle,
+                            borderColor: colors.middleShadow,
                             height: 90 * scaleFactor,
                             width: 250 * scaleFactor,
                           },
@@ -160,12 +156,12 @@ export const ModulesOverview = ({ route }) => {
                           <Text
                             style={[
                               styles.moduleName,
-                              { fontSize: 16 * scaleFactor, color: colors.darkText },
+                              { fontSize: 16 * scaleFactor, color: colors.lightText },
                             ]}>
                             Modul {item.get('name')}
                           </Text>
                           <Text
-                            style={[styles.moduleDesc, { color: colors.darkText }]}>
+                            style={[styles.moduleDesc, { color: colors.lightText }]}>
                             {item.get('description')}
                           </Text>
                         </View>
@@ -177,6 +173,7 @@ export const ModulesOverview = ({ route }) => {
                       icon={faDownLong}
                       size={30 * scaleFactor}
                       style={{ marginVertical: 15 }}
+                      color={colors.darkText}
                     />
                   ) : (
                     <Text></Text>
@@ -202,6 +199,7 @@ const styles = StyleSheet.create({
   description: {
     padding: 10,
     marginHorizontal: '3%',
+    textAlign: 'center'
   },
   border: {
     borderWidth: 1,
@@ -220,7 +218,6 @@ const styles = StyleSheet.create({
   },
   buttonGrad: {
     borderRadius: 10,
-    backgroundColor: '#FFEABF',
     alignItems: 'center',
     flexDirection: 'row',
     elevation: 5,
@@ -228,6 +225,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
+    borderBottomWidth: 4,
+    borderWidth: 1
   },
   progessionBar: {
     width: '20%',

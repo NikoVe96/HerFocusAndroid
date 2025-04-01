@@ -78,7 +78,7 @@ const CommentSection = ({ comments, setComments, postId }) => {
                 style={[
                   styles.commentContainer,
                   styles.shadowProp,
-                  { backgroundColor: colors.dark },
+                  { backgroundColor: colors.lightMiddle },
                 ]}>
                 <View style={styles.upperDisplay}>
                   <View style={styles.userInfo}>
@@ -151,7 +151,7 @@ const CommentSection = ({ comments, setComments, postId }) => {
                   style={[
                     styles.comment,
                     styles.shadowProp,
-                    { backgroundColor: colors.middle },
+                    { backgroundColor: colors.light },
                   ]}>
                   <Text style={[styles.commentText, { color: colors.darkText }]}>
                     {comment.get('commentContent')}
@@ -169,6 +169,7 @@ const CommentSection = ({ comments, setComments, postId }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: '10%'
   },
   userInfo: {
     flexDirection: 'row',
@@ -177,11 +178,12 @@ const styles = StyleSheet.create({
   },
   user: {
     marginLeft: 10,
-    fontSize: 15,
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   when: {
     marginLeft: 10,
-    fontSize: 10,
+    fontSize: 12,
   },
   upperDisplay: {
     justifyContent: 'space-between',
@@ -212,10 +214,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   shadowProp: {
-    shadowColor: '#443939',
-    shadowOffset: { width: 1, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   trashIcon: {
     margin: 10,
@@ -252,8 +258,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   avatarImage: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
   },
 });
 

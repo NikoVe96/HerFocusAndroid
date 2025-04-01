@@ -2,8 +2,8 @@ import { Text, TouchableOpacity, View, Alert, SafeAreaView, ScrollView, Switch, 
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '@react-navigation/native';
 import Parse from 'parse/react-native';
-import { useThemeContext } from "../../Assets/Theme/ThemeContext";
 import Modal from "react-native-modal";
+import { useThemeContext } from "../../Assets/Theme/ThemeContext";
 
 export const UserSettings = ({ navigation }) => {
 
@@ -46,12 +46,12 @@ export const UserSettings = ({ navigation }) => {
           <Text
             style={[
               styles.textStyle,
-              { color: colors.darkText, fontSize: 30 * scaleFactor },
+              { color: colors.lightText, fontSize: 30 * scaleFactor },
             ]}>
             Indstillinger
           </Text>
         </View>
-        <View style={[styles.colorView, { backgroundColor: colors.middle }]}>
+        <View style={[styles.colorView, { backgroundColor: colors.light, borderColor: colors.lightShadow }]}>
           <Text
             style={{
               fontSize: 20 * scaleFactor,
@@ -63,42 +63,75 @@ export const UserSettings = ({ navigation }) => {
           </Text>
           <View style={styles.themeOption}>
             <TouchableOpacity
-              style={styles.pastel}
-              onPress={() => updateTheme('pastel')}></TouchableOpacity>
+              style={styles.turquoise}
+              onPress={() => updateTheme('turquoise')}>
+              <Text>Turkis</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.purple}
-              onPress={() => updateTheme('purple')}></TouchableOpacity>
+              onPress={() => updateTheme('purple')}>
+              <Text>Lilla</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.red}
-              onPress={() => updateTheme('red')}></TouchableOpacity>
+              onPress={() => updateTheme('red')}>
+              <Text>Rød</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.beige}
+              onPress={() => updateTheme('beige')}>
+              <Text>Beige</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.themeOption}>
             <TouchableOpacity
               style={styles.yellow}
-              onPress={() => updateTheme('yellow')}></TouchableOpacity>
+              onPress={() => updateTheme('yellow')}>
+              <Text>Gul</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.green}
-              onPress={() => updateTheme('green')}></TouchableOpacity>
+              onPress={() => updateTheme('green')}>
+              <Text>Grøn</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.blue}
-              onPress={() => updateTheme('blue')}></TouchableOpacity>
+              onPress={() => updateTheme('blue')}>
+              <Text>Blå</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.pastel}
+              onPress={() => updateTheme('pastel')}>
+              <Text>Pastel</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.themeOption}>
             <TouchableOpacity
               style={styles.darkBlue}
-              onPress={() => updateTheme('darkblue')}></TouchableOpacity>
+              onPress={() => updateTheme('darkblue')}>
+              <Text>Mørk</Text>
+            </TouchableOpacity>
             <TouchableOpacity
-              style={styles.dark}
-              onPress={() => updateTheme('dark')}></TouchableOpacity>
+              style={styles.pink}
+              onPress={() => updateTheme('pink')}>
+              <Text>Lyserød</Text>
+            </TouchableOpacity>
             <TouchableOpacity
-              style={styles.neutral}
-              onPress={() => updateTheme('neutral')}></TouchableOpacity>
+              style={styles.earth}
+              onPress={() => updateTheme('earth')}>
+              <Text>Jord</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.brown}
+              onPress={() => updateTheme('brown')}>
+              <Text>Brun</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View
           style={[
             styles.notificationView,
-            { backgroundColor: colors.middle },
+            { backgroundColor: colors.light, borderColor: colors.lightShadow },
           ]}>
           <Text
             style={{
@@ -119,8 +152,8 @@ export const UserSettings = ({ navigation }) => {
               To-do opgaver
             </Text>
             <Switch
-              trackColor={{ false: colors.dark, true: colors.light }}
-              thumbColor={isTasksEnabled ? colors.dark : colors.light}
+              trackColor={{ false: colors.middle, true: colors.middle }}
+              thumbColor={isTasksEnabled ? colors.dark : colors.lightMiddle}
               ios_backgroundColor={colors.dark}
               onValueChange={tasksToggleSwitch}
               value={isTasksEnabled}
@@ -137,8 +170,8 @@ export const UserSettings = ({ navigation }) => {
               Kalender events
             </Text>
             <Switch
-              trackColor={{ false: colors.dark, true: colors.light }}
-              thumbColor={isEventsEnabled ? colors.dark : colors.light}
+              trackColor={{ false: colors.middle, true: colors.middle }}
+              thumbColor={isEventsEnabled ? colors.dark : colors.lightMiddle}
               ios_backgroundColor={colors.dark}
               onValueChange={eventsToggleSwitch}
               value={isEventsEnabled}
@@ -155,9 +188,9 @@ export const UserSettings = ({ navigation }) => {
               Rutiner
             </Text>
             <Switch
-              trackColor={{ false: colors.dark, true: colors.light }}
+              trackColor={{ false: colors.middle, true: colors.middle }}
               thumbColor={
-                isRoutinesEnabled ? colors.dark : colors.light
+                isRoutinesEnabled ? colors.dark : colors.lightMiddle
               }
               ios_backgroundColor={colors.dark}
               onValueChange={routinesToggleSwitch}
@@ -171,12 +204,12 @@ export const UserSettings = ({ navigation }) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{ flex: 6, fontSize: 18, color: colors.text }}>
+            <Text style={{ flex: 6, fontSize: 18, color: colors.darkText }}>
               Forum post kommentarer
             </Text>
             <Switch
-              trackColor={{ false: colors.dark, true: colors.light }}
-              thumbColor={isPostEnabled ? colors.dark : colors.light}
+              trackColor={{ false: colors.middle, true: colors.middle }}
+              thumbColor={isPostEnabled ? colors.dark : colors.lightMiddle}
               ios_backgroundColor={colors.dark}
               onValueChange={postToggleSwitch}
               value={isPostEnabled}
@@ -227,77 +260,125 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
   },
-  pastel: {
+  turquoise: {
     borderWidth: 4,
     borderRadius: 50,
-    width: '17%',
+    width: '18%',
     height: '75%',
-    borderColor: '#E7CCF7',
-    backgroundColor: '#BBE7FE',
+    borderColor: '#0C6170',
+    backgroundColor: '#DBF5F0',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  beige: {
+    borderWidth: 4,
+    borderRadius: 50,
+    width: '18%',
+    height: '75%',
+    borderColor: '#C6ABA2',
+    backgroundColor: '#FDF7F3',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   purple: {
     borderWidth: 4,
     borderRadius: 50,
-    width: '17%',
+    width: '18%',
     height: '75%',
-    backgroundColor: '#A47786',
+    backgroundColor: '#E8D5DE',
     borderColor: '#533440',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   red: {
     borderWidth: 4,
     borderRadius: 50,
-    width: '17%',
+    width: '18%',
     height: '75%',
-    backgroundColor: '#F7A399',
-    borderColor: '#BF4C41',
+    backgroundColor: '#FFF0EE',
+    borderColor: '#B03F34',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  pastel: {
+    borderWidth: 4,
+    borderRadius: 50,
+    width: '18%',
+    height: '75%',
+    backgroundColor: '#E3CEF0',
+    borderColor: '#BBE7FE',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   yellow: {
     borderWidth: 4,
     borderRadius: 50,
-    width: '17%',
+    width: '18%',
     height: '75%',
     backgroundColor: '#FFEABF',
     borderColor: '#DC9B18',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  brown: {
+    borderWidth: 4,
+    borderRadius: 50,
+    width: '18%',
+    height: '75%',
+    backgroundColor: '#E4D4C8',
+    borderColor: '#523A28',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   green: {
     borderWidth: 4,
     borderRadius: 50,
-    width: '17%',
+    width: '18%',
     height: '75%',
-    backgroundColor: '#94C973',
-    borderColor: '#2F5233',
+    backgroundColor: '#E6F6E8',
+    borderColor: '#427248',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   blue: {
     borderWidth: 4,
     borderRadius: 50,
-    width: '17%',
+    width: '18%',
     height: '75%',
-    backgroundColor: '#6AABD2',
-    borderColor: '#274472',
+    backgroundColor: '#EEF8FF',
+    borderColor: '#3B8BBB',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   darkBlue: {
     borderWidth: 4,
     borderRadius: 50,
-    width: '17%',
+    width: '18%',
     height: '75%',
-    backgroundColor: '#393751',
-    borderColor: '#131227',
-  },
-  dark: {
-    borderWidth: 4,
-    borderRadius: 50,
-    width: '17%',
-    height: '75%',
-    backgroundColor: '#252121',
+    backgroundColor: '#59586C',
     borderColor: '#000000',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  neutral: {
+  pink: {
     borderWidth: 4,
     borderRadius: 50,
-    width: '17%',
+    width: '18%',
     height: '75%',
-    backgroundColor: '#EDE7DC',
-    borderColor: '#B7897C',
+    backgroundColor: '#FEF5F4',
+    borderColor: '#E8B4B8',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  earth: {
+    borderWidth: 4,
+    borderRadius: 50,
+    width: '18%',
+    height: '75%',
+    backgroundColor: '#EEEEDD',
+    borderColor: '#A45C40',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   notificationView: {
     marginTop: 15,
