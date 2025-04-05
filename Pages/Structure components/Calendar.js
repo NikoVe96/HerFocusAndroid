@@ -71,7 +71,7 @@ const CalendarOverview = ({ navigation }) => {
         <SafeAreaView >
             <ScrollView>
                 <View style={{ justifyContent: 'center', alignItems: 'center', padding: '1%' }}>
-                    <Text style={{ fontSize: 26, marginTop: 15, color: colors.darkText }}>Kalender</Text>
+                    <Text style={{ fontSize: 26, marginVertical: '5%', color: colors.lightText }}>Kalender</Text>
                 </View>
                 <View style={{ flexDirection: 'row', top: '2%', justifyContent: 'center' }}>
                     <TouchableOpacity style={{
@@ -79,24 +79,24 @@ const CalendarOverview = ({ navigation }) => {
                         padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopLeftRadius: 10, borderBottomLeftRadius: 10, width: '30%', alignItems: 'center'
                     }}
                         onPress={() => setEnabled('daily')}>
-                        <Text style={{ fontSize: 18, color: colors.darkText }}>I dag</Text>
+                        <Text style={{ fontSize: 18, color: enabled == 'daily' ? colors.lightText : colors.darkText }}>I dag</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{
                         backgroundColor: enabled == 'weekly' ? colors.dark : colors.light,
                         padding: '2%', borderWidth: 1, borderColor: colors.dark, width: '30%', alignItems: 'center'
                     }}
                         onPress={() => setEnabled('weekly')}>
-                        <Text style={{ fontSize: 18, color: colors.darkText }}>Uge</Text>
+                        <Text style={{ fontSize: 18, color: enabled == 'weekly' ? colors.lightText : colors.darkText }}>Uge</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{
                         backgroundColor: enabled == 'monthly' ? colors.dark : colors.light,
                         padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopRightRadius: 10, borderBottomRightRadius: 10, width: '30%', alignItems: 'center'
                     }}
                         onPress={() => setEnabled('monthly')}>
-                        <Text style={{ fontSize: 18, color: colors.darkText }}>Måned</Text>
+                        <Text style={{ fontSize: 18, color: enabled == 'monthly' ? colors.lightText : colors.darkText }}>Måned</Text>
                     </TouchableOpacity>
                 </View>
-                <View>
+                <View style={{ marginVertical: '5%' }}>
                     {calendarLayout()}</View>
             </ScrollView>
         </SafeAreaView>

@@ -30,7 +30,7 @@ export const AppHistory = () => {
             styles.aboutText,
             { color: colors.darkText, fontSize: 16 * scaleFactor }
           ]}>
-          herfocus er en app af kvinder, for kvinder med ADHD. Vi er to
+          herfocus er en app af kvinder, til kvinder med ADHD. Vi er to
           kvindelige IT-studerende fra IT-Universitetet i København, drevet af
           en personlig mission om at gøre hverdagen lettere for dem med ADHD.
         </Text>

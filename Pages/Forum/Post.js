@@ -16,8 +16,8 @@ const Post = ({ postObject, onDelete, navigation }) => {
     (1000 * 3600 * 24),
   );
   const { colors } = useTheme();
-  const avatar = postObject.get('avatar');
-  const avatarImageSource = getAvatarImage(avatar);
+  const [avatar, setAvatar] = useState();
+
 
   function handlePostClick() {
     navigation.navigate('IndividualPost', { postObject: postObject, onDelete });
@@ -27,6 +27,7 @@ const Post = ({ postObject, onDelete, navigation }) => {
     async function getCurrentUser() {
       const currentUser = await Parse.User.currentAsync();
       setUsername(currentUser.getUsername());
+      getAvatar();
     }
     getCurrentUser();
   }, []);
@@ -53,6 +54,15 @@ const Post = ({ postObject, onDelete, navigation }) => {
     setModalVisible(false);
   };
 
+  async function getAvatar() {
+    const postUser = postObject.get('userObjectId');
+
+    const query = new Parse.Query('User');
+    query.equalTo('objectId', postUser.id);
+    const user = await query.first();
+    setAvatar(user.get('profilePicture'));
+  }
+
   return (
     <View style={styles.container}>
       <View
@@ -63,7 +73,10 @@ const Post = ({ postObject, onDelete, navigation }) => {
         ]}>
         <View style={styles.upperDisplay}>
           <View style={styles.userInfo}>
-            <Image source={avatarImageSource} style={styles.avatarImage} />
+            {avatar ?
+              <Image source={{ uri: avatar.url() }} style={styles.avatarImage} />
+              : <View style={styles.avatarImage} />
+            }
             <View></View>
             <View style={styles.userText}>
               {postObject.get('anonymous') ?

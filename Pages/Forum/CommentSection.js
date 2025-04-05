@@ -7,22 +7,20 @@ import { useEffect, useState } from 'react';
 import Parse from 'parse/react-native';
 import getAvatarImage from '../General components/AvatarUtils';
 import Modal from 'react-native-modal';
+import AvatarImage from '../../Components/AvatarImage';
 //import { useComments } from '../../Components/CommentContext';
 
 const CommentSection = ({ comments, setComments, postId }) => {
   const { colors } = useTheme();
   const [username, setUsername] = useState('');
-  const [avatar, setAvatar] = useState('');
   const [currentCommentId, setCurrentCommentId] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const avatarImageSource = getAvatarImage(avatar);
 
 
   useEffect(() => {
     async function getCurrentUser() {
       const currentUser = await Parse.User.currentAsync();
       setUsername(currentUser.getUsername());
-      setAvatar(currentUser.get('avatar'));
     }
     getCurrentUser();
   }, []);
@@ -63,6 +61,14 @@ const CommentSection = ({ comments, setComments, postId }) => {
     setComments(updatedComments);
   };
 
+  async function getAvatar(user) {
+
+    const query = new Parse.Query('User');
+    query.equalTo('objectId', user.id);
+    const commentUser = await query.first();
+    return commentUser.get('profilePicture').url();
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -82,10 +88,9 @@ const CommentSection = ({ comments, setComments, postId }) => {
                 ]}>
                 <View style={styles.upperDisplay}>
                   <View style={styles.userInfo}>
-                    <Image
-                      source={avatarImageSource}
-                      style={styles.avatarImage}
-                    />
+                    <AvatarImage
+                      userId={comment.get('userObjectId')}
+                      style={styles.avatarImage} />
                     <View>
                       <Text style={[styles.user, { color: colors.darkText }]}>
                         {comment.get('username')}

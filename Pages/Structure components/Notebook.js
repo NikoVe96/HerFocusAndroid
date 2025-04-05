@@ -18,7 +18,7 @@ import Modal from "react-native-modal";
 import Parse from 'parse/react-native';
 import { TextInput } from "react-native-gesture-handler";
 import BottomNavigation from "../../Navigation/BottomNav";
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 export const Notebook = () => {
 
@@ -117,19 +117,29 @@ export const Notebook = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.darkText, fontSize: 30 * scaleFactor },
+            { color: colors.lightText, fontSize: 30 * scaleFactor },
           ]}>
           Noter
         </Text>
-
-        <View
-          style={[styles.seperator, { backgroundColor: colors.dark }]}></View>
+        <Text style={{ color: colors.darkText, fontSize: 16, textAlign: 'center' }}>
+          Her kan du skrive noter, føre dagbog eller nedskrive dine brain dumps.
+        </Text>
+        <TouchableOpacity
+          style={[styles.btn, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}
+          onPress={() => setNotesModalVisible(true)}>
+          <FontAwesomeIcon
+            icon={faPlus}
+            size={40 * scaleFactor}
+            color={colors.lightText}
+          />
+        </TouchableOpacity>
         {notes && notes.length > 0 ? (
           notes.map((item, index) => (
             <AccordionItem
               key={item.id || index}
               title={item.get('name')}
-              icon={null}>
+              icon={null}
+              titleStyle={{ color: colors.darkText }}>
               <TextInput
                 style={{
                   backgroundColor: 'white',
@@ -138,6 +148,7 @@ export const Notebook = () => {
                   borderRadius: 10,
                   fontSize: 16,
                   padding: '2%',
+                  elevation: 5
                 }}
                 value={updatedNoteContent[item.id] || item.get('content')}
                 onChangeText={text =>
@@ -150,20 +161,11 @@ export const Notebook = () => {
                 numberOfLines={12}
                 textAlignVertical={'top'}></TextInput>
               <TouchableOpacity
-                style={{
-                  borderWidth: 1,
-                  backgroundColor: colors.middle,
-                  borderColor: colors.middle,
-                  borderRadius: 10,
-                  padding: 10,
-                  elevation: 10,
-                  marginVertical: '5%',
-                  alignItems: 'center',
-                  width: '40%',
-                  alignSelf: 'flex-end',
-                }}
+                style={[styles.btn, {
+                  backgroundColor: colors.middle, borderColor: colors.middleShadow, width: '30%'
+                }]}
                 onPress={() => updateNote(item, updatedNoteContent[item.id])}>
-                <Text style={{ fontSize: 16 }}>Gem</Text>
+                <Text style={{ fontSize: 18, color: colors.lightText }}>Gem</Text>
               </TouchableOpacity>
             </AccordionItem>
           ))
@@ -191,15 +193,15 @@ export const Notebook = () => {
                   fontSize: 24,
                   marginLeft: '20%',
                   marginBottom: '10%',
+                  color: colors.dark
                 }}>
-                {' '}
                 Tilføj en ny note
               </Text>
               <TouchableOpacity onPress={() => setNotesModalVisible(false)}>
                 <FontAwesomeIcon icon={faCircleXmark} size={25} />
               </TouchableOpacity>
             </View>
-            <Text style={{ fontSize: 18 }}>Hvad skal din note hedde?</Text>
+            <Text style={{ fontSize: 18, color: colors.dark }}>Hvad skal din note hedde?</Text>
             <TextInput
               style={{
                 backgroundColor: 'white',
@@ -209,6 +211,7 @@ export const Notebook = () => {
                 fontSize: 20,
                 padding: '2%',
                 marginVertical: '5%',
+                elevation: 5,
               }}
               onChangeText={text => setNoteName(text)}
               value={noteName}></TextInput>
@@ -220,6 +223,7 @@ export const Notebook = () => {
                 borderRadius: 10,
                 fontSize: 16,
                 padding: '2%',
+                elevation: 5
               }}
               onChangeText={text => setNoteContent(text)}
               value={noteContent}
@@ -227,34 +231,15 @@ export const Notebook = () => {
               numberOfLines={12}
               textAlignVertical={'top'}></TextInput>
             <TouchableOpacity
-              style={{
-                borderWidth: 1,
-                backgroundColor: colors.middle,
-                borderColor: colors.middle,
-                borderRadius: 10,
-                padding: 10,
-                elevation: 10,
-                marginVertical: '10%',
-                alignItems: 'center',
-                width: '50%',
-                alignSelf: 'center',
-              }}
+              style={[styles.btn, {
+                backgroundColor: colors.dark, borderColor: colors.darkShadow, alignSelf: 'center', width: '50%'
+              }]}
               onPress={() => saveNewNote()}>
-              <Text style={{ fontSize: 18 }}>Gem note</Text>
+              <Text style={{ fontSize: 18, color: colors.lightText }}>Gem note</Text>
             </TouchableOpacity>
           </View>
         </Modal>
       </ScrollView>
-      <TouchableOpacity
-        style={styles.btn}
-        onPress={() => setNotesModalVisible(true)}>
-        <FontAwesomeIcon
-          icon={faPlusCircle}
-          size={50 * scaleFactor}
-          color={colors.dark}
-          style={styles.icon}
-        />
-      </TouchableOpacity>
     </View>
   );
 }
@@ -301,9 +286,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   btn: {
-    marginBottom: 15,
-    marginTop: 15,
-    marginLeft: 15,
+    justifyContent: 'center',
+    padding: '2%',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 10,
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+    marginBottom: 8,
+    borderBottomWidth: 4,
+    width: 50,
+    height: 50,
+    alignSelf: 'flex-end',
+    marginHorizontal: '5%',
+    marginVertical: '5%'
   },
   icon: {
     alignSelf: 'center'
