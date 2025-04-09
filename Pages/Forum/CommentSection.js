@@ -5,7 +5,6 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import Parse from 'parse/react-native';
-import getAvatarImage from '../General components/AvatarUtils';
 import Modal from 'react-native-modal';
 import AvatarImage from '../../Components/AvatarImage';
 //import { useComments } from '../../Components/CommentContext';
@@ -130,7 +129,7 @@ const CommentSection = ({ comments, setComments, postId }) => {
                         borderColor: colors.light,
                         borderRadius: 10,
                       }}>
-                      <Text style={styles.modalTitle}>
+                      <Text style={[styles.modalTitle, { color: colors.darkText }]}>
                         Er du sikker på, at du vil slette din kommentar?
                       </Text>
                       <View style={{ flexDirection: 'row', marginVertical: 10 }}>
@@ -261,6 +260,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
+    marginVertical: '5%'
   },
   avatarImage: {
     width: 50,

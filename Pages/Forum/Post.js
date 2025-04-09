@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { useTheme } from '@react-navigation/native';
 import Parse from 'parse/react-native';
 import Modal from 'react-native-modal';
-import getAvatarImage from '../General components/AvatarUtils';
 
 const Post = ({ postObject, onDelete, navigation }) => {
   const [username, setUsername] = useState('');
@@ -74,7 +73,9 @@ const Post = ({ postObject, onDelete, navigation }) => {
         <View style={styles.upperDisplay}>
           <View style={styles.userInfo}>
             {avatar ?
-              <Image source={{ uri: avatar.url() }} style={styles.avatarImage} />
+              (postObject.get('anonymous') ?
+                <Image source={require('../../Assets/images/icons/anonymous-woman.png')} style={styles.avatarImage} />
+                : <Image source={{ uri: avatar.url() }} style={styles.avatarImage} />)
               : <View style={styles.avatarImage} />
             }
             <View></View>

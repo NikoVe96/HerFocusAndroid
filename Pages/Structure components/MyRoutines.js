@@ -402,11 +402,12 @@ export const MyRoutines = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
                 <ScrollView
+                  nestedScrollEnabled={true}
                   style={{
                     height:
                       routine.get('routineSteps').length > 4
                         ? 250 * scaleFactor
-                        : null,
+                        : undefined,
                   }}>
                   {routine.get('routineSteps').map((step, index) => (
                     <View key={index} style={{ flexDirection: 'row' }}>

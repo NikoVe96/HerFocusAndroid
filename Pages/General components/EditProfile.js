@@ -36,10 +36,8 @@ export const EditProfile = ({ navigation }) => {
     const [newUsername, setNewUsername] = useState(username);
 
     async function handleAvatarSelect(avatar) {
-        const assetSource = Image.resolveAssetSource(avatar);
         try {
-            const newFile = await convertAvatar(assetSource);
-            setNewAvatar(newFile);
+            setNewAvatar(avatar);
             setModalVisible(false);
         } catch (error) {
             Alert.alert("Error processing avatar image.");

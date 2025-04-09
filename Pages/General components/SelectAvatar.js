@@ -17,9 +17,17 @@ export const SelectAvatar = ({ onSelect }) => {
         setCategory(category);
     }
 
-    const handleAvatarSelect = (avatarAsset) => {
-        const assetSource = Image.resolveAssetSource(avatarAsset);
-        onSelect(assetSource);
+    const handleAvatarSelect = async (avatarAsset, type) => {
+        console.log('Avatar: ' + avatarAsset)
+        console.log('type: ' + type)
+        if (type == 'avatar') {
+            const assetSource = Image.resolveAssetSource(avatarAsset);
+            const newFile = await convertAvatar(assetSource);
+            onSelect(newFile);
+        } else {
+            onSelect(avatarAsset);
+        }
+
     };
 
     return (
@@ -86,7 +94,7 @@ export const SelectAvatar = ({ onSelect }) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            onPress={() => handleAvatarSelect(item)}
+                            onPress={() => handleAvatarSelect(item, 'avatar')}
                             style={styles.avatarContainer}>
                             <Image
                                 source={item}

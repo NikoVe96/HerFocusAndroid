@@ -27,7 +27,6 @@ const UploadImage = ({ onSelect }) => {
         try {
             const currentUser = await Parse.User.currentAsync();
             const responseFile = await parseFile.save();
-            console.log('File saved:', responseFile);
             currentUser.set('profilePicture', responseFile);
 
             await currentUser.save();
@@ -54,7 +53,6 @@ const UploadImage = ({ onSelect }) => {
                     console.log('ImagePicker Error: ', response.errorMessage);
                 } else if (response.assets && response.assets.length > 0) {
                     setImage(response.assets[0]);
-                    console.log('Picked image:', response.assets[0]);
                 }
             },
         );

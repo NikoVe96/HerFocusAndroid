@@ -8,6 +8,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { getDayEvents, getAllDayEvents } from './DayEvents';
 import { LightenDarkenColor } from './ColorChange';
 import Parse from 'parse/react-native';
+import { useUser } from '../../Components/UserContext';
 
 const TaskSorter = ({
     date,
@@ -24,30 +25,16 @@ const TaskSorter = ({
     ]);
     const [allDayArray, setAllDayArray] = useState([]);
     const [dayTasksArray, setDayTasksArray] = useState([]);
-    const [ID, setID] = useState('');
-    const [username, setUsername] = useState('');
+    const { ID } = useUser();
     const [tasksArray, setTasksArray] = useState([]);
     const [eventsArray, setEventsArray] = useState([]);
     const [routinesArray, setRoutinesArray] = useState([]);
-
-    useEffect(() => {
-        async function getCurrentUser() {
-            if (username === '') {
-                const currentUser = await Parse.User.currentAsync();
-                if (currentUser !== null) {
-                    setUsername(currentUser.getUsername());
-                    setID(currentUser.id);
-                }
-            }
-        }
-
-        getCurrentUser();
-    }, []);
 
     useFocusEffect(
         useCallback(() => {
             async function fetchEvents() {
                 const formattedDate = formatDate(date);
+                console.log('formatted date: ' + formattedDate)
                 if (!formattedDate) {
                     console.error('Invalid date format:', date);
                     return;
@@ -60,6 +47,7 @@ const TaskSorter = ({
                     setTasksArray(dayEvents.tasks);
                     setEventsArray(dayEvents.events);
                     setRoutinesArray(dayEvents.routines);
+                    console.log(tasksArray)
                 } catch (error) {
                     console.error('Error fetching events:', error);
                 }

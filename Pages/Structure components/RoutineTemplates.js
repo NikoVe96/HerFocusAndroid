@@ -12,12 +12,55 @@ const RoutineTemplates = () => {
     const templates = [
         {
             name: 'Morgen rutine',
-            emoji: '',
+            emoji: '☀️',
             steps: [
-                { stepName: 'Stå op', stepTime: '5', checked: false },
-                { stepName: 'Spis morgenmad', stepTime: '10', checked: false },
+                { stepName: 'Stå op', stepTime: '', checked: false },
+                { stepName: 'Spis morgenmad', stepTime: '', checked: false },
+                { stepName: 'Drik et glas vand', stepTime: '', checked: false },
+                { stepName: 'Vask ansigt', stepTime: '', checked: false },
+                { stepName: 'Børste tænder', stepTime: '', checked: false },
+                { stepName: 'Påfør ansigtscreme', stepTime: '', checked: false },
+                { stepName: 'Tag tøj på', stepTime: '', checked: false },
             ],
-            color: '#fkdjfg'
+            color: '#FFD6A5'
+        },
+        {
+            name: 'Effektiv morgen',
+            emoji: '🌞',
+            steps: [
+                { stepName: 'Nedskriv dagens opgaver', stepTime: '', checked: false },
+                { stepName: 'Identificer de tre vigtigste opgaver', stepTime: '', checked: false },
+                { stepName: 'Ryd op', stepTime: '', checked: false },
+                { stepName: 'Sæt en timer på 15 min', stepTime: '', checked: false },
+                { stepName: 'Arbejd på 1. opgave indtil timeren ringer', stepTime: '', checked: false },
+                { stepName: 'Rejs dig, stræk dig og gå rundt i 5 min', stepTime: '', checked: false },
+                { stepName: 'Gentag for opgave 2 og 3', stepTime: '', checked: false },
+            ],
+            color: '#FFD6A5'
+        },
+        {
+            name: 'Self-care eftermiddag',
+            emoji: '✨',
+            steps: [
+                { stepName: 'Rejs dig og lav stræk øvelser i 2 min', stepTime: '', checked: false },
+                { stepName: 'Drik et glas vand eller en kop the', stepTime: '', checked: false },
+                { stepName: 'Lav noget kreativt i 15 min', stepTime: '', checked: false },
+                { stepName: 'Nedskriv en ting du har opnået eller er taknemmelig for i dag', stepTime: '', checked: false },
+            ],
+            color: '#FFD6A5'
+        },
+        {
+            name: 'Aften oprydning',
+            emoji: '🧼',
+            steps: [
+                { stepName: 'Sæt en timer på 15 min', stepTime: '', checked: false },
+                { stepName: 'Saml ting op som ligger på borde, gulv eller andet', stepTime: '', checked: false },
+                { stepName: 'Læg tingene på plads', stepTime: '', checked: false },
+                { stepName: 'Tør overflader af', stepTime: '', checked: false },
+                { stepName: 'Udvælg tøj til i morgen', stepTime: '', checked: false },
+                { stepName: 'Pak en taske', stepTime: '', checked: false },
+            ],
+            color: '#FFD6A5'
         },
     ]
 
@@ -55,7 +98,7 @@ const RoutineTemplates = () => {
                         <AccordionItem
                             key={index}
                             title={routine.name}
-                            //emoji={routine.get('emoji')}
+                            emoji={routine.emoji}
                             icon={null}
                             emojiStyle={{ fontSize: 35 * scaleFactor }}
                             titleStyle={{ fontSize: 24 * scaleFactor, color: colors.darkText }}>
@@ -65,72 +108,64 @@ const RoutineTemplates = () => {
                                     borderColor: colors.middleShadow,
 
                                 }]}>
-                                <ScrollView
-                                    style={{
-                                        height:
-                                            routine.steps.length > 4
-                                                ? 250 * scaleFactor
-                                                : null,
-                                    }}>
-                                    <TouchableOpacity
-                                        onPress={() => addRoutine(routine)}
-                                        style={[
-                                            styles.plusBtn,
-                                            {
-                                                backgroundColor: colors.lightMiddle,
-                                                borderColor: colors.lightMiddleShadow,
-                                            },
-                                        ]}>
-                                        <FontAwesomeIcon
-                                            icon={faPlus}
-                                            size={25 * scaleFactor}
-                                            color={colors.darkText}
-                                        />
-                                    </TouchableOpacity>
-                                    {routine.steps.map((step, index) => (
-                                        <View key={index} style={{ flexDirection: 'row' }}>
-                                            <View
-                                                style={[styles.taskView, {
-                                                    backgroundColor: colors.light,
-                                                    borderColor: colors.lightShadow,
-                                                }]}>
-                                                <View style={{ justifyContent: 'center' }}>
+                                <TouchableOpacity
+                                    onPress={() => addRoutine(routine)}
+                                    style={[
+                                        styles.plusBtn,
+                                        {
+                                            backgroundColor: colors.lightMiddle,
+                                            borderColor: colors.lightMiddleShadow,
+                                        },
+                                    ]}>
+                                    <FontAwesomeIcon
+                                        icon={faPlus}
+                                        size={25 * scaleFactor}
+                                        color={colors.darkText}
+                                    />
+                                </TouchableOpacity>
+                                {routine.steps.map((step, index) => (
+                                    <View key={index} style={{ flexDirection: 'row' }}>
+                                        <View
+                                            style={[styles.taskView, {
+                                                backgroundColor: colors.light,
+                                                borderColor: colors.lightShadow,
+                                            }]}>
+                                            <View style={{ justifyContent: 'center' }}>
+                                                <Text
+                                                    style={{
+                                                        fontSize: 18 * scaleFactor,
+                                                        color: colors.darkText,
+                                                    }}>
+                                                    {step.stepName}
+                                                </Text>
+                                            </View>
+                                            {step.stepTime !== '' ? (
+                                                <View
+                                                    style={{
+                                                        flexDirection: 'row',
+                                                        width: '20%',
+                                                        alignItems: 'center',
+                                                        //marginLeft: '45%',
+                                                        alignSelf: 'flex-end'
+                                                    }}>
+                                                    <FontAwesomeIcon
+                                                        icon={faStopwatch}
+                                                        style={{ marginHorizontal: 5 }}
+                                                        size={20 * scaleFactor}
+                                                        color={colors.dark}
+                                                    />
                                                     <Text
                                                         style={{
                                                             fontSize: 18 * scaleFactor,
                                                             color: colors.darkText,
                                                         }}>
-                                                        {step.stepName}
+                                                        {step.stepTime}
                                                     </Text>
                                                 </View>
-                                                {step.stepTime !== '' ? (
-                                                    <View
-                                                        style={{
-                                                            flexDirection: 'row',
-                                                            width: '20%',
-                                                            alignItems: 'center',
-                                                            //marginLeft: '45%',
-                                                            alignSelf: 'flex-end'
-                                                        }}>
-                                                        <FontAwesomeIcon
-                                                            icon={faStopwatch}
-                                                            style={{ marginHorizontal: 5 }}
-                                                            size={20 * scaleFactor}
-                                                            color={colors.dark}
-                                                        />
-                                                        <Text
-                                                            style={{
-                                                                fontSize: 18 * scaleFactor,
-                                                                color: colors.darkText,
-                                                            }}>
-                                                            {step.stepTime}
-                                                        </Text>
-                                                    </View>
-                                                ) : null}
-                                            </View>
+                                            ) : null}
                                         </View>
-                                    ))}
-                                </ScrollView>
+                                    </View>
+                                ))}
                             </View>
                         </AccordionItem>
                     </View>

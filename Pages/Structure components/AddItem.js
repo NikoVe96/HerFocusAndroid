@@ -226,25 +226,6 @@ export const AddItem = ({ item }) => {
                                     value={isRecurringEnabled}
                                 />
                             </View>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    marginVertical: '2%'
-                                }}>
-                                <Text
-                                    style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.darkText }}>
-                                    Udvid detaljer
-                                </Text>
-                                <Switch
-                                    trackColor={{ false: colors.dark, true: colors.middle }}
-                                    thumbColor={isDetailsEnabled ? colors.dark : colors.light}
-                                    ios_backgroundColor={colors.dark}
-                                    onValueChange={() => setDetailsEnabled(previousState => !previousState)}
-                                    value={isDetailsEnabled}
-                                />
-                            </View>
                         </View>
                         <View style={{ marginTop: '10%', flexDirection: 'row' }}>
                             <View style={styles.rowView}>
@@ -361,7 +342,7 @@ export const AddItem = ({ item }) => {
                                             borderColor: colors.middleShadow,
                                         },
                                     ]}
-                                    onPress={() => setEndDatePickerVisibility(true)}>
+                                    onPress={() => setEndTimePickerVisibility(true)}>
                                     <Text style={[styles.buttonText, { color: colors.lightText }]}>
                                         Slut tidspunkt
                                     </Text>
@@ -406,7 +387,7 @@ export const AddItem = ({ item }) => {
                                         <Picker
                                             selectedValue={recurrence}
                                             onValueChange={(value) => setRecurrence(value)}
-                                            style={[styles.picker, { color: colors.lightText }]}
+                                            style={[styles.picker, { color: colors.darkText }]}
                                             dropdownIconColor={colors.lightText}
                                             mode="dropdown"
                                         >

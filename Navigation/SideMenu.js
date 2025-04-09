@@ -23,6 +23,8 @@ import {
   faClockRotateLeft,
   faThumbsUp,
   faThumbsDown,
+  faVenus,
+  faCommentDots,
 } from '@fortawesome/free-solid-svg-icons';
 import AccordionItem from '../Components/AccordionItem';
 import TopNavigation from './TopNav';
@@ -46,7 +48,6 @@ import Forum from '../Pages/Forum/Forum';
 import IndividualPost from '../Pages/Forum/IndividualPost';
 import { useUser } from '../Components/UserContext';
 import Notebook from '../Pages/Structure components/Notebook';
-import Todos from '../Pages/Structure components/Todos';
 import FutureTodo from '../Pages/Structure components/FutureTodo';
 import Calendar from '../Pages/Structure components/Calendar';
 import CompletedModules from '../Pages/Learning components/CompletedModules';
@@ -186,7 +187,7 @@ function CustomDrawerContent({ navigation }) {
           <Text style={{ fontSize: 18, color: colors.darkText }}>Medicin </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
           onPress={() =>
             navigation.navigate('Forum', {
               forumTitle: 'Gode tips',
@@ -196,6 +197,38 @@ function CustomDrawerContent({ navigation }) {
           }>
           <FontAwesomeIcon
             icon={faLightbulb}
+            size={15}
+            color={colors.darkText}
+            style={{ marginRight: 10 }}></FontAwesomeIcon>
+          <Text style={{ fontSize: 18, color: colors.darkText }}>Gode tips </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
+          onPress={() =>
+            navigation.navigate('Forum', {
+              forumTitle: 'Den kvindelige cyklus',
+              forumDescription:
+                'Del spørgsmål og erfaringer omkring den kvindelige cyklys, og hvordan den kan påvirke AD(H)D',
+            })
+          }>
+          <FontAwesomeIcon
+            icon={faVenus}
+            size={15}
+            color={colors.darkText}
+            style={{ marginRight: 10 }}></FontAwesomeIcon>
+          <Text style={{ fontSize: 18, color: colors.darkText }}>Den kvindelige cyklus</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
+          onPress={() =>
+            navigation.navigate('Forum', {
+              forumTitle: 'Andet',
+              forumDescription:
+                'Her kan du dele spørgsmål og andet der ikke rigtig passer ind i andre forum emner.',
+            })
+          }>
+          <FontAwesomeIcon
+            icon={faCommentDots}
             size={15}
             color={colors.darkText}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
@@ -316,10 +349,10 @@ function SideMenu() {
         header: props => <TopNavigation {...props} />,
       }}
       drawerContent={props => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="Home" component={Home}></Drawer.Screen>
       <Drawer.Screen name="Front page" component={FrontPage}></Drawer.Screen>
       <Drawer.Screen name="App history" component={AppHistory}></Drawer.Screen>
       <Drawer.Screen name="Future todo" component={FutureTodo}></Drawer.Screen>
-      <Drawer.Screen name="Todos" component={Todos}></Drawer.Screen>
       <Drawer.Screen
         name="Completed modules"
         component={CompletedModules}></Drawer.Screen>
@@ -357,7 +390,6 @@ function SideMenu() {
         name="Structure"
         component={StructureFrontPage}></Drawer.Screen>
       <Drawer.Screen name="Notebook" component={Notebook}></Drawer.Screen>
-      <Drawer.Screen name="Home" component={Home}></Drawer.Screen>
       <Drawer.Screen name="Add" component={Add}></Drawer.Screen>
       <Drawer.Screen name="Calendar" component={Calendar}></Drawer.Screen>
       <Drawer.Screen name="Edit profile" component={EditProfile}></Drawer.Screen>
