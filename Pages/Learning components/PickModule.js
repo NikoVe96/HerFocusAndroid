@@ -18,7 +18,7 @@ import Parse from 'parse/react-native';
 
 export const PickModule = () => {
   const navigation = useNavigation();
-  const [structuringProgress, setStructuringProgress] = useState('0');
+  const [progress, setProgress] = useState('0');
   const [procrastinationProgress, setProcrastinationProgress] = useState('0');
   const [relationsProgress, setRelationsProgress] = useState('0');
   const [goalProgress, setGoalProgress] = useState('0');
@@ -29,20 +29,15 @@ export const PickModule = () => {
 
   const moduleSubjects = [
     {
-      subject: 'Opnå dine mål',
-      description: 'I dette modul vil du lære om forskellige værktøjer til at opnå de mål du har sat dig i dit liv og din hverdag. For voksne med ADHD kan det være en fordel at have specifikke mål, tidsrammer og værktøjer til at opnå disse mål, og derfor har vi samlet nogle øvelser der kan give dig de bedste chancer for success og give mere overskud i hverdagen.',
-      image: require('../../Assets/images/learning_notebook.png'),
-    },
-    {
       subject: 'Struktur og planlægning',
       description: 'I dette modul vil du lære om forskellige værktøjer til at strukturere dit liv og din hverdag. For voksne med ADHD kan det være en fordel at have specifikke mål, tidsrammer og værktøjer til at opnå sine mål. Derfor har vi samlet nogle øvelser, der kan give dig de bedste chancer for success og forhåbentlig give mere overskud i hverdagen.',
       image: require('../../Assets/images/learning_notebook.png'),
     },
     {
-      subject: 'Overspringshandlinger',
+      subject: 'Forstå AD(H)D hjernen',
       description:
         'In the time management learning module, you will learn how to...',
-      image: require('../../Assets/images/learning_hourglass.png'),
+      image: require('../../Assets/images/icons/brain.png'),
     },
   ];
 
@@ -73,7 +68,12 @@ export const PickModule = () => {
     switch (subject) {
       case 'Struktur og planlægning':
         if (completedModules.length !== 0) {
-          setStructuringProgress((completedModules / totalModulesResults.length) * 100);
+          setProgress((completedModules / totalModulesResults.length) * 100);
+        }
+        break;
+      case 'Forstå AD(H)D hjernen':
+        if (completedModules.length !== 0) {
+          setProgress((completedModules / totalModulesResults.length) * 100);
         }
         break;
       default:
@@ -105,7 +105,7 @@ export const PickModule = () => {
                 styles.text,
                 { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
-              {structuringProgress}%
+              {progress}%
             </Text>
           </View>
           <TouchableOpacity
@@ -119,8 +119,8 @@ export const PickModule = () => {
             <View
               style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
               <Animated.Image
-                source={require('../../Assets/images/learning_notebook.png')}
-                style={{ width: 120, height: 100, marginTop: 5 }}
+                source={require('../../Assets/images/icons/schedule.png')}
+                style={{ width: 100, height: 100, marginTop: 5 }}
                 sharedTransitionTag="structure"></Animated.Image>
               <Text
                 style={[
@@ -132,19 +132,47 @@ export const PickModule = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Completed modules')}>
-          <View style={[styles.done, { backgroundColor: colors.middle }]}>
-            <FontAwesomeIcon
-              icon={faCheck}
-              size={35 * scaleFactor}
-              color={colors.light}
-            />
-            <Text style={[styles.doneText, { color: colors.lightText, fontSize: 16 * scaleFactor }]}>
-              Opgavesvar for fuldførte læringsmoduler
+        <View style={{ marginVertical: 20 }}>
+          <View
+            style={[
+              styles.progessionBar,
+              {
+                backgroundColor: colors.light,
+                borderColor: colors.lightShadow,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.text,
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
+              ]}>
+              {progress}%
             </Text>
           </View>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Module overview', {
+                subject: moduleSubjects[1].subject,
+                description: moduleSubjects[1].description,
+                image: moduleSubjects[1].image,
+              })
+            }>
+            <View
+              style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
+              <Animated.Image
+                source={require('../../Assets/images/icons/attention-deficit-hyperactivity-disorder.png')}
+                style={{ width: 100, height: 100, marginTop: 5 }}
+                sharedTransitionTag="ADHD-brain"></Animated.Image>
+              <Text
+                style={[
+                  styles.text,
+                  { color: colors.lightText, fontSize: 18 * scaleFactor },
+                ]}>
+                Forstå AD(H)D hjernen
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

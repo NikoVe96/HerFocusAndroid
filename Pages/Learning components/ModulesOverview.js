@@ -27,6 +27,7 @@ export const ModulesOverview = ({ route }) => {
     '2 Struktur og planlægning': require('../../Assets/images/learning_goals.png'),
     '3 Struktur og planlægning': require('../../Assets/images/learning_clock.png'),
     '4 Struktur og planlægning': require('../../Assets/images/learning_score.png'),
+    '1 Forstå AD(H)D hjernen': require('../../Assets/images/learning_score.png')
   };
 
   useEffect(() => {
@@ -35,10 +36,12 @@ export const ModulesOverview = ({ route }) => {
   }, []);
 
   async function modulesQuery() {
+    console.log('Subject: ' + subject)
     let query = new Parse.Query('LearningModules');
     query.contains('subject', subject);
     query.ascending('name');
     const Result = await query.find();
+    console.log('Læringsmodul: ' + Result)
     setModules(Result);
   }
 
@@ -128,7 +131,7 @@ export const ModulesOverview = ({ route }) => {
                     )}
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate('Module', {
+                        navigation.navigate('Dynamic module', {
                           module: item,
                           subject: subject,
                           image: image,

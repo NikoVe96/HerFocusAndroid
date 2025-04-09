@@ -10,6 +10,7 @@ import generateRecurringDates from "../../Components/RecurringDates";
 import ColorPicker from "../../Components/ColorPicker";
 import { colorChange } from "./ColorChange";
 import handleTimeConfirm from "../../Components/TimeConfirm";
+import { KeyboardAvoidingView, Platform } from "react-native";
 
 export const AddItem = ({ item }) => {
 
@@ -177,420 +178,425 @@ export const AddItem = ({ item }) => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <ScrollView>
-                <View
-                    style={{
-                        alignContent: 'center',
-                        paddingHorizontal: 16,
-                    }}>
-                    <View>
-                        <Text style={[styles.text, { color: colors.darkText }]}>
-                            Hvad skal din {item} hedde?
-                        </Text>
-                        <TextInput
-                            style={styles.textInput}
-                            onChangeText={text => setItemName(text)}
-                            value={itemName}
-                        />
-                    </View>
-                    <View>
-                        <ColorPicker
-                            onSelect={setColor} />
-                    </View>
-                    <View style={[styles.buttonSmall, {
-                        borderColor: colors.light, backgroundColor: colors.light,
-                        marginVertical: '5%'
-                    }]}>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginVertical: '2%'
-                            }}>
-                            <Text
-                                style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.darkText }}>
-                                Tilbagevendene
-                            </Text>
-                            <Switch
-                                trackColor={{ false: colors.dark, true: colors.middle }}
-                                thumbColor={isRecurringEnabled ? colors.dark : colors.light}
-                                ios_backgroundColor={colors.dark}
-                                onValueChange={() => setRecurringDayEnabled(previousState => !previousState)}
-                                value={isRecurringEnabled}
-                            />
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginVertical: '2%'
-                            }}>
-                            <Text
-                                style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.darkText }}>
-                                Udvid detaljer
-                            </Text>
-                            <Switch
-                                trackColor={{ false: colors.dark, true: colors.middle }}
-                                thumbColor={isDetailsEnabled ? colors.dark : colors.light}
-                                ios_backgroundColor={colors.dark}
-                                onValueChange={() => setDetailsEnabled(previousState => !previousState)}
-                                value={isDetailsEnabled}
-                            />
-                        </View>
-                    </View>
-                    <View style={{ marginTop: '10%', flexDirection: 'row' }}>
-                        <View style={styles.rowView}>
-                            <TouchableOpacity
-                                onPress={() => setEmojiModalVisible(true)}
-                                style={[
-                                    styles.buttonSmall,
-                                    {
-                                        backgroundColor: colors.middle,
-                                        borderColor: colors.middleShadow,
-                                    },
-                                ]}>
-                                <Text
-                                    style={[
-                                        styles.buttonText,
-                                        { fontSize: 20 * scaleFactor },
-                                        { color: colors.lightText },
-                                    ]}>
-                                    Emoji
-                                </Text>
-                            </TouchableOpacity>
-                            <Modal
-                                visible={emojiModalVisible}
-                                animationType="slide"
-                                transparent={true}
-                                onRequestClose={() => setEmojiModalVisible(false)}>
-                                <View style={styles.modalContainer}>
-                                    <View
-                                        style={[
-                                            styles.emojiPickerContainer,
-                                            { backgroundColor: colors.light },
-                                        ]}>
-                                        <EmojiPicker
-                                            emojis={emojis}
-                                            recent={recent}
-                                            loading={false}
-                                            darkMode={false}
-                                            perLine={6}
-                                            onSelect={chosenEmoji => {
-                                                setEmoji(chosenEmoji.emoji);
-                                                setEmojiModalVisible(false)
-                                            }}
-                                            onChangeRecent={setRecent}
-                                            backgroundColor={colors.light}
-                                        />
-                                    </View>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.modalButton,
-                                            {
-                                                backgroundColor: colors.dark,
-                                                borderColor: colors.dark,
-                                            },
-                                        ]}
-                                        onPress={() => setEmojiModalVisible(false)}>
-                                        <Text style={{ fontWeight: 'bold', fontSize: 24 }}>LUK</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </Modal>
-                        </View>
-                        <View style={[styles.rowView, { alignItems: 'center', }]}>
-                            <Text style={{ fontSize: 26, color: colors.darkText }}> {emoji}</Text>
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: 'row', marginVertical: 2 }}>
-                        <View style={styles.rowView}>
-                            <TouchableOpacity
-                                style={[
-                                    styles.buttonSmall,
-                                    {
-                                        backgroundColor: colors.middle,
-                                        borderColor: colors.dark,
-                                    },
-                                ]}
-                                onPress={() => setStartTimePickerVisibility(true)}>
-                                <Text style={[styles.buttonText, { color: colors.lightText }]}>
-                                    Start tidspunkt
-                                </Text>
-                            </TouchableOpacity>
-                            <DatePicker
-                                mode="time"
-                                modal
-                                open={isStartTimePickerVisible}
-                                date={today}
-                                title={'Start tid'}
-                                confirmText="Bekræft"
-                                cancelText="Annuler"
-                                buttonColor={colors.dark}
-                                dividerColor={colors.dark}
-                                onConfirm={(date) => {
-                                    setStartTimePickerVisibility(false)
-                                    const time = formatTime(date);
-                                    setStartTime(time);
-                                    setEndTimePickerVisibility(true);
-                                }}
-                                onCancel={() => {
-                                    setStartTimePickerVisibility(false)
-                                }}
-                            />
-                        </View>
-                        <View style={[styles.rowView, { alignItems: 'center' }]}>
-                            <Text style={[styles.text, { fontWeight: 'bold', color: colors.darkText }]}>
-                                {itemStartTime == '' ? '' : `${itemStartTime}`}
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: 'row', marginVertical: 2 }}>
-                        <View style={styles.rowView}>
-                            <TouchableOpacity
-                                style={[
-                                    styles.buttonSmall,
-                                    {
-                                        backgroundColor: colors.middle,
-                                        borderColor: colors.dark,
-                                    },
-                                ]}
-                                onPress={() => setEndDatePickerVisibility(true)}>
-                                <Text style={[styles.buttonText, { color: colors.lightText }]}>
-                                    Slut tidspunkt
-                                </Text>
-                            </TouchableOpacity>
-                            <DatePicker
-                                mode="time"
-                                modal
-                                open={isEndTimePickerVisible}
-                                date={today}
-                                title={'Slut tid'}
-                                confirmText="Bekræft"
-                                cancelText="Annuler"
-                                buttonColor={colors.dark}
-                                dividerColor={colors.dark}
-                                onConfirm={(date) => {
-                                    setEndTimePickerVisibility(false)
-                                    const time = formatTime(date);
-                                    setEndTime(time);
-                                }}
-                                onCancel={() => {
-                                    setEndTimePickerVisibility(false)
-                                }}
-                            />
-                        </View>
-                        <View style={[styles.rowView, { alignItems: 'center' }]}>
-                            <Text style={[styles.text, { fontWeight: 'bold', color: colors.darkText }]}>
-                                {itemEndTime == '' ? '' : `${itemEndTime}`}
-                            </Text>
-                        </View>
-                    </View>
+            <KeyboardAvoidingView
 
-                    {isRecurringEnabled ?
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
+            >
+                <ScrollView>
+                    <View
+                        style={{
+                            alignContent: 'center',
+                            paddingHorizontal: 16,
+                        }}>
                         <View>
-                            <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
-                                <View style={[styles.rowView, { alignItems: 'center', flex: 1, justifyContent: 'center' }]}>
-                                    <Text style={[styles.text, { color: colors.darkText }]}>Gentages hver: </Text>
-                                </View>
-                                <View style={[styles.rowView, { alignItems: 'center', alignSelf: 'center', flex: 0.5 }]}>
-                                    <TextInput style={[styles.textInput, {}]} keyboardType="numeric" onChangeText={(interval) => setInterval(parseInt(interval))} />
-                                </View>
-                                <View style={[styles.rowView, { flex: 1, marginHorizontal: '2%' }]}>
-                                    <Picker selectedValue={recurrence} onValueChange={(recurrence) => setRecurrence(recurrence)} style={[
-                                        styles.buttonSmall,
-                                        {
-                                            backgroundColor: colors.middle,
-                                            borderColor: colors.dark,
-                                            color: colors.lightText
-                                        },
-                                    ]}>
-                                        <Picker.Item label="Dag" value="daily" />
-                                        <Picker.Item label="Uge" value="weekly" />
-                                        <Picker.Item label="Måned" value="monthly" />
-                                    </Picker>
-                                </View>
+                            <Text style={[styles.text, { color: colors.darkText }]}>
+                                Hvad skal din {item} hedde?
+                            </Text>
+                            <TextInput
+                                style={styles.textInput}
+                                onChangeText={text => setItemName(text)}
+                                value={itemName}
+                            />
+                        </View>
+                        <View>
+                            <ColorPicker
+                                onSelect={setColor} />
+                        </View>
+                        <View style={[styles.buttonSmall, {
+                            borderColor: colors.light, backgroundColor: colors.light,
+                            marginVertical: '5%'
+                        }]}>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginVertical: '2%'
+                                }}>
+                                <Text
+                                    style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.darkText }}>
+                                    Tilbagevendene
+                                </Text>
+                                <Switch
+                                    trackColor={{ false: colors.dark, true: colors.middle }}
+                                    thumbColor={isRecurringEnabled ? colors.dark : colors.light}
+                                    ios_backgroundColor={colors.dark}
+                                    onValueChange={() => setRecurringDayEnabled(previousState => !previousState)}
+                                    value={isRecurringEnabled}
+                                />
                             </View>
-                            <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
-                                <View style={styles.rowView}>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.buttonSmall,
-                                            {
-                                                backgroundColor: colors.middle,
-                                                borderColor: colors.dark,
-                                            },
-                                        ]}
-                                        onPress={() => setStartDatePickerVisibility(true)}>
-                                        <Text
-                                            style={[
-                                                styles.buttonText,
-                                                { fontSize: 20 * scaleFactor },
-                                                { color: colors.lightText },
-                                            ]}>
-                                            Start dato
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <DatePicker
-                                        mode="date"
-                                        modal
-                                        title={'Start dato'}
-                                        open={isStartDatePickerVisible}
-                                        date={today}
-                                        onConfirm={(date) => {
-                                            setStartDate(date)
-                                            setStartDatePickerVisibility(false)
-                                            setEndDatePickerVisibility(true)
-                                        }}
-                                        onCancel={() => {
-                                            setStartDatePickerVisibility(false)
-                                        }}
-                                    />
-                                </View>
-                                <View style={[styles.rowView, { alignItems: 'center' }]}>
-                                    <Text
-                                        style={[
-                                            styles.text,
-                                            { fontWeight: 'bold', fontSize: 18 * scaleFactor },
-                                            { color: colors.darkText },
-                                        ]}>
-                                        {startDate == null ? null : dateDisplay(startDate)}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
-                                <View style={styles.rowView}>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles.buttonSmall,
-                                            {
-                                                backgroundColor: colors.middle,
-                                                borderColor: colors.dark,
-                                            },
-                                        ]}
-                                        onPress={() => setEndDatePickerVisibility(true)}>
-                                        <Text
-                                            style={[
-                                                styles.buttonText,
-                                                { fontSize: 20 * scaleFactor },
-                                                { color: colors.lightText },
-                                            ]}>
-                                            Slut dato
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <DatePicker
-                                        mode="date"
-                                        modal
-                                        open={isEndDatePickerVisible}
-                                        date={today}
-                                        title={'Slut dato'}
-                                        onConfirm={(date) => {
-                                            setEndDate(date)
-                                            setEndDatePickerVisibility(false)
-                                        }}
-                                        onCancel={() => {
-                                            setEndDatePickerVisibility(false)
-                                        }}
-                                    />
-                                </View>
-                                <View style={[styles.rowView, { alignItems: 'center' }]}>
-                                    <Text
-                                        style={[
-                                            styles.text,
-                                            { fontWeight: 'bold', fontSize: 18 * scaleFactor },
-                                            { color: colors.darkText },
-                                        ]}>
-                                        {endDate == null ? null : dateDisplay(endDate)}
-                                    </Text>
-                                </View>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginVertical: '2%'
+                                }}>
+                                <Text
+                                    style={{ flex: 6, fontSize: 18 * scaleFactor, color: colors.darkText }}>
+                                    Udvid detaljer
+                                </Text>
+                                <Switch
+                                    trackColor={{ false: colors.dark, true: colors.middle }}
+                                    thumbColor={isDetailsEnabled ? colors.dark : colors.light}
+                                    ios_backgroundColor={colors.dark}
+                                    onValueChange={() => setDetailsEnabled(previousState => !previousState)}
+                                    value={isDetailsEnabled}
+                                />
                             </View>
                         </View>
-                        : <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                        <View style={{ marginTop: '10%', flexDirection: 'row' }}>
                             <View style={styles.rowView}>
                                 <TouchableOpacity
+                                    onPress={() => setEmojiModalVisible(true)}
                                     style={[
                                         styles.buttonSmall,
                                         {
                                             backgroundColor: colors.middle,
-                                            borderColor: colors.dark,
+                                            borderColor: colors.middleShadow,
                                         },
-                                    ]}
-                                    onPress={() => setDatePickerVisibility(true)}>
+                                    ]}>
                                     <Text
                                         style={[
                                             styles.buttonText,
                                             { fontSize: 20 * scaleFactor },
                                             { color: colors.lightText },
                                         ]}>
-                                        Dato
+                                        Emoji
+                                    </Text>
+                                </TouchableOpacity>
+                                <Modal
+                                    visible={emojiModalVisible}
+                                    animationType="slide"
+                                    transparent={true}
+                                    onRequestClose={() => setEmojiModalVisible(false)}>
+                                    <View style={styles.modalContainer}>
+                                        <View
+                                            style={[
+                                                styles.emojiPickerContainer,
+                                                { backgroundColor: colors.light },
+                                            ]}>
+                                            <EmojiPicker
+                                                emojis={emojis}
+                                                recent={recent}
+                                                loading={false}
+                                                darkMode={false}
+                                                perLine={6}
+                                                onSelect={chosenEmoji => {
+                                                    setEmoji(chosenEmoji.emoji);
+                                                    setEmojiModalVisible(false)
+                                                }}
+                                                onChangeRecent={setRecent}
+                                                backgroundColor={colors.light}
+                                            />
+                                        </View>
+                                        <TouchableOpacity
+                                            style={[
+                                                styles.modalButton,
+                                                {
+                                                    backgroundColor: colors.dark,
+                                                    borderColor: colors.dark,
+                                                },
+                                            ]}
+                                            onPress={() => setEmojiModalVisible(false)}>
+                                            <Text style={{ fontWeight: 'bold', fontSize: 24 }}>LUK</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </Modal>
+                            </View>
+                            <View style={[styles.rowView, { alignItems: 'center', }]}>
+                                <Text style={{ fontSize: 26, color: colors.darkText }}> {emoji}</Text>
+                            </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', marginVertical: 2 }}>
+                            <View style={styles.rowView}>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.buttonSmall,
+                                        {
+                                            backgroundColor: colors.middle,
+                                            borderColor: colors.middleShadow,
+                                        },
+                                    ]}
+                                    onPress={() => setStartTimePickerVisibility(true)}>
+                                    <Text style={[styles.buttonText, { color: colors.lightText }]}>
+                                        Start tidspunkt
                                     </Text>
                                 </TouchableOpacity>
                                 <DatePicker
-                                    mode="date"
+                                    mode="time"
                                     modal
-                                    open={isDatePickerVisible}
+                                    open={isStartTimePickerVisible}
                                     date={today}
+                                    title={'Start tid'}
+                                    confirmText="Bekræft"
+                                    cancelText="Annuler"
+                                    buttonColor={colors.dark}
+                                    dividerColor={colors.dark}
                                     onConfirm={(date) => {
-                                        setDatePickerVisibility(false)
-                                        handleDateConfirm(date)
+                                        setStartTimePickerVisibility(false)
+                                        const time = formatTime(date);
+                                        setStartTime(time);
+                                        setEndTimePickerVisibility(true);
                                     }}
                                     onCancel={() => {
-                                        setDatePickerVisibility(false)
+                                        setStartTimePickerVisibility(false)
                                     }}
                                 />
                             </View>
                             <View style={[styles.rowView, { alignItems: 'center' }]}>
-                                <Text
-                                    style={[
-                                        styles.text,
-                                        { fontWeight: 'bold', fontSize: 18 * scaleFactor },
-                                        { color: colors.darkText },
-                                    ]}>
-                                    {`${itemDate}`}
+                                <Text style={[styles.text, { fontWeight: 'bold', color: colors.darkText }]}>
+                                    {itemStartTime == '' ? '' : `${itemStartTime}`}
                                 </Text>
                             </View>
                         </View>
-                    }
+                        <View style={{ flexDirection: 'row', marginVertical: 2 }}>
+                            <View style={styles.rowView}>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.buttonSmall,
+                                        {
+                                            backgroundColor: colors.middle,
+                                            borderColor: colors.middleShadow,
+                                        },
+                                    ]}
+                                    onPress={() => setEndDatePickerVisibility(true)}>
+                                    <Text style={[styles.buttonText, { color: colors.lightText }]}>
+                                        Slut tidspunkt
+                                    </Text>
+                                </TouchableOpacity>
+                                <DatePicker
+                                    mode="time"
+                                    modal
+                                    open={isEndTimePickerVisible}
+                                    date={today}
+                                    title={'Slut tid'}
+                                    confirmText="Bekræft"
+                                    cancelText="Annuler"
+                                    buttonColor={colors.dark}
+                                    dividerColor={colors.dark}
+                                    onConfirm={(date) => {
+                                        setEndTimePickerVisibility(false)
+                                        const time = formatTime(date);
+                                        setEndTime(time);
+                                    }}
+                                    onCancel={() => {
+                                        setEndTimePickerVisibility(false)
+                                    }}
+                                />
+                            </View>
+                            <View style={[styles.rowView, { alignItems: 'center' }]}>
+                                <Text style={[styles.text, { fontWeight: 'bold', color: colors.darkText }]}>
+                                    {itemEndTime == '' ? '' : `${itemEndTime}`}
+                                </Text>
+                            </View>
+                        </View>
 
-                </View>
-                <View
-                    style={{
-                        alignContent: 'center',
-                        paddingHorizontal: 16,
-                    }}>
-                    <Text style={[styles.text, { color: colors.darkText }]}>
-                        Tilføj en beskrivelse
-                    </Text>
-                    <TextInput
-                        style={styles.textInput}
-                        onChangeText={text => setDescription(text)}
-                        value={description}
-                        multiline={true}
-                        //numberOfLines={8}
-                        textAlignVertical={'top'}></TextInput>
-                </View>
-                <TouchableOpacity
-                    style={[
-                        styles.Button,
-                        {
-                            backgroundColor: colors.dark,
-                            borderColor: colorChange(colors.dark, -20),
-                        },
-                    ]}
-                    onPress={() => saveItem()}>
-                    <Text style={{ color: 'white', fontSize: 18 * scaleFactor }}>
-                        Tilføj til kalender
-                    </Text>
-                </TouchableOpacity>
-            </ScrollView>
-        </SafeAreaView>
+                        {isRecurringEnabled ?
+                            <View>
+                                <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                                    <View style={[styles.rowView, { alignItems: 'center', flex: 1, justifyContent: 'center' }]}>
+                                        <Text style={[styles.text, { color: colors.darkText }]}>Gentages hver: </Text>
+                                    </View>
+                                    <View style={[styles.rowView, { alignItems: 'center', alignSelf: 'center', flex: 0.5 }]}>
+                                        <TextInput style={[styles.textInput, {}]} keyboardType="numeric" onChangeText={(interval) => setInterval(parseInt(interval))} />
+                                    </View>
+                                    <View style={[styles.pickerContainer, { backgroundColor: colors.lightMiddle, borderColor: colors.lightMiddle }]}>
+                                        <Picker
+                                            selectedValue={recurrence}
+                                            onValueChange={(value) => setRecurrence(value)}
+                                            style={[styles.picker, { color: colors.lightText }]}
+                                            dropdownIconColor={colors.lightText}
+                                            mode="dropdown"
+                                        >
+                                            <Picker.Item label="Dag" value="daily" />
+                                            <Picker.Item label="Uge" value="weekly" />
+                                            <Picker.Item label="Måned" value="monthly" />
+                                        </Picker>
+                                    </View>
+                                </View>
+                                <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                                    <View style={styles.rowView}>
+                                        <TouchableOpacity
+                                            style={[
+                                                styles.buttonSmall,
+                                                {
+                                                    backgroundColor: colors.middle,
+                                                    borderColor: colors.middleShadow,
+                                                },
+                                            ]}
+                                            onPress={() => setStartDatePickerVisibility(true)}>
+                                            <Text
+                                                style={[
+                                                    styles.buttonText,
+                                                    { fontSize: 20 * scaleFactor },
+                                                    { color: colors.lightText },
+                                                ]}>
+                                                Start dato
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <DatePicker
+                                            mode="date"
+                                            modal
+                                            title={'Start dato'}
+                                            open={isStartDatePickerVisible}
+                                            date={today}
+                                            onConfirm={(date) => {
+                                                setStartDate(date)
+                                                setStartDatePickerVisibility(false)
+                                                setEndDatePickerVisibility(true)
+                                            }}
+                                            onCancel={() => {
+                                                setStartDatePickerVisibility(false)
+                                            }}
+                                        />
+                                    </View>
+                                    <View style={[styles.rowView, { alignItems: 'center' }]}>
+                                        <Text
+                                            style={[
+                                                styles.text,
+                                                { fontWeight: 'bold', fontSize: 18 * scaleFactor },
+                                                { color: colors.darkText },
+                                            ]}>
+                                            {startDate == null ? null : dateDisplay(startDate)}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                                    <View style={styles.rowView}>
+                                        <TouchableOpacity
+                                            style={[
+                                                styles.buttonSmall,
+                                                {
+                                                    backgroundColor: colors.middle,
+                                                    borderColor: colors.middleShadow,
+                                                },
+                                            ]}
+                                            onPress={() => setEndDatePickerVisibility(true)}>
+                                            <Text
+                                                style={[
+                                                    styles.buttonText,
+                                                    { fontSize: 20 * scaleFactor },
+                                                    { color: colors.lightText },
+                                                ]}>
+                                                Slut dato
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <DatePicker
+                                            mode="date"
+                                            modal
+                                            open={isEndDatePickerVisible}
+                                            date={today}
+                                            title={'Slut dato'}
+                                            onConfirm={(date) => {
+                                                setEndDate(date)
+                                                setEndDatePickerVisibility(false)
+                                            }}
+                                            onCancel={() => {
+                                                setEndDatePickerVisibility(false)
+                                            }}
+                                        />
+                                    </View>
+                                    <View style={[styles.rowView, { alignItems: 'center' }]}>
+                                        <Text
+                                            style={[
+                                                styles.text,
+                                                { fontWeight: 'bold', fontSize: 18 * scaleFactor },
+                                                { color: colors.darkText },
+                                            ]}>
+                                            {endDate == null ? null : dateDisplay(endDate)}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                            : <View style={{ flexDirection: 'row', marginVertical: '2%' }}>
+                                <View style={styles.rowView}>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.buttonSmall,
+                                            {
+                                                backgroundColor: colors.middle,
+                                                borderColor: colors.middleShadow,
+                                            },
+                                        ]}
+                                        onPress={() => setDatePickerVisibility(true)}>
+                                        <Text
+                                            style={[
+                                                styles.buttonText,
+                                                { fontSize: 20 * scaleFactor },
+                                                { color: colors.lightText },
+                                            ]}>
+                                            Dato
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <DatePicker
+                                        mode="date"
+                                        modal
+                                        open={isDatePickerVisible}
+                                        date={today}
+                                        onConfirm={(date) => {
+                                            setDatePickerVisibility(false)
+                                            handleDateConfirm(date)
+                                        }}
+                                        onCancel={() => {
+                                            setDatePickerVisibility(false)
+                                        }}
+                                    />
+                                </View>
+                                <View style={[styles.rowView, { alignItems: 'center' }]}>
+                                    <Text
+                                        style={[
+                                            styles.text,
+                                            { fontWeight: 'bold', fontSize: 18 * scaleFactor },
+                                            { color: colors.darkText },
+                                        ]}>
+                                        {`${itemDate}`}
+                                    </Text>
+                                </View>
+                            </View>
+                        }
+
+                    </View>
+                    <View
+                        style={{
+                            alignContent: 'center',
+                            paddingHorizontal: 16,
+                        }}>
+                        <Text style={[styles.text, { color: colors.darkText }]}>
+                            Tilføj en beskrivelse
+                        </Text>
+                        <TextInput
+                            style={styles.textInput}
+                            onChangeText={text => setDescription(text)}
+                            value={description}
+                            multiline={true}
+                            //numberOfLines={8}
+                            textAlignVertical={'top'}></TextInput>
+                    </View>
+                    <TouchableOpacity
+                        style={[
+                            styles.Button,
+                            {
+                                backgroundColor: colors.dark,
+                                borderColor: colors.darkShadow,
+                            },
+                        ]}
+                        onPress={() => saveItem()}>
+                        <Text style={{ color: 'white', fontSize: 24 * scaleFactor }}>
+                            Tilføj til kalender
+                        </Text>
+                    </TouchableOpacity>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </SafeAreaView >
     );
 }
 
 const styles = StyleSheet.create({
     Button: {
         borderRadius: 10,
-        padding: 5,
+        padding: '3%',
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
@@ -683,6 +689,18 @@ const styles = StyleSheet.create({
     },
     rowView: {
         flex: 1,
+    },
+    pickerContainer: {
+        borderWidth: 1,
+        borderRadius: 10,
+        overflow: 'hidden',
+        elevation: 5,
+        width: '40%'
+    },
+    picker: {
+        height: 50,
+        width: '100%',
+        elevation: 5
     },
 });
 

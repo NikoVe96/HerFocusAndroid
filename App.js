@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeProvider, useThemeContext } from './Assets/Theme/ThemeContext';
 import { UserProvider, useUser } from './Components/UserContext';
 import { configurePushNotifications } from './Components/PushNotificationMethods';
-import { PermissionsAndroid, Alert } from 'react-native';
+import { PermissionsAndroid, Alert, StatusBar } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -35,7 +35,11 @@ function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <LinearGradient colors={gradientColors} style={{ flex: 1 }}>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+      />
+      <LinearGradient colors={gradientColors} style={{ flex: 1 }} >
         <NavigationContainer theme={{
           ...theme,
           colors: {
@@ -57,7 +61,7 @@ function App() {
           )}
         </NavigationContainer>
       </LinearGradient>
-    </GestureHandlerRootView>
+    </GestureHandlerRootView >
   );
 }
 

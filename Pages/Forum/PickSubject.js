@@ -44,7 +44,7 @@ export const PickSubject = () => {
               Familie
             </Text>
             <Image
-              source={require('../../Assets/images/Heart.png')}
+              source={require('../../Assets/images/icons/family.png')}
               style={[
                 styles.images,
                 {
@@ -73,7 +73,7 @@ export const PickSubject = () => {
               Relationer
             </Text>
             <Image
-              source={require('../../Assets/images/Hands.png')}
+              source={require('../../Assets/images/icons/holding-hands.png')}
               style={[
                 styles.images,
                 {
@@ -103,7 +103,7 @@ export const PickSubject = () => {
               Medicin
             </Text>
             <Image
-              source={require('../../Assets/images/Medicin.png')}
+              source={require('../../Assets/images/icons/medicine.png')}
               style={[
                 styles.images,
                 {
@@ -133,7 +133,7 @@ export const PickSubject = () => {
               Gode tips
             </Text>
             <Image
-              source={require('../../Assets/images/Tips.png')}
+              source={require('../../Assets/images/icons/idea.png')}
               style={[
                 styles.images,
                 {
@@ -162,7 +162,7 @@ export const PickSubject = () => {
               Den kvindelige cyklus
             </Text>
             <Image
-              source={require('../../Assets/images/Tips.png')}
+              source={require('../../Assets/images/icons/uterus.png')}
               style={[
                 styles.images,
                 {
@@ -191,7 +191,7 @@ export const PickSubject = () => {
               Andet
             </Text>
             <Image
-              source={require('../../Assets/images/learning_think.png')}
+              source={require('../../Assets/images/icons/thinking(1).png')}
               style={[
                 styles.images,
                 {

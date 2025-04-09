@@ -11,7 +11,8 @@ import Parse from 'parse/react-native';
 
 const TaskSorter = ({
     date,
-    selectedWeekDays
+    selectedWeekDays,
+    completeTask
 }) => {
 
     const { colors } = useTheme();
@@ -54,7 +55,7 @@ const TaskSorter = ({
                 try {
                     const dayEvents = await getDayEvents(formattedDate, ID);
                     const allDayEvents = await getAllDayEvents(formattedDate, ID);
-                    setDayTasksArray(dayEvents);
+                    setDayTasksArray(dayEvents.allEvents);
                     setAllDayArray(allDayEvents);
                     setTasksArray(dayEvents.tasks);
                     setEventsArray(dayEvents.events);
@@ -79,8 +80,6 @@ const TaskSorter = ({
         }
         return '';
     };
-
-
 
     function sortEventView() {
         if (sorting == 'tid') {

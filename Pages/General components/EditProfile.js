@@ -35,10 +35,15 @@ export const EditProfile = ({ navigation }) => {
     const [newEmail, setNewEmail] = useState(email);
     const [newUsername, setNewUsername] = useState(username);
 
-    const handleAvatarSelect = (avatar) => {
-        setNewAvatar(convertAvatar(avatar));
-        setModalVisible(false);
-        console.log(newAvatar);
+    async function handleAvatarSelect(avatar) {
+        const assetSource = Image.resolveAssetSource(avatar);
+        try {
+            const newFile = await convertAvatar(assetSource);
+            setNewAvatar(newFile);
+            setModalVisible(false);
+        } catch (error) {
+            Alert.alert("Error processing avatar image.");
+        }
     };
 
     async function save() {
@@ -124,7 +129,7 @@ export const EditProfile = ({ navigation }) => {
                         </View>
                     </View>
                 </Modal>
-                <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, marginBottom: 100, marginTop: '15%' }]}
+                <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, borderColor: colors.middleShadow, marginBottom: 100, marginTop: '15%' }]}
                     onPress={() => save()}>
                     <Text style={[styles.buttonText, { color: colors.lightText }]}>Gem</Text>
                 </TouchableOpacity>

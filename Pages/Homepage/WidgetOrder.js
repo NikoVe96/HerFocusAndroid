@@ -1,30 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView, Dimensions, Modal } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
-import { useTheme } from '@react-navigation/native';
+import { useFocusEffect, useTheme } from '@react-navigation/native';
 import Parse from 'parse/react-native';
-import { useUser } from '../../../Components/UserContext';
+import { useUser } from '../../Components/UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const WidgetOrder = ({ navigation }) => {
     const { colors } = useTheme();
-    const { ID, username, updateUserProfile, name } = useUser();
+    const { ID } = useUser();
     const [data, setData] = useState([
-        "TaskProgress",
-        "NextTaskW",
+        "To-do status",
+        "Næste to-do",
         "Streak",
-        "DailyOverviewW",
+        "Dagligt overblik",
+        'ADHD fakta'
     ]);
     const { width, height } = Dimensions.get('window');
     const scaleFactor = Math.min(width / 375, height / 667);
     const [modalVisible, setModalVisible] = useState(false);
     const availableWidgets = [
-        "TaskProgress",
-        "NextTaskW",
+        "To-do status",
+        "Næste to-do",
         "Streak",
-        "DailyOverviewW",
+        "Dagligt overblik",
+        'ADHD fakta'
     ];
+
+    useFocusEffect(
+        useCallback(() => {
+            getOrder();
+        }, [])
+    );
+
+
+
+    async function getOrder() {
+        const settings = new Parse.Query('Settings');
+        settings.contains('user', ID);
+        let result = await settings.find();
+        console.log('result: ' + result[0].get('homeOrder'))
+        setData(result[0].get('homeOrder'))
+    }
 
     async function saveNewOrder() {
         try {
@@ -111,9 +129,11 @@ const WidgetOrder = ({ navigation }) => {
                 >
                     <View style={styles.modalContainer}>
                         <View style={[styles.modalContent, { backgroundColor: colors.light }]}>
-                            <Text style={[styles.modalTitle, { color: colors.darkText, fontSize: 26 * scaleFactor }]}>Vælg en widget</Text>
-                            {availableWidgets.map((widget, idx) => (
-                                <View key={idx} style={styles.modalItem}>
+                            <Text style={[styles.modalTitle, { color: colors.darkText, fontSize: 26 * scaleFactor }]}>
+                                Vælg en widget
+                            </Text>
+                            {availableWidgets.filter(widget => !data.includes(widget)).map((widget, idx) => (
+                                <View key={idx} style={[styles.modalItem, { borderColor: colors.dark }]}>
                                     <Text style={{ fontSize: 16, color: colors.darkText }}>{widget}</Text>
                                     <TouchableOpacity onPress={() => addWidget(widget)}>
                                         <FontAwesomeIcon icon={faPlus} size={25} color={colors.darkText} />

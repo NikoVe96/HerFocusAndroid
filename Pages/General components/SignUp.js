@@ -40,14 +40,7 @@ const SignUp = () => {
   };
 
   async function signUp() {
-    const user = await handleSignup(name, username, age, email, password, confirmPassword);
-
-    if (avatar) {
-      const parseFile = await convertAvatar(avatar);
-      user.set('profilePicture', parseFile);
-      await user.save();
-    }
-    handleLogin(email, password, navigation);
+    handleSignup(name, username, age, email, password, confirmPassword, avatar);
   }
 
   return (

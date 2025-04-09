@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Parse from 'parse/react-native';
+import { Image } from 'react-native';
+import { convertAvatar } from './ConvertAvatar';
 
 export const UserContext = createContext(null);
 
@@ -14,6 +16,14 @@ export const UserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [ID, setID] = useState('');
   const [age, setAge] = useState();
+  const [avatar, setAvatar] = useState();
+  const homeOrder = [
+    "To-do status",
+    "Næste to-do",
+    "Dagligt overblik",
+    "Streak",
+    "ADHD fakta"
+  ];
 
   useEffect(() => {
     const checkUser = async () => {
@@ -31,8 +41,9 @@ export const UserProvider = ({ children }) => {
     checkUser();
   }, []);
 
-  const handleSignup = async (name, username, age, email, password, confirmPassword, navigation) => {
+  const handleSignup = async (name, username, age, email, password, confirmPassword, avatar) => {
     setError('');
+    console.log('avatar: ' + avatar)
     const lowerCaseEmail = email.toLowerCase();
     const userNameExist = new Parse.Query('User');
     userNameExist.equalTo('username', username);
@@ -59,6 +70,7 @@ export const UserProvider = ({ children }) => {
     userSettings.set('theme', 'yellow');
     userSettings.set('user', user);
     userSettings.set('modulesCompleted', []);
+    userSettings.set('homeOrder', homeOrder);
 
     const userNotebook = new Parse.Object('Notebook');
     userNotebook.set('user', user);
@@ -68,18 +80,29 @@ export const UserProvider = ({ children }) => {
 
     try {
       await user.signUp();
+
       await userSettings.save();
       await userNotebook.save();
       user.set('settings', userSettings);
       user.set('notebook', userNotebook);
-      await user.save();
+
+      if (avatar) {
+        const assetSource = Image.resolveAssetSource(avatar);
+        const parseFile = await convertAvatar(assetSource);
+        user.set('profilePicture', parseFile);
+        await user.save();
+      }
+
+      await handleLogin(email, password);
+
       return user;
     } catch (error) {
       console.error('Error during signup:', error);
+      setError('Der opstod en fejl under oprettelse af brugeren.');
     }
   };
 
-  const handleLogin = async (email, password, navigation) => {
+  const handleLogin = async (email, password) => {
     setError('');
     const lowerCaseEmail = email.toLowerCase();
 
@@ -88,7 +111,6 @@ export const UserProvider = ({ children }) => {
       setIsLoggedIn(true);
       setID(user.id);
       console.log('Success! User ID:', user.id);
-      navigation.navigate('Home');
       setUsername(user.getUsername());
     } catch (error) {
       console.error('Error while logging in user', error);
@@ -102,7 +124,6 @@ export const UserProvider = ({ children }) => {
       setIsLoggedIn(false);
       setUsername('');
       setID('');
-      navigation.navigate('Login');
     } catch (error) {
       console.error('Error logging out', error);
     }

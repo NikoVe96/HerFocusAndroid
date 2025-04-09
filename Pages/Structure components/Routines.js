@@ -13,40 +13,6 @@ const Routines = ({ navigation }) => {
     const { colors } = useTheme();
     const { width, height } = Dimensions.get('window');
     const scaleFactor = Math.min(width / 375, height / 667);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [name, setName] = useState('');
-    const [emoji, setEmoji] = useState();
-    const [routineSteps, setRoutineSteps] = useState([]);
-
-    async function saveNewRoutine() {
-        try {
-            const currentUser = await Parse.User.currentAsync();
-            const newRoutine = new Parse.Object('Routine');
-
-            newRoutine.set('name', name);
-            newRoutine.set('user', currentUser);
-            newRoutine.set('emoji', emoji);
-            newRoutine.set('routineSteps', []);
-            newRoutine.set('type', 'routine');
-            await newRoutine.save();
-
-            routines();
-            hideRoutineModal();
-
-            Alert.alert('En ny rutine er blevet tilføjet!')
-            clearInput();
-        } catch (error) {
-            console.log('Error saving new routine: ', error);
-            Alert.alert('Hovsa!',
-                'Det ser ud til at du har glemt at udfylde enten navn eller farve 😉')
-        }
-    }
-
-    function clearInput() {
-        setName('');
-        setEmoji('');
-        setRoutineSteps([]);
-    }
 
     return (
         <ScrollView>

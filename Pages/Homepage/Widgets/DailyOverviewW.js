@@ -3,7 +3,7 @@ import { useTheme } from '@react-navigation/native';
 import TaskProgress from "../../Structure components/TaskProgress";
 import TaskSorter from "../../Structure components/TaskSorter";
 
-function DailyOverviewW() {
+function DailyOverviewW({ completeTask }) {
 
     const { colors } = useTheme();
     const today = new Date();
@@ -14,7 +14,8 @@ function DailyOverviewW() {
             borderRadius: 10
         }}>
             <TaskSorter
-                date={today} />
+                date={today}
+                completeTask={completeTask} />
         </View>
     );
 

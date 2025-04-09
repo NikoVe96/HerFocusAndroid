@@ -18,7 +18,7 @@ const LearningPlatform = ({ navigation }) => {
             </Text>
             <TouchableOpacity
                 style={styles.press}
-                onPress={() => navigation.navigate('Pick module')}>
+                onPress={() => navigation.navigate('Learning overview')}>
                 <View
                     style={[styles.buttonContainer, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
                     <Text
@@ -29,7 +29,7 @@ const LearningPlatform = ({ navigation }) => {
                         Læringsmoduler
                     </Text>
                     <Image
-                        source={require('../../Assets/images/1-removebg-preview.png')}
+                        source={require('../../Assets/images/icons/cap.png')}
                         style={[
                             styles.images,
                             {
@@ -52,7 +52,7 @@ const LearningPlatform = ({ navigation }) => {
                         Artikler
                     </Text>
                     <Image
-                        source={require('../../Assets/images/1-removebg-preview.png')}
+                        source={require('../../Assets/images/icons/newspaper.png')}
                         style={[
                             styles.images,
                             {

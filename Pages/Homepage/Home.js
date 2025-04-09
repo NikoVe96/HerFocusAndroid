@@ -9,6 +9,7 @@ import TaskProgress from '../Structure components/TaskProgress';
 import Parse from 'parse/react-native';
 import Streak from './Widgets/Streak';
 import DailyOverviewW from './Widgets/DailyOverviewW';
+import FunFact from './Widgets/FunFact';
 
 
 function Home() {
@@ -24,10 +25,11 @@ function Home() {
     const [completedTasksArray, setCompletedTasks] = useState([]);
     const [checked, setChecked] = useState(false);
     const [userComponentOrder, setUserComponentOrder] = useState([
-        "TaskProgress",
-        "NextTaskW",
+        "To-do status",
+        "Næste to-do",
         "Streak",
-        "DailyOverviewW",
+        "Dagligt overblik",
+        "ADHD fakta",
     ]);
 
     useFocusEffect(
@@ -78,6 +80,14 @@ function Home() {
         return Results;
     }
 
+    const completeTask = async (task) => {
+        const isCompleted = task.get('completed');
+        console.log(task.get('completed'))
+        task.set('completed', !isCompleted);
+        await task.save();
+        updateTaskProgress()
+    }
+
     async function getOrder() {
         try {
             let query = new Parse.Query("Settings");
@@ -100,21 +110,20 @@ function Home() {
     }
 
     const componentMap = {
-        TaskProgress: <TaskProgress taskProgress={taskProgress} key="TaskProgress" />,
-        NextTaskW: (
+        'To-do status': <TaskProgress taskProgress={taskProgress} key='To-do status' />,
+        'Næste to-do': (
             <NextTaskW
                 remainingTasksArray={remainingTasksArray}
                 checked={checked}
                 taskCompleted={(task) => {
-                    task.set('completed', true);
-                    task.save().then(updateTaskProgress);
-                    setChecked(false);
+                    completeTask(task);
                 }}
-                key="NextTaskW"
+                key='Næste to-do'
             />
         ),
-        Streak: <Streak key="Streak" />,
-        DailyOverviewW: <DailyOverviewW key="DailyOverviewW" />,
+        Streak: <Streak key='Streak' />,
+        'Dagligt overblik': <DailyOverviewW completeTask={(task) => completeTask(task)} key='Dagligt overblik' />,
+        'ADHD fakta': <FunFact key={'ADHD fakta'} />
     };
 
     return (

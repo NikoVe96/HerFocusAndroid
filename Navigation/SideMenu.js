@@ -21,6 +21,8 @@ import {
   faAddressCard,
   faBook,
   faClockRotateLeft,
+  faThumbsUp,
+  faThumbsDown,
 } from '@fortawesome/free-solid-svg-icons';
 import AccordionItem from '../Components/AccordionItem';
 import TopNavigation from './TopNav';
@@ -51,9 +53,12 @@ import CompletedModules from '../Pages/Learning components/CompletedModules';
 import Home from '../Pages/Homepage/Home';
 import Add from '../Pages/Structure components/Add';
 import EditProfile from '../Pages/General components/EditProfile';
-import WidgetOrder from '../Pages/Homepage/Widgets/WidgetOrder';
+import WidgetOrder from '../Pages/Homepage/WidgetOrder';
 import Routines from '../Pages/Structure components/Routines';
 import LearningPlatform from '../Pages/General components/LearningPlatform';
+import ReportBug from '../Pages/General components/ReportBug';
+import LearningOverview from '../Pages/Learning components/LearningOverview';
+import DynamicModule from '../Pages/Learning components/DynamicModule';
 
 const Drawer = createDrawerNavigator();
 
@@ -270,6 +275,31 @@ function CustomDrawerContent({ navigation }) {
           <Text style={{ fontSize: 18, color: colors.darkText }}>Kontakt os</Text>
         </TouchableOpacity>
       </AccordionItem>
+      <View style={styles.accordContainer}>
+        <TouchableOpacity
+          style={styles.accordHeader}
+          onPress={() => navigation.navigate('Feedback')}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View>
+              <FontAwesomeIcon
+                icon={faThumbsUp}
+                size={15}
+                color={colors.darkText}
+                style={{ marginRight: 10 }}
+              />
+              <FontAwesomeIcon
+                icon={faThumbsDown}
+                size={15}
+                color={colors.darkText}
+                style={{ marginRight: 10 }}
+              />
+            </View>
+            <Text style={[styles.accordTitle, { color: colors.darkText }]}>
+              Feedback til app'en
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </DrawerContentScrollView>
   );
 }
@@ -334,6 +364,9 @@ function SideMenu() {
       <Drawer.Screen name="Home order" component={WidgetOrder}></Drawer.Screen>
       <Drawer.Screen name="Routines" component={Routines}></Drawer.Screen>
       <Drawer.Screen name="Learning platform" component={LearningPlatform}></Drawer.Screen>
+      <Drawer.Screen name="Feedback" component={ReportBug}></Drawer.Screen>
+      <Drawer.Screen name="Learning overview" component={LearningOverview}></Drawer.Screen>
+      <Drawer.Screen name="Dynamic module" component={DynamicModule}></Drawer.Screen>
     </Drawer.Navigator>
   );
 }
