@@ -95,10 +95,10 @@ const SignUp = () => {
           <Text style={styles.errorText}>{error}</Text>
           <TouchableOpacity style={[styles.signUpBtn, {
             backgroundColor: colors.middle, borderColor: colors.middleShadow,
-            width: '35%', alignSelf: 'flex-start', height: '30%', marginRight: '8%', alignSelf: 'center'
+            width: '35%', alignSelf: 'flex-start', height: '8%', marginRight: '8%', alignSelf: 'center'
           }]}
             onPress={() => setModalVisible(true)}>
-            <Text style={[styles.btnText, { color: colors.lightText, fontSize: 16 * scaleFactor }]}>Vælg en avatar</Text>
+            <Text style={[styles.btnText, { color: colors.darkText, fontSize: 16 * scaleFactor }]}>Vælg en avatar</Text>
           </TouchableOpacity>
           <Modal
             visible={modalVisible}
@@ -119,14 +119,14 @@ const SignUp = () => {
             onPress={() => signUp()}
             title=" Sign up"
             titleColor="#000000">
-            <Text style={[styles.btnText, { fontSize: 18 * scaleFactor, color: colors.lightText }]}>
+            <Text style={[styles.btnText, { fontSize: 18 * scaleFactor, color: colors.darkText }]}>
               Lav en profil
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate('Login')}
             style={[styles.signUpBtn, { backgroundColor: colors.dark, borderColor: colors.darkShadow }]}>
-            <Text style={[styles.btnText, { fontSize: 18 * scaleFactor, color: colors.lightText }]}>
+            <Text style={[styles.btnText, { fontSize: 18 * scaleFactor, color: colors.darkText }]}>
               Tilbage til login
             </Text>
           </TouchableOpacity>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginBottom: '90%',
+    marginBottom: 100,
   },
   image: {
     width: '80%',

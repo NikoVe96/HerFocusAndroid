@@ -69,45 +69,43 @@ export const UserProvider = ({ children }) => {
 
     try {
       await user.signUp();
+
+      const userSettings = new Parse.Object('Settings');
+      userSettings.set('theme', 'yellow');
+      userSettings.set('user', user);
+      userSettings.set('modulesCompleted', []);
+      userSettings.set('homeOrder', homeOrder);
+
+      const userNotebook = new Parse.Object('Notebook');
+      userNotebook.set('user', user);
+      userNotebook.set('exercises', []);
+      userNotebook.set('todo', []);
+      userNotebook.set('notes', []);
+
+      await userSettings.save();
+      await userNotebook.save();
+
+      if (type === 'avatar') {
+        const assetSource = Image.resolveAssetSource(avatar);
+        const newFile = await convertAvatar(assetSource);
+        user.set('profilePicture', newFile);
+      } else {
+        user.set('profilePicture', avatar);
+      }
+
+      user.set('settings', userSettings);
+      user.set('notebook', userNotebook);
+      await user.save();
+
     } catch (error) {
       console.error('Error during signup:', error);
     }
-    setData(avatar, type);
+    //setData(avatar, type);
     //handleLogin(savedEmail, savedPassword);
+    setID(user.id);
+    setUsername(user.getUsername());
     setIsLoggedIn(true);
   };
-
-  const setData = async (avatar, type) => {
-    console.log('type: ' + type);
-    const currentUser = await Parse.User.currentAsync();
-
-    const userSettings = new Parse.Object('Settings');
-    userSettings.set('theme', 'yellow');
-    userSettings.set('user', currentUser);
-    userSettings.set('modulesCompleted', []);
-    userSettings.set('homeOrder', homeOrder);
-
-    const userNotebook = new Parse.Object('Notebook');
-    userNotebook.set('user', currentUser);
-    userNotebook.set('exercises', []);
-    userNotebook.set('todo', []);
-    userNotebook.set('notes', []);
-
-    await userSettings.save();
-    await userNotebook.save();
-
-    if (type === 'avatar') {
-      const assetSource = Image.resolveAssetSource(avatar);
-      const newFile = await convertAvatar(assetSource);
-      currentUser.set('profilePicture', newFile);
-    } else {
-      currentUser.set('profilePicture', avatar);
-    }
-
-    currentUser.set('settings', userSettings);
-    currentUser.set('notebook', userNotebook);
-    await currentUser.save();
-  }
 
   const handleLogin = async (email, password) => {
     //setError('');
@@ -151,7 +149,7 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         username, email, name, error, profilePicture, isLoggedIn, ID, age,
-        updateUserProfile, handleLogin, handleLogout, handleSignup, setData
+        updateUserProfile, handleLogin, handleLogout, handleSignup,
       }}>
       {children}
     </UserContext.Provider>
