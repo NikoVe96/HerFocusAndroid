@@ -87,8 +87,8 @@ const Quiz = ({ navigation, subject, module }) => {
           style={[
             styles.button,
             {
-              backgroundColor: colors.dark,
-              borderColor: colors.dark,
+              backgroundColor: colors.middle,
+              borderColor: colors.middleShadow,
             },
           ]}
           onPress={() => resetQuiz()}>
@@ -137,10 +137,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginRight: 20,
     borderWidth: 1,
+    borderBottomWidth: 4,
     borderRadius: 10,
     padding: 10,
-    elevation: 10,
-    width: '50%'
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+    width: '50%',
+    marginBottom: '10%'
   },
 });
 export default Quiz;

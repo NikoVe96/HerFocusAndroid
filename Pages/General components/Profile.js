@@ -7,7 +7,8 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  Alert
 } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { useUser } from '../../Components/UserContext';
@@ -73,11 +74,11 @@ export const Profile = ({ navigation }) => {
         <View style={{ marginHorizontal: '5%' }}>
           <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}
             onPress={() => navigation.navigate('Edit profile')}>
-            <Text style={[styles.buttonText, { color: colors.lightText }]}>Rediger profil</Text>
+            <Text style={[styles.buttonText, { color: colors.darkText }]}>Rediger profil</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}
             onPress={() => navigation.navigate('Settings')}>
-            <Text style={[styles.buttonText, { color: colors.lightText }]}>Indstillinger</Text>
+            <Text style={[styles.buttonText, { color: colors.darkText }]}>Indstillinger</Text>
           </TouchableOpacity>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity
@@ -87,7 +88,7 @@ export const Profile = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, borderColor: colors.middleShadow, width: '48%' }]}
               onPress={handleLogout}>
-              <Text style={[styles.buttonText, { color: colors.lightText }]}>Log ud</Text>
+              <Text style={[styles.buttonText, { color: colors.darkText }]}>Log ud</Text>
             </TouchableOpacity>
           </View>
         </View>

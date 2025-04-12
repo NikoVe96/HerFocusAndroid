@@ -12,19 +12,19 @@ const LearningPlatform = ({ navigation }) => {
             <Text
                 style={[
                     styles.title,
-                    { color: colors.lightText, fontSize: 22 * scaleFactor },
+                    { color: colors.darkText, fontSize: 22 * scaleFactor },
                 ]}>
                 Igennem vores læringsplatform kan du lære en masse om kvinder og AD(H)D, og hvordan man kan blive bedre til at takle de tilhørende udfordringer.
             </Text>
             <TouchableOpacity
                 style={styles.press}
-                onPress={() => navigation.navigate('Learning overview')}>
+                onPress={() => navigation.navigate('Pick module')}>
                 <View
                     style={[styles.buttonContainer, { backgroundColor: colors.middle, borderColor: colors.middleShadow }]}>
                     <Text
                         style={[
                             styles.text,
-                            { color: colors.lightText, fontSize: 20 * scaleFactor },
+                            { color: colors.darkText, fontSize: 20 * scaleFactor },
                         ]}>
                         Læringsmoduler
                     </Text>
@@ -47,7 +47,7 @@ const LearningPlatform = ({ navigation }) => {
                     <Text
                         style={[
                             styles.text,
-                            { color: colors.lightText, fontSize: 20 * scaleFactor },
+                            { color: colors.darkText, fontSize: 20 * scaleFactor },
                         ]}>
                         Artikler
                     </Text>

@@ -129,8 +129,8 @@ function Home() {
     return (
         <SafeAreaView>
             <ScrollView>
-                <Text style={[styles.header, { color: colors.lightText }]}>Hej {name}!</Text>
-                <Text style={[styles.text, { color: colors.lightText }]}>Er du klar til at tackle dagen?</Text>
+                <Text style={[styles.header, { color: colors.darkText }]}>Hej {name}!</Text>
+                <Text style={[styles.text, { color: colors.darkText }]}>Er du klar til at tackle dagen?</Text>
                 <TouchableOpacity style={styles.gearBtn}
                     onPress={() => navigation.navigate('Home order')}>
                     <FontAwesomeIcon icon={faGear} size={25} color={colors.dark} />

@@ -21,7 +21,7 @@ function AccordionItem({ children, title, icon, emoji, titleStyle, emojiStyle, t
             <TouchableOpacity style={[styles.accordHeader, { color: colors.dark }]} onPress={toggleItem}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {icon !== null ?
-                        <FontAwesomeIcon icon={icon} size={20} color={colors.darkText} style={{ marginRight: 10 }} />
+                        <FontAwesomeIcon icon={icon} size={20} color={colors.dark} style={{ marginRight: 10 }} />
                         : <Text style={[emojiStyle, { fontSize: 22, marginRight: 10, color: colors.dark }]}>{emoji}</Text>
                     }
                     {time == null ?

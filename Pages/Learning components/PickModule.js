@@ -18,11 +18,10 @@ import Parse from 'parse/react-native';
 
 export const PickModule = () => {
   const navigation = useNavigation();
-  const [progress, setProgress] = useState('0');
-  const [procrastinationProgress, setProcrastinationProgress] = useState('0');
+  const [structureProgress, setStructureProgress] = useState('0');
+  const [generalProgress, setGeneralProgress] = useState('0');
   const [relationsProgress, setRelationsProgress] = useState('0');
-  const [goalProgress, setGoalProgress] = useState('0');
-  const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+  const [womenProgress, setWomenProgress] = useState('0');
   const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
   const { colors } = useTheme();
@@ -31,13 +30,25 @@ export const PickModule = () => {
     {
       subject: 'Struktur og planlægning',
       description: 'I dette modul vil du lære om forskellige værktøjer til at strukturere dit liv og din hverdag. For voksne med ADHD kan det være en fordel at have specifikke mål, tidsrammer og værktøjer til at opnå sine mål. Derfor har vi samlet nogle øvelser, der kan give dig de bedste chancer for success og forhåbentlig give mere overskud i hverdagen.',
-      image: require('../../Assets/images/learning_notebook.png'),
+      image: require('../../Assets/images/icons/schedule.png'),
     },
     {
-      subject: 'Forstå AD(H)D hjernen',
+      subject: 'Generel AD(H)D',
       description:
-        'In the time management learning module, you will learn how to...',
-      image: require('../../Assets/images/icons/brain.png'),
+        'Dette emne fokuserer på at give en dybdegående forståelse af ADHD som tilstand. Du vil blive introduceret til de neurologiske aspekter bag ADHD og de dagligdags udfordringer, som følger med tilstanden. Emnet indeholder redskaber og strategier til at skabe struktur, sætte målbare delmål og udvikle personligt tilpassede løsninger, som kan reducere stress og øge produktiviteten i hverdagen.',
+      image: require('../../Assets/images/icons/psychology(2).png'),
+    },
+    {
+      subject: 'AD(H)D og relationer',
+      description:
+        'Dette emne undersøger, hvordan ADHD påvirker både private og professionelle relationer. Her lærer du at identificere og adressere kommunikationsudfordringer, håndtere konflikter og opbygge støttende netværk. Ved at arbejde med konkrete kommunikationsstrategier og selvrefleksion kan du opnå en bedre forståelse af, hvordan ADHD indvirker på dine interaktioner med andre – og dermed styrke dine relationer.',
+      image: require('../../Assets/images/icons/relationship(1).png'),
+    },
+    {
+      subject: 'Kvinder med AD(H)D',
+      description:
+        'Dette emne er specielt udviklet til kvinder med ADHD og fokuserer på de unikke aspekter ved, hvordan ADHD manifesterer sig hos kvinder. Emnet belyser, at kvinder ofte oplever mere subtile og indre symptomer, der kan have stor betydning for deres dagligdag. Indholdet dækker strategier for selvomsorg, håndtering af dagligdags udfordringer, udvikling af sunde relationer samt karriere- og personlig udvikling. Målet er at øge bevidstheden om de særlige udfordringer og styrker, som kvinder med ADHD møder, og at tilbyde redskaber til at fremme både personlig og professionel vækst.',
+      image: require('../../Assets/images/icons/female.png'),
     },
   ];
 
@@ -67,13 +78,31 @@ export const PickModule = () => {
 
     switch (subject) {
       case 'Struktur og planlægning':
-        if (completedModules.length !== 0) {
-          setProgress((completedModules / totalModulesResults.length) * 100);
+        if (completedModules > 0) {
+          setStructureProgress((completedModules / totalModulesResults.length) * 100);
+        } else {
+          setStructureProgress(0);
         }
         break;
-      case 'Forstå AD(H)D hjernen':
-        if (completedModules.length !== 0) {
-          setProgress((completedModules / totalModulesResults.length) * 100);
+      case 'Generel AD(H)D':
+        if (completedModules > 0) {
+          setGeneralProgress((completedModules / totalModulesResults.length) * 100);
+        } else {
+          setGeneralProgress(0);
+        }
+        break;
+      case 'AD(H)D og relationer':
+        if (completedModules > 0) {
+          setRelationsProgress((completedModules / totalModulesResults.length) * 100);
+        } else {
+          setRelationsProgress(0);
+        }
+        break;
+      case 'Kvinder med AD(H)D':
+        if (completedModules > 0) {
+          setWomenProgress((completedModules / totalModulesResults.length) * 100);
+        } else {
+          setWomenProgress(0);
         }
         break;
       default:
@@ -87,7 +116,7 @@ export const PickModule = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.lightText, fontSize: 22 * scaleFactor },
+            { color: colors.darkText, fontSize: 22 * scaleFactor },
           ]}>
           Hvad vil du gerne lære om i dag?
         </Text>
@@ -105,15 +134,15 @@ export const PickModule = () => {
                 styles.text,
                 { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
-              {progress}%
+              {structureProgress}%
             </Text>
           </View>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('Module overview', {
-                subject: moduleSubjects[1].subject,
-                description: moduleSubjects[1].description,
-                image: moduleSubjects[1].image,
+                subject: moduleSubjects[0].subject,
+                description: moduleSubjects[0].description,
+                image: moduleSubjects[0].image,
               })
             }>
             <View
@@ -125,7 +154,7 @@ export const PickModule = () => {
               <Text
                 style={[
                   styles.text,
-                  { color: colors.lightText, fontSize: 18 * scaleFactor },
+                  { color: colors.darkText, fontSize: 18 * scaleFactor },
                 ]}>
                 Planlægning og strukturering af hverdagen
               </Text>
@@ -146,7 +175,7 @@ export const PickModule = () => {
                 styles.text,
                 { color: colors.darkText, fontSize: 18 * scaleFactor },
               ]}>
-              {progress}%
+              {generalProgress}%
             </Text>
           </View>
           <TouchableOpacity
@@ -160,15 +189,97 @@ export const PickModule = () => {
             <View
               style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
               <Animated.Image
-                source={require('../../Assets/images/icons/attention-deficit-hyperactivity-disorder.png')}
+                source={require('../../Assets/images/icons/psychology(2).png')}
                 style={{ width: 100, height: 100, marginTop: 5 }}
-                sharedTransitionTag="ADHD-brain"></Animated.Image>
+                sharedTransitionTag="ADHD"></Animated.Image>
               <Text
                 style={[
                   styles.text,
-                  { color: colors.lightText, fontSize: 18 * scaleFactor },
+                  { color: colors.darkText, fontSize: 18 * scaleFactor },
                 ]}>
-                Forstå AD(H)D hjernen
+                Generel AD(H)D
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={{ marginVertical: 20 }}>
+          <View
+            style={[
+              styles.progessionBar,
+              {
+                backgroundColor: colors.light,
+                borderColor: colors.lightShadow,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.text,
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
+              ]}>
+              {relationsProgress}%
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Module overview', {
+                subject: moduleSubjects[2].subject,
+                description: moduleSubjects[2].description,
+                image: moduleSubjects[2].image,
+              })
+            }>
+            <View
+              style={[styles.buttonGrad, { backgroundColor: colors.middle }]}>
+              <Animated.Image
+                source={require('../../Assets/images/icons/relationship(1).png')}
+                style={{ width: 100, height: 100, marginTop: 5 }}
+                sharedTransitionTag="relationships"></Animated.Image>
+              <Text
+                style={[
+                  styles.text,
+                  { color: colors.darkText, fontSize: 18 * scaleFactor },
+                ]}>
+                AD(H)D og relationer
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={{ marginVertical: 20 }}>
+          <View
+            style={[
+              styles.progessionBar,
+              {
+                backgroundColor: colors.light,
+                borderColor: colors.lightShadow,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.text,
+                { color: colors.darkText, fontSize: 18 * scaleFactor },
+              ]}>
+              {womenProgress}%
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Module overview', {
+                subject: moduleSubjects[3].subject,
+                description: moduleSubjects[3].description,
+                image: moduleSubjects[3].image,
+              })
+            }>
+            <View
+              style={[styles.buttonGrad, { backgroundColor: colors.middle, marginBottom: '10%' }]}>
+              <Animated.Image
+                source={require('../../Assets/images/icons/female.png')}
+                style={{ width: 100, height: 100, marginTop: 5 }}
+                sharedTransitionTag="women"></Animated.Image>
+              <Text
+                style={[
+                  styles.text,
+                  { color: colors.darkText, fontSize: 18 * scaleFactor },
+                ]}>
+                Kvinder med AD(H)D
               </Text>
             </View>
           </TouchableOpacity>

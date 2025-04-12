@@ -21,25 +21,26 @@ export const Add = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView>
                 <View style={{ alignItems: 'center', padding: 10 }}>
-                    <Text style={{ fontSize: 24, color: 'white', marginTop: 15 }}>
+                    <Text style={{ fontSize: 24, color: colors.darkText, marginVertical: '5%' }}>
                         Tilføj en ny {enabled}
                     </Text>
                     <View style={{ flexDirection: 'row', top: '2%' }}>
 
                         <TouchableOpacity style={{
-                            backgroundColor: enabled == 'to-do' ? colors.dark : colors.light,
+                            backgroundColor: enabled == 'to-do' ? colors.dark : colors.light, width: '35%',
                             padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopLeftRadius: 10, borderBottomLeftRadius: 10
                         }}
                             onPress={() => setEnabled('to-do')}>
-                            <Text style={{ fontSize: 18, color: enabled == 'to-do' ? colors.lightText : colors.darkText }}>To-do</Text>
+                            <Text style={{ fontSize: 18, color: enabled == 'to-do' ? colors.lightText : colors.darkText, textAlign: 'center' }}>To-do</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
-                            backgroundColor: enabled == 'begivenhed' ? colors.dark : colors.light,
-                            padding: '2%', borderWidth: 1, borderColor: colors.dark,
+                            backgroundColor: enabled == 'begivenhed' ? colors.dark : colors.light, width: '35%',
+                            padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopRightRadius: 15, borderBottomRightRadius: 15
                         }}
                             onPress={() => setEnabled('begivenhed')}>
-                            <Text style={{ fontSize: 18, color: enabled == 'begivenhed' ? colors.lightText : colors.darkText }}>Begivenhed</Text>
+                            <Text style={{ fontSize: 18, color: enabled == 'begivenhed' ? colors.lightText : colors.darkText, textAlign: 'center' }}>Begivenhed</Text>
                         </TouchableOpacity>
+                        {/*
                         <TouchableOpacity style={{
                             backgroundColor: enabled == 'rutine' ? colors.dark : colors.light,
                             padding: '2%', borderWidth: 1, borderColor: colors.dark, borderTopRightRadius: 10, borderBottomRightRadius: 10
@@ -47,6 +48,7 @@ export const Add = () => {
                             onPress={() => setEnabled('rutine')}>
                             <Text style={{ fontSize: 18, color: enabled == 'rutine' ? colors.lightText : colors.darkText }}>Rutine</Text>
                         </TouchableOpacity>
+*/}
                     </View>
                 </View>
                 <AddItem item={enabled} />

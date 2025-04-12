@@ -10,14 +10,14 @@ export const TaskProgress = ({ taskProgress }) => {
     const { colors } = useTheme();
 
     return (
-        <View style={[styles.widget, { borderColor: colors.middle, backgroundColor: colors.light }]}>
+        <View style={[styles.widget, { borderColor: colors.dark, backgroundColor: colors.light }]}>
             <CircularProgress
                 value={taskProgress}
                 inActiveStrokeColor={colors.middle}
                 inActiveStrokeOpacity={0.3}
-                progressValueColor={colors.darkText}
+                progressValueColor={colors.dark}
                 valueSuffix={'%'}
-                activeStrokeColor={colors.darkText}
+                activeStrokeColor={colors.dark}
                 activeStrokeSecondaryColor={colors.middle}
                 radius={70 * scaleFactor}
             />
@@ -29,13 +29,13 @@ export const TaskProgress = ({ taskProgress }) => {
                     </Text>
                     : taskProgress == 100 ?
                         <Text
-                            style={{ fontSize: 18, textAlign: 'center', marginVertical: 10 }}>
+                            style={[styles.text, { color: colors.darkText }]}>
                             Du har klaret alle dine to-do's i dag. Godt arbejde! Nu kan du
                             holde fri med god samvittighed.
                         </Text>
                         :
                         <Text
-                            style={{ fontSize: 18, textAlign: 'center', marginVertical: 10 }}>
+                            style={[styles.text, { color: colors.darkText }]}>
                             Du har klaret {taskProgress}% af dine opgaver i dag. Godt arbejde!
                         </Text>
                 }

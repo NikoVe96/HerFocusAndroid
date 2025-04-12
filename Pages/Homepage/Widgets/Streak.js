@@ -96,7 +96,7 @@ export const Streak = () => {
                 >
                     <FontAwesomeIcon
                         size={25}
-                        color={colors.darkText}
+                        color={colors.dark}
                         icon={item.completed ? faCircleCheck : faCircle}
                     />
                 </Animated.View>
@@ -106,7 +106,7 @@ export const Streak = () => {
     };
 
     return (
-        <View style={[styles.widget, { borderColor: colors.middle, backgroundColor: colors.light }]}>
+        <View style={[styles.widget, { borderColor: colors.dark, backgroundColor: colors.light }]}>
             <Text style={[styles.title, { color: colors.darkText }]}>Streak: {streak} 🔥</Text>
             <FlatList
                 data={streakDays}

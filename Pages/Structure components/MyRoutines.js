@@ -69,7 +69,7 @@ export const MyRoutines = ({ navigation }) => {
     }
     getCurrentUser();
     routines();
-  }, [checked]);
+  }, [checked, allRoutines]);
 
   const showAddStepeModal = (routine, steps) => {
     setRoutineSteps(steps);
@@ -165,7 +165,6 @@ export const MyRoutines = ({ navigation }) => {
     query.equalTo('user', currentUser);
     const results = await query.find();
     setAllRoutines(results);
-
   }
 
   function handleColorPick(color) {

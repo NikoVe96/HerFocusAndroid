@@ -35,12 +35,17 @@ export const EditProfile = ({ navigation }) => {
     const [newEmail, setNewEmail] = useState(email);
     const [newUsername, setNewUsername] = useState(username);
 
-    async function handleAvatarSelect(avatar) {
-        try {
-            setNewAvatar(avatar);
+    const handleAvatarSelect = async (avatarAsset, type) => {
+        console.log('Avatar: ' + avatarAsset)
+        console.log('type: ' + type);
+        if (type == 'avatar') {
+            const assetSource = Image.resolveAssetSource(avatarAsset);
+            const newFile = await convertAvatar(assetSource);
+            setNewAvatar(newFile);
             setModalVisible(false);
-        } catch (error) {
-            Alert.alert("Error processing avatar image.");
+        } else {
+            setNewAvatar(avatarAsset);
+            setModalVisible(false);
         }
     };
 
@@ -79,11 +84,11 @@ export const EditProfile = ({ navigation }) => {
                     borderRadius: 100
                 }}
                     onPress={() => setModalVisible(true)}>
-                    <FontAwesomeIcon icon={faPen} color={colors.dark} size={40} />
+                    <FontAwesomeIcon icon={faPen} color={colors.darkText} size={40} />
                     <Text style={{ textAlign: 'center', marginTop: '10%' }}>Rediger profilbillede</Text>
                 </TouchableOpacity>
                 <View style={{ marginVertical: '2%', marginHorizontal: '5%', }}>
-                    <Text style={{ fontSize: 16, marginBottom: '1%', color: colors.dark }}>Navn</Text>
+                    <Text style={{ fontSize: 16, marginBottom: '1%', color: colors.darkText }}>Navn</Text>
                     <TextInput
                         onChangeText={(input) => setName(input)}
                         style={styles.textInput}
@@ -92,14 +97,14 @@ export const EditProfile = ({ navigation }) => {
                     />
                 </View>
                 <View style={{ marginVertical: '2%', marginHorizontal: '5%', }}>
-                    <Text style={{ fontSize: 16, marginBottom: '1%', color: colors.dark }}>Brugernavn</Text>
+                    <Text style={{ fontSize: 16, marginBottom: '1%', color: colors.darkText }}>Brugernavn</Text>
                     <TextInput
                         onChangeText={(input) => setNewUsername(input)}
                         style={styles.textInput}
                         placeholder={username} />
                 </View>
                 <View style={{ marginVertical: '2%', marginHorizontal: '5%', }}>
-                    <Text style={{ fontSize: 16, marginBottom: '1%', color: colors.dark }}>Alder</Text>
+                    <Text style={{ fontSize: 16, marginBottom: '1%', color: colors.darkText }}>Alder</Text>
                     <TextInput
                         onChangeText={(input) => setNewAge(input)}
                         style={styles.textInput}
@@ -107,7 +112,7 @@ export const EditProfile = ({ navigation }) => {
                     />
                 </View>
                 <View style={{ marginVertical: '2%', marginHorizontal: '5%', }}>
-                    <Text style={{ fontSize: 16, marginBottom: '1%', color: colors.dark }}>Email</Text>
+                    <Text style={{ fontSize: 16, marginBottom: '1%', color: colors.darkText }}>Email</Text>
                     <TextInput
                         onChangeText={(input) => setNewEmail(input)}
                         style={styles.textInput}
@@ -129,7 +134,7 @@ export const EditProfile = ({ navigation }) => {
                 </Modal>
                 <TouchableOpacity style={[styles.button, { backgroundColor: colors.middle, borderColor: colors.middleShadow, marginBottom: 100, marginTop: '15%' }]}
                     onPress={() => save()}>
-                    <Text style={[styles.buttonText, { color: colors.lightText }]}>Gem</Text>
+                    <Text style={[styles.buttonText, { color: colors.darkText }]}>Gem</Text>
                 </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>

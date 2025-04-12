@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPaperPlane, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
@@ -16,6 +16,8 @@ const Post = ({ postObject, onDelete, navigation }) => {
   );
   const { colors } = useTheme();
   const [avatar, setAvatar] = useState();
+  const { width, height } = Dimensions.get('window');
+  const scaleFactor = Math.min(width / 375, height / 667);
 
 
   function handlePostClick() {
@@ -81,12 +83,12 @@ const Post = ({ postObject, onDelete, navigation }) => {
             <View></View>
             <View style={styles.userText}>
               {postObject.get('anonymous') ?
-                <Text style={[styles.user, { color: 'white' }]}>Anonym</Text>
-                : <Text style={[styles.user, { color: 'white' }]}>
+                <Text style={[styles.user, { color: colors.darkText }]}>Anonym</Text>
+                : <Text style={[styles.user, { color: colors.darkText }]}>
                   {postObject.get('username')}
                 </Text>
               }
-              <Text style={[styles.when, { color: colors.lightText }]}>
+              <Text style={[styles.when, { color: colors.darkText }]}>
                 Tilføjet {daysAgo} dage siden
               </Text>
             </View>
@@ -96,8 +98,8 @@ const Post = ({ postObject, onDelete, navigation }) => {
               <TouchableOpacity onPress={showModal}>
                 <FontAwesomeIcon
                   icon={faTrash}
-                  size={15}
-                  style={[styles.trashIcon, { color: colors.lightText }]}
+                  size={20 * scaleFactor}
+                  style={[styles.trashIcon, { color: 'darkred' }]}
                 />
               </TouchableOpacity>
             ) : (
@@ -154,17 +156,17 @@ const Post = ({ postObject, onDelete, navigation }) => {
             <TouchableOpacity onPress={() => handlePostClick()}>
               <FontAwesomeIcon
                 icon={faPaperPlane}
-                style={[styles.icon2, { color: colors.lightText }]}
+                style={[styles.icon2, { color: colors.light }]}
                 size={15}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handlePostClick()}>
-              <Text style={[styles.text, { color: colors.lightText }]}>kommenter</Text>
+              <Text style={[styles.text, { color: colors.darkText }]}>kommenter</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => handlePostClick()}>
             <View style={styles.numberComments}>
-              <Text style={{ color: colors.lightText }}>
+              <Text style={{ color: colors.darkText }}>
                 {postObject.get('numberOfComments')} kommentarer
               </Text>
             </View>

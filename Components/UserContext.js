@@ -17,6 +17,8 @@ export const UserProvider = ({ children }) => {
   const [ID, setID] = useState('');
   const [age, setAge] = useState();
   const [avatar, setAvatar] = useState();
+  const [savedEmail, setSavedEmail] = useState('');
+  const [savedPassword, setSavedPassword] = useState('');
   const homeOrder = [
     "To-do status",
     "Næste to-do",
@@ -41,11 +43,10 @@ export const UserProvider = ({ children }) => {
     checkUser();
   }, []);
 
-  const handleSignup = async (name, username, age, email, password, confirmPassword, avatar) => {
+  const handleSignup = async (name, username, age, email, password, confirmPassword, avatar, type) => {
     setError('');
-    console.log('avatar: ' + avatar)
     const lowerCaseEmail = email.toLowerCase();
-    const userNameExist = new Parse.Query('User');
+    const userNameExist = new Parse.Query(Parse.User);
     userNameExist.equalTo('username', username);
     const userExists = await userNameExist.first();
 
@@ -64,46 +65,52 @@ export const UserProvider = ({ children }) => {
     user.set('username', username);
     user.set('email', lowerCaseEmail);
     user.set('password', password);
-    user.set('age', age)
+    user.set('age', age);
+
+    try {
+      await user.signUp();
+    } catch (error) {
+      console.error('Error during signup:', error);
+    }
+    setData(avatar, type);
+    //handleLogin(savedEmail, savedPassword);
+    setIsLoggedIn(true);
+  };
+
+  const setData = async (avatar, type) => {
+    console.log('type: ' + type);
+    const currentUser = await Parse.User.currentAsync();
 
     const userSettings = new Parse.Object('Settings');
     userSettings.set('theme', 'yellow');
-    userSettings.set('user', user);
+    userSettings.set('user', currentUser);
     userSettings.set('modulesCompleted', []);
     userSettings.set('homeOrder', homeOrder);
 
     const userNotebook = new Parse.Object('Notebook');
-    userNotebook.set('user', user);
+    userNotebook.set('user', currentUser);
     userNotebook.set('exercises', []);
     userNotebook.set('todo', []);
     userNotebook.set('notes', []);
 
-    try {
-      await user.signUp();
+    await userSettings.save();
+    await userNotebook.save();
 
-      await userSettings.save();
-      await userNotebook.save();
-      user.set('settings', userSettings);
-      user.set('notebook', userNotebook);
-
-      if (avatar) {
-        const assetSource = Image.resolveAssetSource(avatar);
-        const parseFile = await convertAvatar(assetSource);
-        user.set('profilePicture', parseFile);
-        await user.save();
-      }
-
-      await handleLogin(email, password);
-
-      return user;
-    } catch (error) {
-      console.error('Error during signup:', error);
-      setError('Der opstod en fejl under oprettelse af brugeren.');
+    if (type === 'avatar') {
+      const assetSource = Image.resolveAssetSource(avatar);
+      const newFile = await convertAvatar(assetSource);
+      currentUser.set('profilePicture', newFile);
+    } else {
+      currentUser.set('profilePicture', avatar);
     }
-  };
+
+    currentUser.set('settings', userSettings);
+    currentUser.set('notebook', userNotebook);
+    await currentUser.save();
+  }
 
   const handleLogin = async (email, password) => {
-    setError('');
+    //setError('');
     const lowerCaseEmail = email.toLowerCase();
 
     try {
@@ -114,7 +121,7 @@ export const UserProvider = ({ children }) => {
       setUsername(user.getUsername());
     } catch (error) {
       console.error('Error while logging in user', error);
-      setError('Forkert email eller kodeord');
+      //setError('Forkert email eller kodeord');
     }
   };
 
@@ -144,7 +151,7 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         username, email, name, error, profilePicture, isLoggedIn, ID, age,
-        updateUserProfile, handleLogin, handleLogout, handleSignup
+        updateUserProfile, handleLogin, handleLogout, handleSignup, setData
       }}>
       {children}
     </UserContext.Provider>

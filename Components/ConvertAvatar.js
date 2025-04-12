@@ -5,8 +5,7 @@ import Parse from 'parse/react-native';
 export async function convertAvatar(avatarAsset) {
     try {
 
-        const assetSource = Image.resolveAssetSource(avatarAsset);
-        const response = await fetch(assetSource.uri);
+        const response = await fetch(avatarAsset.uri);
         const blob = await response.blob();
 
         const base64data = await new Promise((resolve, reject) => {

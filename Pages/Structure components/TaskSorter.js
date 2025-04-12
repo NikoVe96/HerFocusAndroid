@@ -84,7 +84,7 @@ const TaskSorter = ({
                                     {allDayArray.map((item, index) => (
                                         <View key={index} style={{ alignItems: 'center', borderWidth: 1, padding: 5, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), }}>
                                             <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.lightText }}>{item.get('emoji')}</Text>
-                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
+                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{item.get('name')}</Text>
                                         </View>
                                     ))}
                                     {allDayArray.length == 0 ?
@@ -137,12 +137,12 @@ const TaskSorter = ({
                                                                 </View>
                                                                 <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: LightenDarkenColor(item.get('color'), -30), borderColor: LightenDarkenColor(item.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
                                                                     <View style={{ justifyContent: 'center' }}>
-                                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{step.stepName}</Text>
+                                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{step.stepName}</Text>
                                                                     </View>
                                                                     {step.stepTime !== '' ?
                                                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                             <FontAwesomeIcon icon={faStopwatch} style={{ marginHorizontal: 5 }} size={20} color={'white'} />
-                                                                            <Text style={{ fontSize: 18, color: colors.lightText }}>{step.stepTime}</Text>
+                                                                            <Text style={{ fontSize: 18, color: colors.darkText }}>{step.stepTime}</Text>
                                                                         </View>
                                                                         : null}
                                                                 </View>
@@ -153,8 +153,8 @@ const TaskSorter = ({
                                                 : <View style={{ flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5, flexDirection: 'row' }}>
                                                     <Text style={{ fontSize: 22, marginRight: 10, color: colors.lightText }}>{item.get('emoji')}</Text>
                                                     <View>
-                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
-                                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.lightText }}>{item.get('startTime')} - {item.get('endTime')}</Text>
+                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{item.get('name')}</Text>
+                                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.darkText }}>{item.get('startTime')} - {item.get('endTime')}</Text>
                                                     </View>
                                                 </View>
                                             }
@@ -179,7 +179,7 @@ const TaskSorter = ({
                                     {allDayArray.map((item, index) => (
                                         <View key={index} style={{ alignItems: 'center', borderWidth: 1, padding: 5, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), }}>
                                             <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.lightText }}>{item.get('emoji')}</Text>
-                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
+                                            <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{item.get('name')}</Text>
                                         </View>
                                     ))}
                                 </View>
@@ -204,8 +204,8 @@ const TaskSorter = ({
                                                 <View style={{ flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5, flexDirection: 'row' }}>
                                                     <Text style={{ fontSize: 22, marginRight: 10, color: colors.lightText }}>{item.get('emoji')}</Text>
                                                     <View>
-                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
-                                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.lightText }}>{item.get('startTime')} - {item.get('endTime')}</Text>
+                                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{item.get('name')}</Text>
+                                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.darkText }}>{item.get('startTime')} - {item.get('endTime')}</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -221,8 +221,8 @@ const TaskSorter = ({
                                                 style={{ marginLeft: '15%', flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), elevation: 5, flexDirection: 'row' }}>
                                                 <Text style={{ fontSize: 22, marginRight: 10, color: colors.lightText }}>{item.get('emoji')}</Text>
                                                 <View>
-                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
-                                                    <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.lightText }}>{item.get('startTime')} - {item.get('endTime')}</Text>
+                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{item.get('name')}</Text>
+                                                    <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.darkText }}>{item.get('startTime')} - {item.get('endTime')}</Text>
                                                 </View>
                                             </View>
                                         ))}
@@ -258,12 +258,12 @@ const TaskSorter = ({
                                                             </View>
                                                             <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: LightenDarkenColor(item.get('color'), -30), borderColor: LightenDarkenColor(item.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
                                                                 <View style={{ justifyContent: 'center' }}>
-                                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{step.stepName}</Text>
+                                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{step.stepName}</Text>
                                                                 </View>
                                                                 {step.stepTime !== '' ?
                                                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                                         <FontAwesomeIcon icon={faStopwatch} style={{ marginHorizontal: 5 }} size={20} color={'white'} />
-                                                                        <Text style={{ fontSize: 18, color: colors.lightText }}>{step.stepTime}</Text>
+                                                                        <Text style={{ fontSize: 18, color: colors.darkText }}>{step.stepTime}</Text>
                                                                     </View>
                                                                     : <Text></Text>}
                                                             </View>
@@ -281,7 +281,7 @@ const TaskSorter = ({
     }
 
     return (
-        <SafeAreaView style={{ marginHorizontal: '5%', marginBottom: '2%' }}>
+        <SafeAreaView style={{ marginHorizontal: '5%', marginBottom: '20%' }}>
             <View style={{ alignItems: 'center', marginVertical: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text style={{ fontSize: 24, color: colors.darkText }}>Dagens planer</Text>
                 <DropDownPicker

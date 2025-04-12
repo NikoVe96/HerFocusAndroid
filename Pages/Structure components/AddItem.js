@@ -42,10 +42,18 @@ export const AddItem = ({ item }) => {
     const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
     const [dayEvent, setDayEvent] = useState(false);
     const [isDetailsEnabled, setDetailsEnabled] = useState(false);
+    const [startTimeDate, setStartTimeDate] = useState(null);
+    const [endTimeDate, setEndTimeDate] = useState(new Date());
 
     async function newItem(date) {
+
         if (item == "to-do") {
             try {
+                if (!itemColor) {
+                    Alert.alert('Hovsa!', 'Du skal vælge en farve.');
+                    return;
+                }
+
                 const newTask = new Parse.Object('Task');
                 const currentUser = await Parse.User.currentAsync();
 
@@ -67,6 +75,11 @@ export const AddItem = ({ item }) => {
             }
         } else if (item == "begivenhed") {
             try {
+                if (!itemColor) {
+                    Alert.alert('Hovsa!', 'Du skal vælge en farve.');
+                    return;
+                }
+
                 const newEvent = new Parse.Object('Events');
                 const currentUser = await Parse.User.currentAsync();
 
@@ -90,6 +103,11 @@ export const AddItem = ({ item }) => {
             }
         } else {
             try {
+                if (!itemColor) {
+                    Alert.alert('Hovsa!', 'Du skal vælge en farve.');
+                    return;
+                }
+
                 const currentUser = await Parse.User.currentAsync();
                 const newRoutine = new Parse.Object('Routine');
 
@@ -100,9 +118,6 @@ export const AddItem = ({ item }) => {
                 newRoutine.set('routineSteps', []);
                 newRoutine.set('type', 'routine');
                 await newRoutine.save();
-
-                routines();
-                hideRoutineModal();
 
                 Alert.alert('En ny rutine er blevet tilføjet!')
                 clearInput();
@@ -242,7 +257,7 @@ export const AddItem = ({ item }) => {
                                         style={[
                                             styles.buttonText,
                                             { fontSize: 20 * scaleFactor },
-                                            { color: colors.lightText },
+                                            { color: colors.darkText },
                                         ]}>
                                         Emoji
                                     </Text>
@@ -301,7 +316,7 @@ export const AddItem = ({ item }) => {
                                         },
                                     ]}
                                     onPress={() => setStartTimePickerVisibility(true)}>
-                                    <Text style={[styles.buttonText, { color: colors.lightText }]}>
+                                    <Text style={[styles.buttonText, { color: colors.darkText }]}>
                                         Start tidspunkt
                                     </Text>
                                 </TouchableOpacity>
@@ -319,6 +334,9 @@ export const AddItem = ({ item }) => {
                                         setStartTimePickerVisibility(false)
                                         const time = formatTime(date);
                                         setStartTime(time);
+                                        setStartTimeDate(date);
+                                        const defaultEndTime = new Date(date.getTime() + 3600000);
+                                        setEndTimeDate(defaultEndTime);
                                         setEndTimePickerVisibility(true);
                                     }}
                                     onCancel={() => {
@@ -343,7 +361,7 @@ export const AddItem = ({ item }) => {
                                         },
                                     ]}
                                     onPress={() => setEndTimePickerVisibility(true)}>
-                                    <Text style={[styles.buttonText, { color: colors.lightText }]}>
+                                    <Text style={[styles.buttonText, { color: colors.darkText }]}>
                                         Slut tidspunkt
                                     </Text>
                                 </TouchableOpacity>
@@ -351,7 +369,7 @@ export const AddItem = ({ item }) => {
                                     mode="time"
                                     modal
                                     open={isEndTimePickerVisible}
-                                    date={today}
+                                    date={endTimeDate || today}
                                     title={'Slut tid'}
                                     confirmText="Bekræft"
                                     cancelText="Annuler"
@@ -388,7 +406,7 @@ export const AddItem = ({ item }) => {
                                             selectedValue={recurrence}
                                             onValueChange={(value) => setRecurrence(value)}
                                             style={[styles.picker, { color: colors.darkText }]}
-                                            dropdownIconColor={colors.lightText}
+                                            dropdownIconColor={colors.darkText}
                                             mode="dropdown"
                                         >
                                             <Picker.Item label="Dag" value="daily" />
@@ -412,7 +430,7 @@ export const AddItem = ({ item }) => {
                                                 style={[
                                                     styles.buttonText,
                                                     { fontSize: 20 * scaleFactor },
-                                                    { color: colors.lightText },
+                                                    { color: colors.darkText },
                                                 ]}>
                                                 Start dato
                                             </Text>
@@ -459,7 +477,7 @@ export const AddItem = ({ item }) => {
                                                 style={[
                                                     styles.buttonText,
                                                     { fontSize: 20 * scaleFactor },
-                                                    { color: colors.lightText },
+                                                    { color: colors.darkText },
                                                 ]}>
                                                 Slut dato
                                             </Text>
@@ -506,7 +524,7 @@ export const AddItem = ({ item }) => {
                                             style={[
                                                 styles.buttonText,
                                                 { fontSize: 20 * scaleFactor },
-                                                { color: colors.lightText },
+                                                { color: colors.darkText },
                                             ]}>
                                             Dato
                                         </Text>
@@ -564,7 +582,7 @@ export const AddItem = ({ item }) => {
                             },
                         ]}
                         onPress={() => saveItem()}>
-                        <Text style={{ color: 'white', fontSize: 24 * scaleFactor }}>
+                        <Text style={{ color: colors.darkText, fontSize: 24 * scaleFactor }}>
                             Tilføj til kalender
                         </Text>
                     </TouchableOpacity>

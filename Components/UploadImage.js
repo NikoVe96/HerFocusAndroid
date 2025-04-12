@@ -25,13 +25,13 @@ const UploadImage = ({ onSelect }) => {
         console.log(parseFile);
 
         try {
-            const currentUser = await Parse.User.currentAsync();
-            const responseFile = await parseFile.save();
-            currentUser.set('profilePicture', responseFile);
+            //const currentUser = await Parse.User.currentAsync();
+            //const responseFile = await parseFile.save();
+            //currentUser.set('profilePicture', responseFile);
 
-            await currentUser.save();
-            Alert.alert('Dit profilbillede er blevet gemt.');
-            onSelect(responseFile);
+            //await currentUser.save();
+            //Alert.alert('Dit profilbillede er blevet gemt.');
+            onSelect(parseFile);
         } catch (error) {
             console.log('Error saving file:', error);
             Alert.alert('Der skete en fejl. Vi kunne ikke gemme dit billede.');
@@ -60,11 +60,11 @@ const UploadImage = ({ onSelect }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={pickImage} style={[styles.button, { backgroundColor: colors.light }]} >
+            <TouchableOpacity onPress={pickImage} style={[styles.button, { backgroundColor: colors.light, borderColor: colors.lightShadow }]} >
                 <Text style={styles.buttonText}>Vælg et billede fra dit galleri</Text>
             </TouchableOpacity>
             {image && <Image source={{ uri: image.uri }} style={styles.avatarImage} />}
-            {image && <TouchableOpacity style={[styles.button, { backgroundColor: colors.light }]} onPress={upload}>
+            {image && <TouchableOpacity style={[styles.button, { backgroundColor: colors.light, borderColor: colors.lightShadow }]} onPress={upload}>
                 <Text style={styles.buttonText}>Gem billede</Text>
             </TouchableOpacity>}
         </View>
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
         padding: '5%',
-        marginVertical: '3%',
+        marginVertical: '10%',
         borderWidth: 0.4,
         borderBottomWidth: 4,
         borderColor: "#F8B52D",

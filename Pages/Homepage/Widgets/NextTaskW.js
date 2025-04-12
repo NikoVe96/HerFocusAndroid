@@ -60,7 +60,7 @@ const NextTaskW = ({
                             icon={faStopwatch}
                             size={25}
                             style={{ marginHorizontal: 5 }}
-                            color={colors.darkText}
+                            color={colors.dark}
                         />
                         <Text style={{ fontSize: 18, color: colors.darkText }}>
                             Fra {remainingTasksArray[0].get('startTime')}
@@ -77,6 +77,8 @@ const NextTaskW = ({
                                 borderRadius: 10,
                                 padding: 10,
                                 marginHorizontal: 10,
+                                width: 250,
+                                backgroundColor: colors.lightMiddle
                             }}>
                             <Text style={{ fontSize: 16, marginBottom: 20, color: colors.darkText }}>{remainingTasksArray[0].get('description')}</Text>
                         </ScrollView>
@@ -87,7 +89,7 @@ const NextTaskW = ({
                             <BouncyCheckbox
                                 key={remainingTasksArray[0].id}
                                 size={25}
-                                fillColor={colors.darkText}
+                                fillColor={colors.dark}
                                 unfillColor={colors.light}
                                 iconStyle={{ borderColor: colors.middle }}
                                 innerIconStyle={{ borderWidth: 2 }}
@@ -102,7 +104,7 @@ const NextTaskW = ({
                             <FontAwesomeIcon
                                 icon={faFaceTired}
                                 size={25}
-                                color={colors.darkText}
+                                color={colors.dark}
                             />
                             <Text style={{ fontSize: 18, marginLeft: 12, color: colors.darkText }}>
                                 Ramt væggen?

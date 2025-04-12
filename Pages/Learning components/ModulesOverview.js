@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Parse from 'parse/react-native';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faDownLong, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,17 +23,30 @@ export const ModulesOverview = ({ route }) => {
   const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
   const moduleImages = {
-    '1 Struktur og planlægning': require('../../Assets/images/learning_think.png'),
-    '2 Struktur og planlægning': require('../../Assets/images/learning_goals.png'),
-    '3 Struktur og planlægning': require('../../Assets/images/learning_clock.png'),
-    '4 Struktur og planlægning': require('../../Assets/images/learning_score.png'),
-    '1 Forstå AD(H)D hjernen': require('../../Assets/images/learning_score.png')
+    '1 Struktur og planlægning': require('../../Assets/images/icons/crystal-ball.png'),
+    '2 Struktur og planlægning': require('../../Assets/images/icons/goal.png'),
+    '3 Struktur og planlægning': require('../../Assets/images/icons/clock(1).png'),
+    '4 Struktur og planlægning': require('../../Assets/images/icons/rating(2).png'),
+    '1 Generel AD(H)D': require('../../Assets/images/icons/attention-deficit-hyperactivity-disorder.png'),
+    '2 Generel AD(H)D': require('../../Assets/images/icons/strategy.png'),
+    '3 Generel AD(H)D': require('../../Assets/images/icons/daily-routine.png'),
+    '1 AD(H)D og relationer': require('../../Assets/images/icons/chat(3).png'),
+    '2 AD(H)D og relationer': require('../../Assets/images/icons/together.png'),
+    '3 AD(H)D og relationer': require('../../Assets/images/icons/briefcase.png'),
+    '1 Kvinder med AD(H)D': require('../../Assets/images/icons/binoculars.png'),
+    '2 Kvinder med AD(H)D': require('../../Assets/images/icons/peace.png'),
+    '3 Kvinder med AD(H)D': require('../../Assets/images/icons/plant(1).png'),
+    '4 Kvinder med AD(H)D': require('../../Assets/images/icons/briefcase.png'),
   };
 
-  useEffect(() => {
-    modulesQuery();
-    completedQuery();
-  }, []);
+
+
+  useFocusEffect(
+    useCallback(() => {
+      modulesQuery();
+      completedQuery();
+    }, [subject])
+  )
 
   async function modulesQuery() {
     console.log('Subject: ' + subject)
@@ -89,7 +102,7 @@ export const ModulesOverview = ({ route }) => {
             styles.title,
             {
               fontSize: 30 * scaleFactor,
-              color: colors.lightText,
+              color: colors.darkText,
             },
           ]}>
           {subject}
@@ -97,7 +110,7 @@ export const ModulesOverview = ({ route }) => {
         <Image
           source={image}
           style={{
-            width: 200 * scaleFactor,
+            width: 170 * scaleFactor,
             height: 170 * scaleFactor,
             alignSelf: 'center',
           }}></Image>
@@ -159,12 +172,12 @@ export const ModulesOverview = ({ route }) => {
                           <Text
                             style={[
                               styles.moduleName,
-                              { fontSize: 16 * scaleFactor, color: colors.lightText },
+                              { fontSize: 16 * scaleFactor, color: colors.darkText },
                             ]}>
                             Modul {item.get('name')}
                           </Text>
                           <Text
-                            style={[styles.moduleDesc, { color: colors.lightText }]}>
+                            style={[styles.moduleDesc, { color: colors.darkText }]}>
                             {item.get('description')}
                           </Text>
                         </View>
@@ -212,7 +225,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   image: {
-    marginHorizontal: '2%',
+    marginHorizontal: '5%',
   },
   container: {
     justifyContent: 'center',

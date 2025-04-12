@@ -70,7 +70,7 @@ const WeeklyTaskView = ({ weekDates, userID }) => {
                         {item.events.allDay.map((event, index) => (
                             <View key={index} style={{ alignItems: 'center', borderWidth: 1, padding: 5, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: item.get('color'), borderRadius: 10, borderColor: item.get('color'), }}>
                                 <Text style={{ fontSize: 20, marginRight: 10, marginLeft: 2, color: colors.lightText }}>{item.get('emoji')}</Text>
-                                <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{item.get('name')}</Text>
+                                <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{item.get('name')}</Text>
                             </View>
                         ))}
                         {item.events.tasks.map((task, index) => (
@@ -89,8 +89,8 @@ const WeeklyTaskView = ({ weekDates, userID }) => {
                                 <View style={{ flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: task.get('color'), borderRadius: 10, borderColor: task.get('color'), elevation: 5, flexDirection: 'row' }}>
                                     <Text style={{ fontSize: 22, marginRight: 10, color: colors.lightText }}>{task.get('emoji')}</Text>
                                     <View>
-                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{task.get('name')}</Text>
-                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.lightText }}>{task.get('startTime')} - {task.get('endTime')}</Text>
+                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{task.get('name')}</Text>
+                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.darkText }}>{task.get('startTime')} - {task.get('endTime')}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -100,8 +100,8 @@ const WeeklyTaskView = ({ weekDates, userID }) => {
                                 <View style={{ flex: 7, padding: '3%', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, backgroundColor: event.get('color'), borderRadius: 10, borderColor: event.get('color'), elevation: 5, flexDirection: 'row' }}>
                                     <Text style={{ fontSize: 22, marginRight: 10, color: colors.lightText }}>{event.get('emoji')}</Text>
                                     <View>
-                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{event.get('name')}</Text>
-                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.lightText }}>{event.get('startTime')} - {event.get('endTime')}</Text>
+                                        <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{event.get('name')}</Text>
+                                        <Text style={{ marginHorizontal: 1, fontSize: 14, color: colors.darkText }}>{event.get('startTime')} - {event.get('endTime')}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -132,7 +132,7 @@ const WeeklyTaskView = ({ weekDates, userID }) => {
                                             </View>
                                             <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: LightenDarkenColor(routine.get('color'), -30), borderColor: LightenDarkenColor(routine.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
                                                 <View style={{ justifyContent: 'center' }}>
-                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.lightText }}>{step.stepName}</Text>
+                                                    <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{step.stepName}</Text>
                                                 </View>
                                                 {step.stepTime !== '' ?
                                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>

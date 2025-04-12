@@ -27,6 +27,13 @@ const CalendarOverview = ({ navigation }) => {
     const { ID } = useUser();
     const [selectedWeekDates, setSelectedWeekDates] = useState([]);
 
+    const completeTask = async (task) => {
+        const isCompleted = task.get('completed');
+        console.log(task.get('completed'))
+        task.set('completed', !isCompleted);
+        await task.save();
+    }
+
     const calendarLayout = () => {
         if (enabled === 'monthly') {
             return (
@@ -37,6 +44,7 @@ const CalendarOverview = ({ navigation }) => {
                     />
                     <TaskSorter
                         date={chosenDate}
+                        completeTask={completeTask}
                     />
                 </View>
             );
@@ -71,7 +79,7 @@ const CalendarOverview = ({ navigation }) => {
         <SafeAreaView >
             <ScrollView>
                 <View style={{ justifyContent: 'center', alignItems: 'center', padding: '1%' }}>
-                    <Text style={{ fontSize: 26, marginVertical: '5%', color: colors.lightText }}>Kalender</Text>
+                    <Text style={{ fontSize: 26, marginVertical: '5%', color: colors.darkText }}>Kalender</Text>
                 </View>
                 <View style={{ flexDirection: 'row', top: '2%', justifyContent: 'center' }}>
                     <TouchableOpacity style={{

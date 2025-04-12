@@ -46,7 +46,7 @@ export const UserSettings = ({ navigation }) => {
           <Text
             style={[
               styles.textStyle,
-              { color: colors.lightText, fontSize: 30 * scaleFactor },
+              { color: colors.darkText, fontSize: 30 * scaleFactor },
             ]}>
             Indstillinger
           </Text>

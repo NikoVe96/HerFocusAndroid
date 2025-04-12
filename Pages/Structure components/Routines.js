@@ -20,7 +20,7 @@ const Routines = ({ navigation }) => {
                 <Text
                     style={{
                         fontSize: 28 * scaleFactor,
-                        color: colors.lightText,
+                        color: colors.darkText,
                         marginVertical: '2%',
                     }}>
                     Rutiner

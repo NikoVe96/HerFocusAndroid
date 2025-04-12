@@ -23,7 +23,7 @@ const themes = {
       dark: '#E3CEF0',
       darkShadow: '#d9b1f2',
       lightText: 'white',
-      darkText: '#E3CEF0',
+      darkText: 'black',
     },
   },
   purple: {
@@ -41,7 +41,7 @@ const themes = {
       dark: '#533440',
       darkShadow: '#40252f',
       lightText: 'white',
-      darkText: '#533440',
+      darkText: 'black',
     },
   },
   red: {
@@ -59,7 +59,7 @@ const themes = {
       dark: '#B03F34',
       darkShadow: '#8c291f',
       lightText: 'white',
-      darkText: '#B03F34',
+      darkText: 'black',
     },
   },
   yellow: {
@@ -77,7 +77,7 @@ const themes = {
       dark: '#DC9B18',
       darkShadow: '#bd7f04',
       lightText: 'white',
-      darkText: '#DC9B18',
+      darkText: 'black',
     },
   },
   brown: {
@@ -95,7 +95,7 @@ const themes = {
       dark: '#523A28',
       darkShadow: '#402c1d',
       lightText: 'white',
-      darkText: '#523A28',
+      darkText: 'black',
     },
   },
   turqouise: {
@@ -113,7 +113,7 @@ const themes = {
       dark: '#0C6170',
       darkShadow: '#04515e',
       lightText: 'white',
-      darkText: '#0C6170',
+      darkText: 'black',
     },
   },
   beige: {
@@ -131,7 +131,7 @@ const themes = {
       dark: '#C6ABA2',
       darkShadow: '#a88b82',
       lightText: 'white',
-      darkText: '#C6ABA2',
+      darkText: 'black',
     },
   },
   green: {
@@ -149,7 +149,7 @@ const themes = {
       dark: '#1A5319',
       darkShadow: '#0d330d',
       lightText: 'white',
-      darkText: '#1A5319',
+      darkText: 'black',
     },
   },
   blue: {
@@ -167,7 +167,7 @@ const themes = {
       dark: '#3B8BBB',
       darkShadow: '#2473a3',
       lightText: 'white',
-      darkText: '#3B8BBB',
+      darkText: 'black',
     },
   },
   darkblue: {
@@ -185,7 +185,7 @@ const themes = {
       dark: '#59586C',
       darkShadow: '#3b3a4f',
       lightText: '#FFFFFF',
-      darkText: '#CCCCCC',
+      darkText: 'white',
     },
   },
   earth: {
@@ -203,7 +203,7 @@ const themes = {
       dark: '#A45C40',
       darkShadow: '#7d4028',
       lightText: 'white',
-      darkText: '#A45C40',
+      darkText: 'black',
     },
   },
   pink: {
@@ -221,7 +221,7 @@ const themes = {
       dark: '#E8B4B8',
       darkShadow: '#c48b90',
       lightText: 'white',
-      darkText: '#E8B4B8',
+      darkText: 'black',
     },
   },
   default: DefaultTheme,

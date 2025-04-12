@@ -33,7 +33,7 @@ const ReportBug = () => {
     return (
         <View style={{ flex: 1 }}>
             <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }}>
-                <Text style={[styles.header, { color: colors.lightText, fontSize: 26 * scaleFactor }]}>
+                <Text style={[styles.header, { color: colors.darkText, fontSize: 26 * scaleFactor }]}>
                     Feedback til app'en
                 </Text>
                 <Text style={[styles.text, { color: colors.darkText, fontSize: 16 * scaleFactor }]}>
@@ -51,7 +51,7 @@ const ReportBug = () => {
                 />
                 <TouchableOpacity style={[styles.button, { backgroundColor: colors.dark, borderColor: colors.darkShadow }]}
                     onPress={() => addReport()}>
-                    <Text style={[styles.text, { color: colors.lightText, fontSize: 20 * scaleFactor }]}>
+                    <Text style={[styles.text, { color: colors.darkText, fontSize: 20 * scaleFactor }]}>
                         Indsend
                     </Text>
                 </TouchableOpacity>

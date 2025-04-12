@@ -86,7 +86,7 @@ function WritePost({ forumTitle, onNewPost }) {
             styles.shadowProp,
             { backgroundColor: colors.dark, borderColor: colors.darkShadow },
           ]}>
-          <Text style={[styles.btnText, { color: 'white' }]}>Slå op</Text>
+          <Text style={[styles.btnText, { color: colors.darkText }]}>Slå op</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

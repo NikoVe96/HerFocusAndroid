@@ -21,7 +21,7 @@ export const PickSubject = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.lightText, fontSize: 26 * scaleFactor },
+            { color: colors.darkText, fontSize: 26 * scaleFactor },
           ]}>
           Hvilket emne vil du dykke ned i?
         </Text>
@@ -39,7 +39,7 @@ export const PickSubject = () => {
             <Text
               style={[
                 styles.text,
-                { color: colors.lightText, fontSize: 22 * scaleFactor },
+                { color: colors.darkText, fontSize: 22 * scaleFactor },
               ]}>
               Familie
             </Text>
@@ -68,7 +68,7 @@ export const PickSubject = () => {
             <Text
               style={[
                 styles.text,
-                { color: colors.lightText, fontSize: 22 * scaleFactor },
+                { color: colors.darkText, fontSize: 22 * scaleFactor },
               ]}>
               Relationer
             </Text>
@@ -98,7 +98,7 @@ export const PickSubject = () => {
             <Text
               style={[
                 styles.text,
-                { color: colors.lightText, fontSize: 22 * scaleFactor },
+                { color: colors.darkText, fontSize: 22 * scaleFactor },
               ]}>
               Medicin
             </Text>
@@ -128,7 +128,7 @@ export const PickSubject = () => {
             <Text
               style={[
                 styles.text,
-                { color: colors.lightText, fontSize: 22 * scaleFactor },
+                { color: colors.darkText, fontSize: 22 * scaleFactor },
               ]}>
               Gode tips
             </Text>
@@ -157,7 +157,7 @@ export const PickSubject = () => {
             <Text
               style={[
                 styles.text,
-                { color: colors.lightText, fontSize: 22 * scaleFactor },
+                { color: colors.darkText, fontSize: 22 * scaleFactor },
               ]}>
               Den kvindelige cyklus
             </Text>
@@ -186,7 +186,7 @@ export const PickSubject = () => {
             <Text
               style={[
                 styles.text,
-                { color: colors.lightText, fontSize: 22 * scaleFactor },
+                { color: colors.darkText, fontSize: 22 * scaleFactor },
               ]}>
               Andet
             </Text>

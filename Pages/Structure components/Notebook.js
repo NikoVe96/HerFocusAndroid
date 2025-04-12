@@ -117,7 +117,7 @@ export const Notebook = () => {
         <Text
           style={[
             styles.title,
-            { color: colors.lightText, fontSize: 30 * scaleFactor },
+            { color: colors.darkText, fontSize: 30 * scaleFactor },
           ]}>
           Noter
         </Text>
@@ -165,7 +165,7 @@ export const Notebook = () => {
                   backgroundColor: colors.middle, borderColor: colors.middleShadow, width: '30%'
                 }]}
                 onPress={() => updateNote(item, updatedNoteContent[item.id])}>
-                <Text style={{ fontSize: 18, color: colors.lightText }}>Gem</Text>
+                <Text style={{ fontSize: 18, color: colors.darkText }}>Gem</Text>
               </TouchableOpacity>
             </AccordionItem>
           ))

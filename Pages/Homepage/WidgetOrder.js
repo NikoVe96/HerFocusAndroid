@@ -9,7 +9,7 @@ import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const WidgetOrder = ({ navigation }) => {
     const { colors } = useTheme();
-    const { ID } = useUser();
+    const { ID, handleLogout } = useUser();
     const [data, setData] = useState([
         "To-do status",
         "Næste to-do",
@@ -68,10 +68,8 @@ const WidgetOrder = ({ navigation }) => {
         setModalVisible(false);
     }
 
-    function removeWidget(index) {
-        const newData = [...data];
-        newData.splice(index, 1);
-        setData(newData);
+    function removeWidget(widgetToRemove) {
+        setData(prevData => prevData.filter(widget => widget !== widgetToRemove));
     }
 
 
@@ -84,7 +82,7 @@ const WidgetOrder = ({ navigation }) => {
                     styles.item,
                     {
                         backgroundColor: isActive ? colors.middle : colors.light,
-                        borderColor: isActive ? colors.middleShadow : colors.lightShadow
+                        borderColor: isActive ? colors.middleShadow : colors.dark
                     },
                 ]}
                 onLongPress={drag}
@@ -92,7 +90,7 @@ const WidgetOrder = ({ navigation }) => {
                 <Text style={{ fontSize: 18, color: colors.darkText }}>{item}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.deleteView}
-                onPress={() => removeWidget(index)}>
+                onPress={() => removeWidget(item)}>
                 <FontAwesomeIcon icon={faTrash} color={colors.lightText} />
             </TouchableOpacity>
         </View>
@@ -101,7 +99,7 @@ const WidgetOrder = ({ navigation }) => {
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Text style={[styles.headerText, { color: colors.lightText, fontSize: 16 * scaleFactor }]}>Ved at holde widget navnene inde kan du trække i dem og omrokere rækkefølgen
+                <Text style={[styles.headerText, { color: colors.darkText, fontSize: 16 * scaleFactor }]}>Ved at holde widget navnene inde kan du trække i dem og omrokere rækkefølgen
                     af din "Hjem" side, så den passer til lige netop dig!</Text>
                 <TouchableOpacity style={[styles.addButton, { backgroundColor: colors.light, borderColor: colors.lightShadow }]}
                     onPress={() =>
@@ -111,7 +109,7 @@ const WidgetOrder = ({ navigation }) => {
                 </TouchableOpacity>
                 <DraggableFlatList
                     data={data}
-                    keyExtractor={(item, index) => `${item}-${index}`}
+                    keyExtractor={(item) => item}
                     renderItem={renderItem}
                     onDragEnd={({ data }) => setData(data)}
                 />
@@ -119,7 +117,7 @@ const WidgetOrder = ({ navigation }) => {
                     onPress={() =>
                         saveNewOrder()
                     }>
-                    <Text style={[styles.buttonText, { color: colors.lightText }]}>Gem</Text>
+                    <Text style={[styles.buttonText, { color: colors.darkText }]}>Gem</Text>
                 </TouchableOpacity>
                 <Modal
                     visible={modalVisible}

@@ -27,20 +27,24 @@ const SignUp = () => {
   const [settings, setSettings] = useState('');
   const navigation = useNavigation();
   const { colors } = useTheme();
-  const { handleSignup, error, handleLogin } = useUser();
+  const { handleSignup, error, handleLogin, setData } = useUser();
   const { width, height } = Dimensions.get('window');
   const scaleFactor = Math.min(width / 375, height / 667);
   const [modalVisible, setModalVisible] = useState(false);
   const [avatarFile, setAvatarFile] = useState();
   const [age, setAge] = useState('');
+  const [type, setType] = useState('');
 
-  const handleAvatarSelect = (avatar) => {
+  const handleAvatarSelect = (avatar, type) => {
     setAvatar(avatar);
+    setType(type);
     setModalVisible(false);
   };
 
   async function signUp() {
-    handleSignup(name, username, age, email, password, confirmPassword, avatar);
+    handleSignup(name, username, age, email, password, confirmPassword, avatar, type);
+    //setData(avatar, type)
+    //handleLogin(email, password, navigation);
   }
 
   return (
@@ -89,20 +93,13 @@ const SignUp = () => {
             secureTextEntry={true}
             style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
           <Text style={styles.errorText}>{error}</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <TouchableOpacity style={[styles.signUpBtn, {
-              backgroundColor: colors.middle, borderColor: colors.middleShadow,
-              width: '35%', alignSelf: 'flex-start', height: '30%', marginRight: '8%', alignSelf: 'center'
-            }]}
-              onPress={() => setModalVisible(true)}>
-              <Text style={[styles.btnText, { color: colors.lightText, fontSize: 16 * scaleFactor }]}>Vælg en avatar</Text>
-            </TouchableOpacity>
-            {avatar ?
-              <Image source={avatar} style={styles.avatarImage} />
-              :
-              <View style={styles.noAvatarImage} />
-            }
-          </View>
+          <TouchableOpacity style={[styles.signUpBtn, {
+            backgroundColor: colors.middle, borderColor: colors.middleShadow,
+            width: '35%', alignSelf: 'flex-start', height: '30%', marginRight: '8%', alignSelf: 'center'
+          }]}
+            onPress={() => setModalVisible(true)}>
+            <Text style={[styles.btnText, { color: colors.lightText, fontSize: 16 * scaleFactor }]}>Vælg en avatar</Text>
+          </TouchableOpacity>
           <Modal
             visible={modalVisible}
             transparent={true}

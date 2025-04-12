@@ -17,19 +17,6 @@ export const SelectAvatar = ({ onSelect }) => {
         setCategory(category);
     }
 
-    const handleAvatarSelect = async (avatarAsset, type) => {
-        console.log('Avatar: ' + avatarAsset)
-        console.log('type: ' + type)
-        if (type == 'avatar') {
-            const assetSource = Image.resolveAssetSource(avatarAsset);
-            const newFile = await convertAvatar(assetSource);
-            onSelect(newFile);
-        } else {
-            onSelect(avatarAsset);
-        }
-
-    };
-
     return (
         <View>
             <View style={{
@@ -94,7 +81,7 @@ export const SelectAvatar = ({ onSelect }) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            onPress={() => handleAvatarSelect(item, 'avatar')}
+                            onPress={() => onSelect(item, 'avatar')}
                             style={styles.avatarContainer}>
                             <Image
                                 source={item}
@@ -110,7 +97,7 @@ export const SelectAvatar = ({ onSelect }) => {
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                onPress={() => handleAvatarSelect(item)}
+                                onPress={() => onSelect(item, 'avatar')}
                                 style={styles.avatarContainer}>
                                 <Image
                                     source={item}
@@ -126,7 +113,7 @@ export const SelectAvatar = ({ onSelect }) => {
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={({ item }) => (
                                 <TouchableOpacity
-                                    onPress={() => handleAvatarSelect(item)}
+                                    onPress={() => onSelect(item, 'avatar')}
                                     style={styles.avatarContainer}>
                                     <Image
                                         source={item}
@@ -142,7 +129,7 @@ export const SelectAvatar = ({ onSelect }) => {
                                 keyExtractor={(item, index) => index.toString()}
                                 renderItem={({ item }) => (
                                     <TouchableOpacity
-                                        onPress={() => handleAvatarSelect(item)}
+                                        onPress={() => onSelect(item, 'avatar')}
                                         style={styles.avatarContainer}>
                                         <Image
                                             source={item}

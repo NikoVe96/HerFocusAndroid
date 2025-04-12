@@ -66,9 +66,26 @@ const Drawer = createDrawerNavigator();
 const moduleSubjects = [
   {
     subject: 'Struktur og planlægning',
+    description: 'I dette modul vil du lære om forskellige værktøjer til at strukturere dit liv og din hverdag. For voksne med ADHD kan det være en fordel at have specifikke mål, tidsrammer og værktøjer til at opnå sine mål. Derfor har vi samlet nogle øvelser, der kan give dig de bedste chancer for success og forhåbentlig give mere overskud i hverdagen.',
+    image: require('../Assets/images/icons/schedule.png'),
+  },
+  {
+    subject: 'Generel AD(H)D',
     description:
-      'I dette modul vil du lære om forskellige værktøjer til at strukturere dit liv og din hverdag. For voksne med ADHD kan det være en fordel at have specifikke mål, tidsrammer og værktøjer til at opnå sine mål. Derfor har vi samlet nogle øvelser, der kan give dig de bedste chancer for success og forhåbentlig give mere overskud i hverdagen.',
-    image: require('../Assets/images/learning_notebook.png'),
+      'Dette emne fokuserer på at give en dybdegående forståelse af ADHD som tilstand. Du vil blive introduceret til de neurologiske aspekter bag ADHD og de dagligdags udfordringer, som følger med tilstanden. Emnet indeholder redskaber og strategier til at skabe struktur, sætte målbare delmål og udvikle personligt tilpassede løsninger, som kan reducere stress og øge produktiviteten i hverdagen.',
+    image: require('../Assets/images/icons/psychology(2).png'),
+  },
+  {
+    subject: 'AD(H)D og relationer',
+    description:
+      'Dette emne undersøger, hvordan ADHD påvirker både private og professionelle relationer. Her lærer du at identificere og adressere kommunikationsudfordringer, håndtere konflikter og opbygge støttende netværk. Ved at arbejde med konkrete kommunikationsstrategier og selvrefleksion kan du opnå en bedre forståelse af, hvordan ADHD indvirker på dine interaktioner med andre – og dermed styrke dine relationer.',
+    image: require('../Assets/images/icons/relationship(1).png'),
+  },
+  {
+    subject: 'Kvinder med AD(H)D',
+    description:
+      'Dette emne er specielt udviklet til kvinder med ADHD og fokuserer på de unikke aspekter ved, hvordan ADHD manifesterer sig hos kvinder. Emnet belyser, at kvinder ofte oplever mere subtile og indre symptomer, der kan have stor betydning for deres dagligdag. Indholdet dækker strategier for selvomsorg, håndtering af dagligdags udfordringer, udvikling af sunde relationer samt karriere- og personlig udvikling. Målet er at øge bevidstheden om de særlige udfordringer og styrker, som kvinder med ADHD møder, og at tilbyde redskaber til at fremme både personlig og professionel vækst.',
+    image: require('../Assets/images/icons/female.png'),
   },
 ];
 
@@ -81,7 +98,7 @@ function CustomDrawerContent({ navigation }) {
     <DrawerContentScrollView style={{ backgroundColor: colors.light }}>
       <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
         {profilePicture && <Image source={{ uri: profilePicture.url() }} style={styles.avatarImage} />}
-        <Text style={{ alignSelf: 'center', fontSize: 26, fontWeight: 'bold', marginTop: '2%', color: colors.darkText }}>{username}</Text>
+        <Text style={{ alignSelf: 'center', fontSize: 26, fontWeight: 'bold', marginTop: '2%', color: colors.dark }}>{username}</Text>
         <View
           style={{
             borderWidth: 1,
@@ -96,16 +113,16 @@ function CustomDrawerContent({ navigation }) {
       <AccordionItem
         title="Planlægning"
         icon={faListCheck}
-        titleStyle={[{ color: colors.darkText }]}>
+        titleStyle={[{ color: colors.dark }]}>
         <TouchableOpacity
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginBottom: '3%' }}
           onPress={() => navigation.navigate('Calendar')}>
           <FontAwesomeIcon
             icon={faCalendar}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>
+          <Text style={{ fontSize: 18, color: colors.dark }}>
             Kalender oversigt
           </Text>
         </TouchableOpacity>
@@ -115,9 +132,9 @@ function CustomDrawerContent({ navigation }) {
           <FontAwesomeIcon
             icon={faBook}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>
+          <Text style={{ fontSize: 18, color: colors.dark }}>
             Notesbog
           </Text>
         </TouchableOpacity>
@@ -127,9 +144,9 @@ function CustomDrawerContent({ navigation }) {
           <FontAwesomeIcon
             icon={faClockRotateLeft}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>
+          <Text style={{ fontSize: 18, color: colors.dark }}>
             Rutiner
           </Text>
         </TouchableOpacity>
@@ -137,7 +154,7 @@ function CustomDrawerContent({ navigation }) {
       <AccordionItem
         title="Forum"
         icon={faComments}
-        titleStyle={[{ color: colors.darkText }]}>
+        titleStyle={[{ color: colors.dark }]}>
         <TouchableOpacity
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginBottom: '3%' }}
           onPress={() =>
@@ -150,9 +167,9 @@ function CustomDrawerContent({ navigation }) {
           <FontAwesomeIcon
             icon={faPeopleRoof}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>Familie </Text>
+          <Text style={{ fontSize: 18, color: colors.dark }}>Familie </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
@@ -166,9 +183,9 @@ function CustomDrawerContent({ navigation }) {
           <FontAwesomeIcon
             icon={faHeart}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>Relationer </Text>
+          <Text style={{ fontSize: 18, color: colors.dark }}>Relationer </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
@@ -182,9 +199,9 @@ function CustomDrawerContent({ navigation }) {
           <FontAwesomeIcon
             icon={faPills}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>Medicin </Text>
+          <Text style={{ fontSize: 18, color: colors.dark }}>Medicin </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
@@ -198,9 +215,9 @@ function CustomDrawerContent({ navigation }) {
           <FontAwesomeIcon
             icon={faLightbulb}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>Gode tips </Text>
+          <Text style={{ fontSize: 18, color: colors.dark }}>Gode tips </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
@@ -214,9 +231,9 @@ function CustomDrawerContent({ navigation }) {
           <FontAwesomeIcon
             icon={faVenus}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>Den kvindelige cyklus</Text>
+          <Text style={{ fontSize: 18, color: colors.dark }}>Den kvindelige cyklus</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
@@ -230,17 +247,17 @@ function CustomDrawerContent({ navigation }) {
           <FontAwesomeIcon
             icon={faCommentDots}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>Gode tips </Text>
+          <Text style={{ fontSize: 18, color: colors.dark }}>Gode tips </Text>
         </TouchableOpacity>
       </AccordionItem>
       <AccordionItem
         title="Læringsmoduler"
         icon={faGraduationCap}
-        titleStyle={[{ color: colors.darkText }]}>
+        titleStyle={[{ color: colors.dark }]}>
         <TouchableOpacity
-          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center' }}
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginRight: '3%', marginBottom: '7%' }}
           onPress={() =>
             navigation.navigate('Module overview', {
               subject: moduleSubjects[0].subject,
@@ -251,15 +268,71 @@ function CustomDrawerContent({ navigation }) {
           <FontAwesomeIcon
             icon={faRectangleList}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
           <View>
-            <Text
-              style={{ fontSize: 18, fontWeight: 'bold', color: colors.darkText }}>
-              Modul 1
+            <Text style={{ fontSize: 18, color: colors.dark, }}>
+              Struktur og planlægning
             </Text>
-            <Text style={{ fontSize: 18, color: colors.darkText, paddingRight: 5 }}>
-              Strukturering og planlægning af dagligdagen{' '}
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginRight: '3%', marginBottom: '7%' }}
+          onPress={() =>
+            navigation.navigate('Module overview', {
+              subject: moduleSubjects[1].subject,
+              description: moduleSubjects[1].description,
+              image: moduleSubjects[1].image,
+            })
+          }>
+          <FontAwesomeIcon
+            icon={faRectangleList}
+            size={15}
+            color={colors.dark}
+            style={{ marginRight: 10 }}></FontAwesomeIcon>
+          <View>
+            <Text style={{ fontSize: 18, color: colors.dark, }}>
+              Generel AD(H)D
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginRight: '3%', marginBottom: '7%' }}
+          onPress={() =>
+            navigation.navigate('Module overview', {
+              subject: moduleSubjects[2].subject,
+              description: moduleSubjects[2].description,
+              image: moduleSubjects[2].image,
+            })
+          }>
+          <FontAwesomeIcon
+            icon={faRectangleList}
+            size={15}
+            color={colors.dark}
+            style={{ marginRight: 10 }}></FontAwesomeIcon>
+          <View>
+            <Text style={{ fontSize: 18, color: colors.dark, }}>
+              AD(H)D og relationer
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginRight: '3%', marginBottom: '7%' }}
+          onPress={() =>
+            navigation.navigate('Module overview', {
+              subject: moduleSubjects[3].subject,
+              description: moduleSubjects[3].description,
+              image: moduleSubjects[3].image,
+            })
+          }>
+          <FontAwesomeIcon
+            icon={faRectangleList}
+            size={15}
+            color={colors.dark}
+            style={{ marginRight: 10 }}></FontAwesomeIcon>
+          <View>
+            <Text style={{ fontSize: 18, color: colors.dark, }}>
+              Kvinder med AD(H)D
             </Text>
           </View>
         </TouchableOpacity>
@@ -272,10 +345,10 @@ function CustomDrawerContent({ navigation }) {
             <FontAwesomeIcon
               icon={faBrain}
               size={20}
-              color={colors.darkText}
+              color={colors.dark}
               style={{ marginRight: 10 }}
             />
-            <Text style={[styles.accordTitle, { color: colors.darkText }]}>
+            <Text style={[styles.accordTitle, { color: colors.dark }]}>
               Vidensbank
             </Text>
           </View>
@@ -284,31 +357,31 @@ function CustomDrawerContent({ navigation }) {
       <AccordionItem
         title="Om herfocus"
         icon={faUsers}
-        titleStyle={[{ color: colors.darkText }]}>
+        titleStyle={[{ color: colors.dark }]}>
         <TouchableOpacity
           style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
           onPress={() => navigation.navigate('App history')}>
           <FontAwesomeIcon
             icon={faLandmark}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>
+          <Text style={{ fontSize: 18, color: colors.dark }}>
             Historien om herfocus
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginBottom: '20%' }}
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
           onPress={() => navigation.navigate('Contact information')}>
           <FontAwesomeIcon
             icon={faAddressCard}
             size={15}
-            color={colors.darkText}
+            color={colors.dark}
             style={{ marginRight: 10 }}></FontAwesomeIcon>
-          <Text style={{ fontSize: 18, color: colors.darkText }}>Kontakt os</Text>
+          <Text style={{ fontSize: 18, color: colors.dark }}>Kontakt os</Text>
         </TouchableOpacity>
       </AccordionItem>
-      <View style={styles.accordContainer}>
+      <View style={[styles.accordContainer, { marginBottom: '20%' }]}>
         <TouchableOpacity
           style={styles.accordHeader}
           onPress={() => navigation.navigate('Feedback')}>
@@ -317,17 +390,17 @@ function CustomDrawerContent({ navigation }) {
               <FontAwesomeIcon
                 icon={faThumbsUp}
                 size={15}
-                color={colors.darkText}
+                color={colors.dark}
                 style={{ marginRight: 10 }}
               />
               <FontAwesomeIcon
                 icon={faThumbsDown}
                 size={15}
-                color={colors.darkText}
+                color={colors.dark}
                 style={{ marginRight: 10 }}
               />
             </View>
-            <Text style={[styles.accordTitle, { color: colors.darkText }]}>
+            <Text style={[styles.accordTitle, { color: colors.dark }]}>
               Feedback til app'en
             </Text>
           </View>
