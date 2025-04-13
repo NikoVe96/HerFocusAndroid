@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import Parse from 'parse/react-native';
 import { Image } from 'react-native';
 import { convertAvatar } from './ConvertAvatar';
+import RNFS from 'react-native-fs';
 
 export const UserContext = createContext(null);
 
@@ -87,7 +88,16 @@ export const UserProvider = ({ children }) => {
 
       if (type === 'avatar') {
         const assetSource = Image.resolveAssetSource(avatar);
-        const newFile = await convertAvatar(assetSource);
+        let newFile;
+
+        if (assetSource.uri.startsWith('asset://')) {
+
+          const assetPath = assetSource.uri.replace('asset://', '');
+          const base64Data = await RNFS.readFileAssets(assetPath, 'base64');
+          newFile = new Parse.File("avatar.png", { base64: `data:image/png;base64,${base64Data}` });
+        } else {
+          newFile = await convertAvatar(assetSource);
+        }
         user.set('profilePicture', newFile);
       } else {
         user.set('profilePicture', avatar);

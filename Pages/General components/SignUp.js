@@ -43,93 +43,121 @@ const SignUp = () => {
 
   async function signUp() {
     handleSignup(name, username, age, email, password, confirmPassword, avatar, type);
-    //setData(avatar, type)
-    //handleLogin(email, password, navigation);
+    // setData(avatar, type);
+    // handleLogin(email, password, navigation);
   }
 
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 10 }}
+      >
         <View style={styles.container}>
           <Image
             source={require('../../Assets/images/logo-light-nb.png')}
-            style={styles.image}></Image>
+            style={styles.image}
+          />
           <TextInput
             placeholder="Navn"
             placeholderTextColor="#8C8C8C"
             value={name}
             onChangeText={text => setName(text)}
-            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}
+          />
           <TextInput
             placeholder="Brugernavn"
             placeholderTextColor="#8C8C8C"
             value={username}
             onChangeText={text => setUsername(text)}
-            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}
+          />
           <TextInput
             placeholder="Alder"
             placeholderTextColor="#8C8C8C"
             value={age}
             onChangeText={text => setAge(text)}
-            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}
+          />
           <TextInput
             placeholder="Email"
             placeholderTextColor="#8C8C8C"
             value={email}
             onChangeText={text => setEmail(text)}
-            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}
+          />
           <TextInput
             placeholder="Kodeord"
             placeholderTextColor="#8C8C8C"
             value={password}
             onChangeText={text => setPassword(text)}
             secureTextEntry={true}
-            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}
+          />
           <TextInput
             placeholder="Bekræft kodeord"
             placeholderTextColor="#8C8C8C"
             value={confirmPassword}
             onChangeText={text => setConfirmPassword(text)}
             secureTextEntry={true}
-            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}></TextInput>
+            style={[styles.form, { fontSize: 16 * scaleFactor, borderColor: colors.dark }]}
+          />
           <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity style={[styles.signUpBtn, {
-            backgroundColor: colors.middle, borderColor: colors.middleShadow,
-            width: '35%', alignSelf: 'flex-start', height: '8%', marginRight: '8%', alignSelf: 'center'
-          }]}
-            onPress={() => setModalVisible(true)}>
-            <Text style={[styles.btnText, { color: colors.darkText, fontSize: 16 * scaleFactor }]}>Vælg en avatar</Text>
+          <TouchableOpacity
+            style={[
+              styles.signUpBtn,
+              {
+                backgroundColor: colors.middle,
+                borderColor: colors.middleShadow,
+                width: '35%',
+                height: 50,
+                alignSelf: 'center'
+              }
+            ]}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={[styles.btnText, { color: colors.darkText, fontSize: 16 * scaleFactor }]}>
+              Vælg en avatar
+            </Text>
           </TouchableOpacity>
           <Modal
             visible={modalVisible}
             transparent={true}
             animationType='slide'
-            backdropColor='black'
             onRequestClose={() => setModalVisible(false)}
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <SelectAvatar
-                  onSelect={handleAvatarSelect} />
+                <SelectAvatar onSelect={handleAvatarSelect} />
               </View>
             </View>
           </Modal>
-          <TouchableOpacity
-            style={[styles.signUpBtn, { backgroundColor: colors.dark, borderColor: colors.darkShadow }]}
-            onPress={() => signUp()}
-            title=" Sign up"
-            titleColor="#000000">
-            <Text style={[styles.btnText, { fontSize: 18 * scaleFactor, color: colors.darkText }]}>
-              Lav en profil
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Login')}
-            style={[styles.signUpBtn, { backgroundColor: colors.dark, borderColor: colors.darkShadow }]}>
-            <Text style={[styles.btnText, { fontSize: 18 * scaleFactor, color: colors.darkText }]}>
-              Tilbage til login
-            </Text>
-          </TouchableOpacity>
+          <View style={{ flexDirection: 'row', marginTop: '15%', justifyContent: 'space-between' }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Login')}
+              style={[
+                styles.signUpBtn,
+                { backgroundColor: colors.dark, borderColor: colors.darkShadow, marginBottom: 50 }
+              ]}
+            >
+              <Text style={[styles.btnText, {
+                fontSize: 20 * scaleFactor, color: colors.darkText, fontWeight: 'bold'
+              }]}>
+                Tilbage til login
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.signUpBtn,
+                { backgroundColor: colors.dark, borderColor: colors.darkShadow }
+              ]}
+              onPress={() => signUp()}
+            >
+              <Text style={[styles.btnText, { fontSize: 20 * scaleFactor, color: colors.darkText, fontWeight: 'bold' }]}>
+                Lav en profil
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -138,9 +166,9 @@ const SignUp = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    marginBottom: 100,
+    paddingVertical: 20,
+    marginBottom: '50%',
   },
   image: {
     width: '80%',
@@ -148,28 +176,21 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginLeft: 10,
     marginBottom: 10,
+    resizeMode: 'contain'
   },
   form: {
-    width: '70%',
-    height: '10%',
+    width: '80%',
+    height: 50,
     marginTop: '2%',
     borderBottomWidth: 1,
-  },
-  avatar: {
-    marginTop: 5,
-    marginBottom: 10,
-  },
-  avatarMargin: {
-    marginLeft: 30,
-    marginRight: 20,
-    padding: 3,
+    paddingHorizontal: 10
   },
   signUpBtn: {
-    width: '60%',
-    height: '8%',
+    width: '40%',
+    height: 50,
     borderRadius: 8,
-    marginBottom: 10,
-    marginTop: 20,
+    //marginBottom: 10,
+    //marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
@@ -178,50 +199,29 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
     borderWidth: 1,
-    borderBottomWidth: 4
+    borderBottomWidth: 4,
+    marginHorizontal: '2%'
   },
   errorText: {
     color: 'red',
-  },
-  avatarImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 30,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  noAvatarImage: {
-    width: 100,
-    height: 100,
+    marginTop: 10
   },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgb(0, 0, 0, 0.9)',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)'
   },
   modalView: {
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
-    //padding: '2%',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    padding: 20,
     elevation: 5,
-    height: '80%'
-  },
+    height: '80%',
+    width: '90%'
+  }
 });
 
 export default SignUp;
