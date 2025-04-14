@@ -114,6 +114,7 @@ export const UserProvider = ({ children }) => {
     //handleLogin(savedEmail, savedPassword);
     setID(user.id);
     setUsername(user.getUsername());
+    setProfilePicture(user.get('profilePicture'));
     setIsLoggedIn(true);
   };
 

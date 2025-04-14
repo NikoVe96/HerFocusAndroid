@@ -24,6 +24,7 @@ const themes = {
       darkShadow: '#d9b1f2',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   purple: {
@@ -42,6 +43,7 @@ const themes = {
       darkShadow: '#40252f',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   red: {
@@ -60,6 +62,7 @@ const themes = {
       darkShadow: '#8c291f',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   yellow: {
@@ -78,6 +81,7 @@ const themes = {
       darkShadow: '#bd7f04',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   brown: {
@@ -96,6 +100,7 @@ const themes = {
       darkShadow: '#402c1d',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   turqouise: {
@@ -114,6 +119,7 @@ const themes = {
       darkShadow: '#04515e',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   beige: {
@@ -132,6 +138,7 @@ const themes = {
       darkShadow: '#a88b82',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   green: {
@@ -150,6 +157,7 @@ const themes = {
       darkShadow: '#0d330d',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   blue: {
@@ -168,6 +176,7 @@ const themes = {
       darkShadow: '#2473a3',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   darkblue: {
@@ -186,6 +195,7 @@ const themes = {
       darkShadow: '#3b3a4f',
       lightText: '#FFFFFF',
       darkText: 'white',
+      white: 'white'
     },
   },
   earth: {
@@ -204,6 +214,7 @@ const themes = {
       darkShadow: '#7d4028',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   pink: {
@@ -222,6 +233,7 @@ const themes = {
       darkShadow: '#c48b90',
       lightText: 'white',
       darkText: 'black',
+      white: 'white'
     },
   },
   default: DefaultTheme,

@@ -30,7 +30,7 @@ const FunFact = () => {
     if (!fact) return null;
 
     return (
-        <View style={[styles.widget, { backgroundColor: colors.light, borderColor: colors.dark }]}>
+        <View style={[styles.widget, { backgroundColor: colors.white, borderColor: colors.white }]}>
             <Text style={[styles.header, { color: colors.darkText, }]}>Dagens fact</Text>
             <Text style={[styles.title, { color: colors.darkText }]}>{fact.title}</Text>
             <Text style={[styles.fact, { color: colors.darkText, fontSize: 18 }]}>{fact.fact}</Text>

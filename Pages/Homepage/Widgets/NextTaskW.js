@@ -22,7 +22,7 @@ const NextTaskW = ({
     };
 
     return (
-        <View style={[styles.widget, { borderColor: colors.middle, backgroundColor: colors.light }]}>
+        <View style={[styles.widget, { borderColor: colors.white, backgroundColor: colors.white }]}>
             {remainingTasksArray.length < 1 ? (
                 <View
                     style={{

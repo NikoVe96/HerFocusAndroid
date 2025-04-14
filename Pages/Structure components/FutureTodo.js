@@ -1,4 +1,4 @@
-import { useTheme } from '@react-navigation/native';
+import { useFocusEffect, useTheme } from '@react-navigation/native';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -9,7 +9,7 @@ import {
   Dimensions,
   TextInput
 } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
 import Parse from 'parse/react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
@@ -56,50 +56,11 @@ export const FutureTodo = ({ navigation }) => {
     ToDoQuery();
   }, []);
 
-  function handleMenuClick(page) {
-    setPage(page);
-  }
-
-  function toggleMenu() {
-    if (isOpen) {
-      setIsOpen(false);
-    } else {
-      setIsOpen(true);
-    }
-  }
-
-  const showToDoModal = () => {
-    setToDoModalVisible(true);
-  };
-
-  const hideToDoModal = () => {
-    setToDoModalVisible(false);
-  };
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-
-  const showStartTimePicker = () => {
-    setStartTimePickerVisibility(true);
-  };
-
-  const hideStartTimePicker = () => {
-    setStartTimePickerVisibility(false);
-  };
-
-  const showEndTimePicker = () => {
-    setEndTimePickerVisibility(true);
-  };
-
-  const hideEndTimePicker = () => {
-    setEndTimePickerVisibility(false);
-  };
+  useFocusEffect(
+    useCallback(() => {
+      ToDoQuery();
+    }, [])
+  )
 
   function clearInput() {
     setTaskName('');

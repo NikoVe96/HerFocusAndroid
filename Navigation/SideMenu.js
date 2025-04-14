@@ -150,6 +150,18 @@ function CustomDrawerContent({ navigation }) {
             Rutiner
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', marginLeft: 30, alignItems: 'center', marginVertical: '3%' }}
+          onPress={() => navigation.navigate('Future todo')}>
+          <FontAwesomeIcon
+            icon={faClockRotateLeft}
+            size={15}
+            color={colors.dark}
+            style={{ marginRight: 10 }}></FontAwesomeIcon>
+          <Text style={{ fontSize: 18, color: colors.dark }}>
+            Fremtidige to-do's
+          </Text>
+        </TouchableOpacity>
       </AccordionItem>
       <AccordionItem
         title="Forum"

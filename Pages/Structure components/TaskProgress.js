@@ -10,7 +10,7 @@ export const TaskProgress = ({ taskProgress }) => {
     const { colors } = useTheme();
 
     return (
-        <View style={[styles.widget, { borderColor: 'white', backgroundColor: 'white' }]}>
+        <View style={[styles.widget, { borderColor: colors.white, backgroundColor: colors.white }]}>
             <CircularProgress
                 value={taskProgress}
                 inActiveStrokeColor={colors.middle}

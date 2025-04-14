@@ -6,14 +6,11 @@ import {
   TouchableOpacity,
   Dimensions
 } from 'react-native';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import Animated from 'react-native-reanimated';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {
-  faCheck
-} from '@fortawesome/free-solid-svg-icons';
 import Parse from 'parse/react-native';
 
 export const PickModule = () => {
@@ -60,6 +57,15 @@ export const PickModule = () => {
 
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      getProgress('Struktur og planlægning');
+      getProgress('Generel AD(H)D');
+      getProgress('AD(H)D og relationer');
+      getProgress('Kvinder med AD(H)D');
+    }, [])
+  )
+
   async function getProgress(subject) {
     const currentUser = await Parse.User.currentAsync();
 
@@ -86,7 +92,7 @@ export const PickModule = () => {
 
     const percentage =
       totalModulesResults.length > 0
-        ? (completedModules / totalModulesResults.length) * 100
+        ? Math.floor((completedModules / totalModulesResults.length) * 100)
         : 0;
 
     switch (subject) {

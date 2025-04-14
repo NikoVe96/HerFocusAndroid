@@ -21,8 +21,8 @@ const HitTheWall = ({
 
     const futureTodo = async function () {
         wallTask.set('futureTask', true);
+        wallTask.set('date', '');
         await wallTask.save();
-        updateTaskProgress();
         onClose();
         Alert.alert(wallTask.get('name') + ' er nu blevet flyttet til fremtidige to-dos!');
     };

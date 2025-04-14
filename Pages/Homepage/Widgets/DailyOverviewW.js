@@ -10,7 +10,7 @@ function DailyOverviewW({ completeTask }) {
 
     return (
         <View style={{
-            backgroundColor: colors.light, elevation: 10, borderColor: colors.middle, borderWidth: 1,
+            backgroundColor: colors.white, elevation: 10, borderColor: colors.white, borderWidth: 1,
             borderRadius: 10
         }}>
             <TaskSorter

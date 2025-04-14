@@ -106,7 +106,7 @@ export const Streak = () => {
     };
 
     return (
-        <View style={[styles.widget, { borderColor: colors.dark, backgroundColor: colors.light }]}>
+        <View style={[styles.widget, { borderColor: colors.white, backgroundColor: colors.white }]}>
             <Text style={[styles.title, { color: colors.darkText }]}>Streak: {streak} 🔥</Text>
             <FlatList
                 data={streakDays}
