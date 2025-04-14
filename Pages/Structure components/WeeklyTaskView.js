@@ -107,7 +107,8 @@ const WeeklyTaskView = ({ weekDates, userID }) => {
                             </View>
                         ))}
                         {item.events.routines.map((routine, index) => (
-                            <View style={{ flex: 1, alignItems: 'center', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: routine.get('color'), borderRadius: 10, borderColor: routine.get('color'), elevation: 5 }}>
+                            <View style={{ flex: 1, alignItems: 'center', borderWidth: 1, marginVertical: 5, marginHorizontal: 15, flexDirection: 'row', backgroundColor: routine.get('color'), borderRadius: 10, borderColor: routine.get('color'), elevation: 5 }}
+                                key={index}>
                                 <AccordionItem
                                     title={routine.get('name')}
                                     time={routine.get('startTime') + ' - ' + routine.get('endTime')}
@@ -115,8 +116,8 @@ const WeeklyTaskView = ({ weekDates, userID }) => {
                                     emoji={routine.get('emoji')}
                                     titleStyle={{ fontSize: 18, color: 'black', fontWeight: 'normal' }}
                                     emojiStyle={{ fontSize: 22 }}
-                                    toggleStyle={'black'}>
-                                    {item.get('routineSteps').map((step, index) => (
+                                >
+                                    {routine.get('routineSteps').map((step, index) => (
                                         <View key={index} style={{ flexDirection: 'row' }}>
                                             <View style={{ justifyContent: 'center' }}>
                                                 <BouncyCheckbox

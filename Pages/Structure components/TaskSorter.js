@@ -9,13 +9,13 @@ import { getDayEvents, getAllDayEvents } from './DayEvents';
 import { LightenDarkenColor } from './ColorChange';
 import Parse from 'parse/react-native';
 import { useUser } from '../../Components/UserContext';
+import AccordionItem from '../../Components/AccordionItem';
 
 const TaskSorter = ({
     date,
     selectedWeekDays,
     completeTask
 }) => {
-
     const { colors } = useTheme();
     const [open, setOpen] = useState(false);
     const [sorting, setSorting] = useState('type');

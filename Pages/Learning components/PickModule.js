@@ -54,56 +54,53 @@ export const PickModule = () => {
 
   useEffect(() => {
     getProgress('Struktur og planlægning');
+    getProgress('Generel AD(H)D');
+    getProgress('AD(H)D og relationer');
+    getProgress('Kvinder med AD(H)D');
 
   }, []);
 
   async function getProgress(subject) {
     const currentUser = await Parse.User.currentAsync();
-    let totalModules = new Parse.Query('LearningModules');
-    totalModules.equalTo('subject', subject);
-    const totalModulesResults = await totalModules.find();
+
+    let totalModulesQ = new Parse.Query('LearningModules');
+    totalModulesQ.equalTo('subject', subject);
+    const totalModulesResults = await totalModulesQ.find();
 
     let completedModulesQ = new Parse.Query('Settings');
     completedModulesQ.equalTo('user', currentUser);
-    completedResults = await completedModulesQ.find();
+    const completedResults = await completedModulesQ.find();
+
     let completedModules = 0;
-    if (completedResults[0].get('modulesCompleted') != null) {
-      completedResults[0].get('modulesCompleted').forEach(module => {
-        if (completedResults[0].get('modulesCompleted').filter(module => module.includes(subject))) {
+    if (
+      completedResults.length > 0 &&
+      completedResults[0].get('modulesCompleted') != null
+    ) {
+      const modulesCompleted = completedResults[0].get('modulesCompleted');
+      modulesCompleted.forEach(mod => {
+        if (typeof mod === 'string' && mod.includes(subject)) {
           completedModules += 1;
         }
       });
     }
 
+    const percentage =
+      totalModulesResults.length > 0
+        ? (completedModules / totalModulesResults.length) * 100
+        : 0;
 
     switch (subject) {
       case 'Struktur og planlægning':
-        if (completedModules > 0) {
-          setStructureProgress((completedModules / totalModulesResults.length) * 100);
-        } else {
-          setStructureProgress(0);
-        }
+        setStructureProgress(percentage);
         break;
       case 'Generel AD(H)D':
-        if (completedModules > 0) {
-          setGeneralProgress((completedModules / totalModulesResults.length) * 100);
-        } else {
-          setGeneralProgress(0);
-        }
+        setGeneralProgress(percentage);
         break;
       case 'AD(H)D og relationer':
-        if (completedModules > 0) {
-          setRelationsProgress((completedModules / totalModulesResults.length) * 100);
-        } else {
-          setRelationsProgress(0);
-        }
+        setRelationsProgress(percentage);
         break;
       case 'Kvinder med AD(H)D':
-        if (completedModules > 0) {
-          setWomenProgress((completedModules / totalModulesResults.length) * 100);
-        } else {
-          setWomenProgress(0);
-        }
+        setWomenProgress(percentage);
         break;
       default:
         break;
