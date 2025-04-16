@@ -97,7 +97,7 @@ function CustomDrawerContent({ navigation }) {
   return (
     <DrawerContentScrollView style={{ backgroundColor: colors.light }}>
       <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-        {profilePicture && <Image source={{ uri: profilePicture.url() }} style={styles.avatarImage} />}
+        {(profilePicture) && <Image source={{ uri: profilePicture.url() }} style={styles.avatarImage} />}
         <Text style={{ alignSelf: 'center', fontSize: 26, fontWeight: 'bold', marginTop: '2%', color: colors.dark }}>{username}</Text>
         <View
           style={{

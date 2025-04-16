@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import Parse from 'parse/react-native';
 import { Image } from 'react-native';
 import { convertAvatar } from './ConvertAvatar';
-import RNFS from 'react-native-fs';
 
 export const UserContext = createContext(null);
 
@@ -34,20 +33,35 @@ export const UserProvider = ({ children }) => {
       if (currentUser) {
         setUsername(currentUser.getUsername());
         setID(currentUser.id);
+        setProfilePicture(currentUser.get('profilePicture'));
         setIsLoggedIn(true);
       } else {
         setUsername('');
         setID('');
+        setProfilePicture('');
         setIsLoggedIn(false);
       }
     };
     checkUser();
   }, []);
 
-  const handleSignup = async (name, username, age, email, password, confirmPassword, avatar, type) => {
+  const handleSignup = async (
+    name,
+    username,
+    age,
+    email,
+    password,
+    confirmPassword,
+    avatar,
+    type
+  ) => {
     setError('');
+    console.log('pass: ', password);
+    console.log('confirm: ', confirmPassword);
+
     const lowerCaseEmail = email.toLowerCase();
-    const userNameExist = new Parse.Query(Parse.User);
+
+    const userNameExist = new Parse.Query('User');
     userNameExist.equalTo('username', username);
     const userExists = await userNameExist.first();
 
@@ -67,59 +81,60 @@ export const UserProvider = ({ children }) => {
     user.set('email', lowerCaseEmail);
     user.set('password', password);
     user.set('age', age);
+    //user.set('avatar', avatar);
+
+    const userSettings = new Parse.Object('Settings');
+    userSettings.set('theme', 'yellow');
+    userSettings.set('user', user);
+    userSettings.set('modulesCompleted', []);
+    userSettings.set('homeOrder', homeOrder);
+
+    const userNotebook = new Parse.Object('Notebook');
+    userNotebook.set('user', user);
+    userNotebook.set('exercises', []);
+    userNotebook.set('todo', []);
+    userNotebook.set('notes', []);
 
     try {
       await user.signUp();
-
-      const userSettings = new Parse.Object('Settings');
-      userSettings.set('theme', 'yellow');
-      userSettings.set('user', user);
-      userSettings.set('modulesCompleted', []);
-      userSettings.set('homeOrder', homeOrder);
-
-      const userNotebook = new Parse.Object('Notebook');
-      userNotebook.set('user', user);
-      userNotebook.set('exercises', []);
-      userNotebook.set('todo', []);
-      userNotebook.set('notes', []);
-
       await userSettings.save();
       await userNotebook.save();
-
-      if (type === 'avatar') {
-        const assetSource = Image.resolveAssetSource(avatar);
-        let newFile;
-
-        if (assetSource.uri.startsWith('asset://')) {
-
-          const assetPath = assetSource.uri.replace('asset://', '');
-          const base64Data = await RNFS.readFileAssets(assetPath, 'base64');
-          newFile = new Parse.File("avatar.png", { base64: `data:image/png;base64,${base64Data}` });
-        } else {
-          newFile = await convertAvatar(assetSource);
-        }
-        user.set('profilePicture', newFile);
-      } else {
-        user.set('profilePicture', avatar);
-      }
-
       user.set('settings', userSettings);
       user.set('notebook', userNotebook);
+
       await user.save();
+      setIsLoggedIn(true);
+
 
     } catch (error) {
       console.error('Error during signup:', error);
     }
-    //setData(avatar, type);
-    //handleLogin(savedEmail, savedPassword);
-    setID(user.id);
-    setUsername(user.getUsername());
-    setProfilePicture(user.get('profilePicture'));
-    setIsLoggedIn(true);
+
+    if (type === 'avatar') {
+      const assetUri = getAssetUri(avatar);
+      const assetSource = { uri: assetUri };
+      const newFile = await convertAvatar(avatar);
+      user.set('profilePicture', newFile);
+      setProfilePicture(newFile);
+    } else {
+      user.set('profilePicture', avatar);
+      setProfilePicture(avatar);
+    }
+    await user.save();
+
   };
 
+  const getAssetUri = (avatar) => {
+    const asset = Image.resolveAssetSource(avatar);
+    if (Platform.OS === 'android' && typeof asset.uri !== 'string') {
+      return `android.resource://com.herfocus/${avatar}`;
+    }
+    return asset.uri;
+  };
+
+
   const handleLogin = async (email, password) => {
-    //setError('');
+    setError('');
     const lowerCaseEmail = email.toLowerCase();
 
     try {
@@ -130,7 +145,7 @@ export const UserProvider = ({ children }) => {
       setUsername(user.getUsername());
     } catch (error) {
       console.error('Error while logging in user', error);
-      //setError('Forkert email eller kodeord');
+      setError('Forkert email eller kodeord');
     }
   };
 

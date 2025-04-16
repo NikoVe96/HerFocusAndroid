@@ -96,7 +96,7 @@ export const DynamicModule = ({ route }) => {
     useFocusEffect(
         useCallback(() => {
             moduleContent();
-        }, [])
+        }, [module])
     )
 
     const findExercises = () => {

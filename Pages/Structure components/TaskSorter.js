@@ -6,7 +6,7 @@ import { faStopwatch, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { useFocusEffect, useTheme } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { getDayEvents, getAllDayEvents } from './DayEvents';
-import { LightenDarkenColor } from './ColorChange';
+import { colorChange } from './ColorChange';
 import Parse from 'parse/react-native';
 import { useUser } from '../../Components/UserContext';
 import AccordionItem from '../../Components/AccordionItem';
@@ -33,6 +33,7 @@ const TaskSorter = ({
     useFocusEffect(
         useCallback(() => {
             async function fetchEvents() {
+                let currentUser = Parse.User.current();
                 const formattedDate = formatDate(date);
                 console.log('formatted date: ' + formattedDate)
                 if (!formattedDate) {
@@ -40,8 +41,8 @@ const TaskSorter = ({
                     return;
                 }
                 try {
-                    const dayEvents = await getDayEvents(formattedDate, ID);
-                    const allDayEvents = await getAllDayEvents(formattedDate, ID);
+                    const dayEvents = await getDayEvents(formattedDate, currentUser.id);
+                    const allDayEvents = await getAllDayEvents(formattedDate, currentUser.id);
                     setDayTasksArray(dayEvents.allEvents);
                     setAllDayArray(allDayEvents);
                     setTasksArray(dayEvents.tasks);
@@ -129,13 +130,13 @@ const TaskSorter = ({
                                                                         fillColor={colors.darkText}
                                                                         unfillColor={colors.dark}
                                                                         iconStyle={{ elevation: 5, }}
-                                                                        innerIconStyle={{ borderWidth: 15, borderColor: LightenDarkenColor(item.get('color'), -30) }}
+                                                                        innerIconStyle={{ borderWidth: 15, borderColor: colorChange(item.get('color'), -30) }}
                                                                         textStyle={{ fontFamily: "JosefinSans-Regular" }}
                                                                         onPress={() => { }}
-                                                                        style={{ flex: 0.5 }}
+                                                                        style={{ flex: 0.5, }}
                                                                     />
                                                                 </View>
-                                                                <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: LightenDarkenColor(item.get('color'), -30), borderColor: LightenDarkenColor(item.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
+                                                                <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: colorChange(item.get('color'), -30), borderColor: colorChange(item.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
                                                                     <View style={{ justifyContent: 'center' }}>
                                                                         <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{step.stepName}</Text>
                                                                     </View>
@@ -248,15 +249,15 @@ const TaskSorter = ({
                                                             <View style={{ justifyContent: 'center' }}>
                                                                 <BouncyCheckbox
                                                                     size={40}
-                                                                    fillColor={LightenDarkenColor(item.get('color'), -30)}
+                                                                    fillColor={colorChange(item.get('color'), -30)}
                                                                     unfillColor={colors.dark}
-                                                                    iconStyle={{ elevation: 5, }}
-                                                                    innerIconStyle={{ borderWidth: 20, borderColor: LightenDarkenColor(item.get('color'), -30) }}
+                                                                    iconStyle={{ elevation: 2, }}
+                                                                    innerIconStyle={{ borderWidth: 20, borderColor: colorChange(item.get('color'), -30) }}
                                                                     textStyle={{ fontFamily: "JosefinSans-Regular" }}
-                                                                    style={{ flex: 0.5 }}
+                                                                    style={{ flex: 0.1 }}
                                                                 />
                                                             </View>
-                                                            <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: LightenDarkenColor(item.get('color'), -30), borderColor: LightenDarkenColor(item.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
+                                                            <View style={{ padding: 10, borderWidth: 1, borderRadius: 10, marginVertical: 5, flexDirection: 'row', backgroundColor: colorChange(item.get('color'), -30), borderColor: colorChange(item.get('color'), -30), elevation: 5, justifyContent: 'space-between', width: '80%' }}>
                                                                 <View style={{ justifyContent: 'center' }}>
                                                                     <Text style={{ fontSize: 18, paddingRight: 5, color: colors.darkText }}>{step.stepName}</Text>
                                                                 </View>

@@ -59,7 +59,8 @@ function Home() {
 
     async function remainingTasks() {
         let TaskQuery = new Parse.Query('Task');
-        TaskQuery.contains('user', ID);
+        let currentUser = Parse.User.current();
+        TaskQuery.contains('user', currentUser.id);
         TaskQuery.contains('date', currentDate);
         TaskQuery.equalTo('completed', false);
         TaskQuery.notEqualTo('futureTask', true);
@@ -70,8 +71,9 @@ function Home() {
     }
 
     async function completedTasks() {
+        let currentUser = Parse.User.current();
         let TaskQuery = new Parse.Query('Task');
-        TaskQuery.contains('user', ID);
+        TaskQuery.contains('user', currentUser.id);
         TaskQuery.contains('date', currentDate);
         TaskQuery.equalTo('completed', true);
         TaskQuery.ascending('startTime');
@@ -90,8 +92,9 @@ function Home() {
 
     async function getOrder() {
         try {
+            let currentUser = Parse.User.current();
             let query = new Parse.Query("Settings");
-            query.contains('user', ID);
+            query.contains('user', currentUser.id);
             let results = await query.find();
             if (results.length > 0) {
                 const order = results[0].get('homeOrder');
